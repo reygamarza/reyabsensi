@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#000000" />
+  <title>Mobilekit Mobile UI Kit</title>
+  <meta name="description" content="Mobilekit HTML Mobile UI Kit" />
+  <meta name="keywords" content="bootstrap 4, mobile template, cordova, phonegap, mobile, html" />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" sizes="32x32" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icon/192x192.png" />
+  <!-- <link rel="stylesheet" href="assets/css/inc/bootstrap/bootstrap.min.css" /> -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="manifest" href="__manifest.json" />
+</head>
+
+<body style="background-color: #e9ecef">
+  <!-- loader -->
+  <div id="loader">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+  <!-- * loader -->
+
+  <!-- App Capsule -->
+  <div id="appCapsule" class="mb-6">
+    <div class="section" id="user-section">
+      <img src="assets/img/iconabas.png" width="50px" height="auto" alt="iconabas" class="rounded mx-auto d-block">
+    </div>
+    <div class="section mt-2 mb-4" id="menu-section">
+      <div class="card">
+        <div class="card-body text-center">
+          <div id="user-detail">
+            <div class="avatar">
+              <img src="assets/img/man.png" alt="avatar" class="imaged w64 rounded" />
+            </div>
+            <div id="user-info">
+              <h2 id="user-name">Hey, Reyga Marza Ramadhan 👋</h2>
+              <span id="user-role">XI RPL 1</span>
+            </div>
+          </div>
+          <div class="list-menu">
+            <div class="item-menu text-center">
+              <div class="menu-icon green">
+                <ion-icon name="calendar-outline"></ion-icon>
+              </div>
+              <div class="menu-name" id="date">Senin, 1 Januari 2025</div>
+            </div>
+            <!-- <div class="item-menu text-center">
+                            <div class="menu-icon">
+                                <a class="danger" style="font-size: 40px;">
+                                    <ion-icon name="calendar-number"></ion-icon>
+                                </a>
+                            </div>
+                            <div class="menu-name">
+                                <span class="text-center">Cuti</span>
+                            </div>
+                        </div>
+                        <div class="item-menu text-center">
+                            <div class="menu-icon">
+                                <a class="warning" style="font-size: 40px;">
+                                    <ion-icon name="document-text"></ion-icon>
+                                </a>
+                            </div>
+                            <div class="menu-name">
+                                <span class="text-center">Histori</span>
+                            </div>
+                        </div> -->
+            <div class="item-menu text-center">
+              <div class="menu-icon danger">
+                <ion-icon name="location"></ion-icon>
+              </div>
+              <div class="menu-name">-6.89109241967836, 107.55912029693185</div>
+            </div>
+            <div class="item-menu text-center">
+              <div class="menu-icon warning">
+                <ion-icon name="alarm-outline"></ion-icon>
+              </div>
+              <div class="clock">
+                <ul>
+                  <li id="jam">05</li>
+                  <li id="point">:</li>
+                  <li id="menit">20</li>
+                  <li id="point">:</li>
+                  <li id="detik">30</li>
+                </ul>
+              </div>
+            </div>
+            <div class="item-menu text-center">
+              <div class="menu-icon orange">
+                <ion-icon name="navigate-outline"></ion-icon>
+              </div>
+              <div class="menu-name">40M</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="card">
+                <div class="card-body text-center">
+
+                </div>
+            </div> -->
+    </div>
+    <div class="section mt-2" id="presence-section">
+      <div class="todaypresence">
+        <div class="row">
+          <div class="col-6">
+            <button class="btn btn-success btn-block">
+              <div class="presencecontent">
+                <div class="iconpresence">
+                  <ion-icon name="camera"></ion-icon>
+                </div>
+                <div class="presencedetail">
+                  <h4 class="presencetitle">Masuk</h4>
+                  <span>07:30</span>
+                </div>
+              </div>
+            </button>
+          </div>
+          <div class="col-6">
+            <button class="btn btn-danger btn-block">
+              <div class="presencecontent">
+                <div class="iconpresence">
+                  <ion-icon name="camera"></ion-icon>
+                </div>
+                <div class="presencedetail">
+                  <h4 class="presencetitle">Pulang</h4>
+                  <span>16:00</span>
+                </div>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="card">
+            <header>
+              <p class="tanggalskrg">Januari 2024</p>
+              <div class="icons">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+                <ion-icon name="chevron-forward-outline"></ion-icon>
+              </div>
+            </header>
+            <div class="calendar">
+              <ul class="hari">
+                <li>Minggu</li>
+                <li>Senin</li>
+                <li>Selasa</li>
+                <li>Rabu</li>
+                <li>Kamis</li>
+                <li>Jumat</li>
+                <li>Sabtu</li>
+              </ul>
+              <ul class="tanggal">
+                <li class="inactive">28</li>
+                <li class="inactive">29</li>
+                <li class="inactive">30</li>
+                <li class="inactive">31</li>
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+                <li>6</li>
+                <li>7</li>
+                <li>8</li>
+                <li>9</li>
+                <li>10</li>
+                <li>11</li>
+                <li>12</li>
+                <li>13</li>
+                <li>14</li>
+                <li>15</li>
+                <li>16</li>
+                <li>17</li>
+                <li>18</li>
+                <li>19</li>
+                <li>20</li>
+                <li>21</li>
+                <li>22</li>
+                <li>23</li>
+                <li class="active">24</li>
+                <li>25</li>
+                <li>26</li>
+                <li>27</li>
+                <li>28</li>
+                <li>29</li>
+                <li>30</li>
+                <li class="inactive">1</li>
+              </ul>
+            </div>
+      </div> -->
+
+      <div class="rekaptitle">
+        <h2>Rekap Kehadiran Anda</h2>
+      </div>
+      <div class="rekappresence">
+        <div class="row">
+          <div class="col-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="presencecontent">
+                  <div class="iconpresence green">
+                    <ion-icon name="log-in"></ion-icon>
+                  </div>
+                  <div class="presencedetail">
+                    <h4 class="rekappresencetitle">Hadir</h4>
+                    <span class="rekappresencedetail">27 Hari</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="presencecontent">
+                  <div class="iconpresence primary">
+                    <ion-icon name="document-text"></ion-icon>
+                  </div>
+                  <div class="presencedetail">
+                    <h4 class="rekappresencetitle">Izin</h4>
+                    <span class="rekappresencedetail">2 Hari</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-1">
+          <div class="col-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="presencecontent">
+                  <div class="iconpresence warning">
+                    <ion-icon name="sad"></ion-icon>
+                  </div>
+                  <div class="presencedetail">
+                    <h4 class="rekappresencetitle">Sakit</h4>
+                    <span class="rekappresencedetail">1 Hari</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="presencecontent">
+                  <div class="iconpresence danger">
+                    <ion-icon name="alarm"></ion-icon>
+                  </div>
+                  <div class="presencedetail">
+                    <h4 class="rekappresencetitle">Terlambat</h4>
+                    <span class="rekappresencedetail">0 Hari</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- * App Capsule -->
+
+  <!-- App Bottom Menu -->
+  <div class="appBottomMenu">
+    <a href="#" class="item">
+      <div class="col">
+        <ion-icon name="home-outline" role="img" class="md hydrated"></ion-icon>
+        <strong>Dashboard</strong>
+      </div>
+    </a>
+    <a href="#" class="item active">
+      <div class="col">
+        <ion-icon name="calendar-outline" role="img" class="md hydrated" aria-label="calendar outline"></ion-icon>
+        <strong>Kalender</strong>
+      </div>
+    </a>
+    <a href="#" class="item">
+        <div class="col">
+            <ion-icon name="document-text-outline" role="img" class="md hydrated" aria-label="document text outline">
+            </ion-icon>
+            <strong>Rekap</strong>
+        </div>
+    </a>
+    <a href="javascript:;" class="item">
+        <div class="col">
+            <ion-icon name="people-outline" role="img" class="md hydrated" aria-label="people outline"></ion-icon>
+            <strong>Profil</strong>
+        </div>
+    </a>
+    <a href="#" class="item">
+      <div class="col">
+        <div class="action-button large">
+          <ion-icon name="camera" role="img" class="md hydrated" aria-label="add outline"></ion-icon>
+        </div>
+      </div>
+    </a>
+</div>
+  <!-- * App Bottom Menu -->
+
+  <!-- ///////////// Js Files ////////////////////  -->
+  <!-- Jquery -->
+  <script src="assets/js/lib/jquery-3.4.1.min.js"></script>
+  <!-- Bootstrap-->
+  <script src="assets/js/lib/popper.min.js"></script>
+  <!-- <script src="assets/js/lib/bootstrap.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <!-- Ionicons -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <!-- Owl Carousel -->
+  <script src="assets/js/plugins/owl-carousel/owl.carousel.min.js"></script>
+  <!-- jQuery Circle Progress -->
+  <script src="assets/js/plugins/jquery-circle-progress/circle-progress.min.js"></script>
+  <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+  <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+  <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+  <!-- Base Js File -->
+  <script src="assets/js/base.js"></script>
+  <script src="assets/js/digitalclock.js"></script>
+
+  <script>
+    am4core.ready(function () {
+      // Themes begin
+      am4core.useTheme(am4themes_animated);
+      // Themes end
+
+      var chart = am4core.create("chartdiv", am4charts.PieChart3D);
+      chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+
+      chart.legend = new am4charts.Legend();
+
+      chart.data = [
+        {
+          country: "Hadir",
+          litres: 501.9,
+        },
+        {
+          country: "Sakit",
+          litres: 301.9,
+        },
+        {
+          country: "Izin",
+          litres: 201.1,
+        },
+        {
+          country: "Terlambat",
+          litres: 165.8,
+        },
+      ];
+
+      var series = chart.series.push(new am4charts.PieSeries3D());
+      series.dataFields.value = "litres";
+      series.dataFields.category = "country";
+      series.alignLabels = false;
+      series.labels.template.text = "{value.percent.formatNumber('#.0')}%";
+      series.labels.template.radius = am4core.percent(-40);
+      series.labels.template.fill = am4core.color("white");
+      series.colors.list = [
+        am4core.color("#1171ba"),
+        am4core.color("#fca903"),
+        am4core.color("#37db63"),
+        am4core.color("#ba113b"),
+      ];
+    }); // end am4core.ready()
+  </script>
+</body>
+
+</html>
