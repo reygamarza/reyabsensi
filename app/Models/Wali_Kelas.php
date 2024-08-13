@@ -17,10 +17,8 @@ class Wali_Kelas extends Model
     protected $fillable = [
         'nuptk',
         'id_user',
-        'nama',
         'jenis_kelamin',
         'nip',
-        'id_kelas',
     ];
 
     public function user()

@@ -36,7 +36,12 @@ class Siswa extends Model
 
     public function absensi()
     {
-        return $this->hasMany(Absensi::class, 'NIS');
+        return $this->hasMany(Absensi::class, 'nis');
+    }
+
+    public function ortu()
+    {
+        return $this->hasOne(Wali_Siswa::class, 'nik');
     }
 
     public $timestamps = false;

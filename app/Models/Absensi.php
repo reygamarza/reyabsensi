@@ -14,11 +14,11 @@ class Absensi extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'NIS',
-        'id_koordinat_sekolah',
-        'id_waktu_absen',
+        'nis',
         'status',
-        'bukti',
+        'keterangan',
+        'photo_in',
+        'photo_out',
         'date',
         'jam_masuk',
         'jam_pulang',
@@ -28,11 +28,6 @@ class Absensi extends Model
     public function absensi()
     {
         return $this->belongsTo(Siswa::class, 'id_siswa');
-    }
-
-    public function koordinat()
-    {
-        return $this->belongsTo(Koordinat_Sekolah::class, 'id_koordinat_sekolah');
     }
 
 }

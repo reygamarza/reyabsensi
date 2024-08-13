@@ -38,7 +38,7 @@
                         <div style="display: flex; align-items: center; justify-content: center;">
                             <a href="{{ route('kelas-O') }}" class="fas fa-chevron-left" style="font-size: 40px; color: #393939;"></a>
                             <div style="flex: 1;">
-                                <h1 class="title-4 text-center" style="margin-bottom: 0;">Daftar Siswa {{ $kelas->tingkat }} {{ $kelas->jurusan->nama_jurusan }} {{ $kelas->nomor_kelas }}</h1>
+                                <h1 class="title-4 text-center" style="margin-bottom: 0;">Daftar Siswa {{ $kelas->tingkat }} {{ $kelas->jurusan->id_jurusan }} {{ $kelas->nomor_kelas }}</h1>
                             </div>
                         </div>
                         <hr class="line-seprate">

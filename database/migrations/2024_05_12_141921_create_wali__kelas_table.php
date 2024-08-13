@@ -16,8 +16,7 @@ return new class extends Migration
 
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id')->on('users');
-
-            $table->enum('jenis_kelamin', ['laki laki', 'perempuan'])->onDelete('cascade');
+            $table->enum('jenis_kelamin', ['laki laki', 'perempuan']);
             $table->string('nip')->unique();
         });
     }

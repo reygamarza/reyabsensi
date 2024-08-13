@@ -4464,15 +4464,20 @@ section {
     background: #57b846;
 }
 
-.status.sakit {
-    background: #ff8300;
-}
-
 .status.izin {
     background: #00b5e9;
 }
 
-.status.nonhadir {
+
+.status.terlambat {
+    background: #ffc107;
+}
+
+.status.tap {
+    background: #ff8300;
+}
+
+.status.alfa {
     background: #fa4251;
 }
 
@@ -5077,7 +5082,7 @@ section {
     border: 1px solid #e5e5e5;
     border-radius: 10px;
     background: #fff;
-    padding: 20px 30px;
+    padding: 20px 33px;
     position: relative;
     min-height: 120px;
     overflow: hidden;

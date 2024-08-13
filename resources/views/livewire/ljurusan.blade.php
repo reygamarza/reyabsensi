@@ -38,12 +38,12 @@
                                     <div class="table-data-feature">
                                         <a data-toggle="modal" data-target="#EditModal">
                                             <button class="item mr-1" data-toggle="tooltip" title="Edit"
-                                                wire:click="editjurusan({{ $j->id_jurusan }})">
+                                                wire:click="editjurusan('{{ $j->id_jurusan }}')">
                                                 <i class="zmdi zmdi-edit"></i>
                                             </button>
                                         </a>
                                         <button class="item mr-1" data-toggle="tooltip" data-placement="top"
-                                            title="Delete" wire:click="hapusjurusan({{ $j->id_jurusan }})">
+                                            title="Delete" wire:click="hapusjurusan('{{ $j->id_jurusan }}')">
                                             <i class="zmdi zmdi-delete"></i>
                                         </button>
                                     </div>
@@ -74,6 +74,16 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="id_jurusan" class="form-control-label">ID Jurusan</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="id_jurusan" name="id_jurusan"
+                                placeholder="Masukan ID Jurusan" class="form-control" wire:model="id_jurusan"
+                                required>
+                        </div>
+                    </div>
                     <div class="row form-group">
                         <div class="col col-md-3">
                             <label for="nama_jurusan" class="form-control-label">Nama Jurusan</label>
@@ -108,6 +118,16 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="id_jurusan" class="form-control-label">ID Jurusan</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="id_jurusan" name="id_jurusan"
+                                placeholder="Masukan ID Jurusan" class="form-control" wire:model="id_jurusan"
+                                required>
+                        </div>
+                    </div>
                     <div class="row form-group">
                         <div class="col col-md-3">
                             <label for="nama_jurusan" class="form-control-label">Nama Jurusan</label>

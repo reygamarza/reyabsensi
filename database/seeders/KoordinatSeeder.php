@@ -15,7 +15,7 @@ class KoordinatSeeder extends Seeder
     {
         Koordinat_Sekolah::create([
             'titik_koordinat' => '-6.890510233555621, 107.55832822384018',
-            'radius' => '300',
+            'radius' => '200',
         ]);
     }
 }

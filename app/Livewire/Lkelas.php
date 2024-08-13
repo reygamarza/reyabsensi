@@ -35,7 +35,7 @@ class Lkelas extends Component
         return Kelas::with('jurusan', 'waliKelas.user')
             ->when($this->searchkelas, function ($query) {
                 $query->whereHas('jurusan', function ($q) {
-                    $q->where('nama_jurusan', 'like', '%' . $this->searchkelas . '%');
+                    $q->where('id_jurusan', 'like', '%' . $this->searchkelas . '%');
                 })
                     ->orWhere('nomor_kelas', 'like', '%' . $this->searchkelas . '%')
                     ->orWhere('tingkat', 'like', '%' . $this->searchkelas . '%');

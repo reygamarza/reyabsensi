@@ -37,7 +37,7 @@
                     <tbody>
                         @foreach ($daftarkelas as $key => $k)
                             <tr>
-                                <td>{{ $k->tingkat }} {{ $k->jurusan->nama_jurusan }} {{ $k->nomor_kelas }}</td>
+                                <td>{{ $k->tingkat }} {{ $k->jurusan->id_jurusan }} {{ $k->nomor_kelas }}</td>
                                 <td>
                                     @if ($k->waliKelas && $k->waliKelas->user)
                                         {{ $k->waliKelas->user->nama }}
@@ -59,7 +59,7 @@
                                             <i class="zmdi zmdi-delete"></i>
                                         </button>
                                         <button class="item mr-1" data-toggle="tooltip" data-placement="top"
-                                            title="Daftar Siswa {{ $k->tingkat }} {{ $k->jurusan->nama_jurusan }} {{ $k->nomor_kelas }}"
+                                            title="Daftar Siswa {{ $k->tingkat }} {{ $k->jurusan->id_jurusan }} {{ $k->nomor_kelas }}"
                                             wire:click="redirectSiswa({{ $k->id_kelas }})">
                                             <i class="zmdi zmdi-more"></i>
                                         </button>
@@ -110,7 +110,7 @@
                         <div class="col-12 col-md-9">
                             <select name="id_jurusan" tabindex="1" wire:model="id_jurusan" class="form-control">
                                 @foreach ($daftarjurusan as $j)
-                                    <option value="{{ $j->id_jurusan }}">{{ $j->nama_jurusan }}</option>
+                                    <option value="{{ $j->id_jurusan }}">{{ $j->id_jurusan }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -179,7 +179,7 @@
                         <div class="col-12 col-md-9">
                             <select name="id_jurusan" tabindex="1" wire:model="id_jurusan" class="form-control">
                                 @foreach ($daftarjurusan as $j)
-                                    <option value="{{ $j->id_jurusan }}">{{ $j->nama_jurusan }}</option>
+                                    <option value="{{ $j->id_jurusan }}">{{ $j->id_jurusan }}</option>
                                 @endforeach
                             </select>
                         </div>

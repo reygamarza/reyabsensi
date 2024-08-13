@@ -14,23 +14,23 @@ class KelasSeeder extends Seeder
     public function run(): void
     {
         Kelas::create([
-            'id_jurusan' => 9,
-            'nuptk' => '1234567890123456',
+            'id_jurusan' => 'PPLG',
             'nomor_kelas' => 2,
+            'nuptk' => '1234567890123456',
             'tingkat' => '10',
         ]);
 
         Kelas::create([
-            'id_jurusan' => 10,
-            'nuptk' => 2345678901234567,
+            'id_jurusan' => 'RPL',
             'nomor_kelas' => 1,
+            'nuptk' => '2345678901234567',
             'tingkat' => '11',
         ]);
 
         Kelas::create([
-            'id_jurusan' => 10,
-            'nuptk' => 3456789012345678,
+            'id_jurusan' => 'RPL',
             'nomor_kelas' => 1,
+            'nuptk' => '3456789012345678',
             'tingkat' => '12',
         ]);
     }

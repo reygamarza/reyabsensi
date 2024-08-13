@@ -37,7 +37,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-Route::middleware(['auth', 'Kesiswaan:kesiswaan'])->group(function () {
+Route::middleware(['auth', 'can:kesiswaan'])->group(function () {
 
     // Dashboard
     Route::resource('kesiswaan', App\Http\Controllers\KesiswaanController::class);
@@ -64,19 +64,20 @@ Route::middleware(['auth', 'Kesiswaan:kesiswaan'])->group(function () {
 });
 
 
-Route::middleware(['auth', 'Siswa:Siswa'])->group(function () {
+Route::middleware(['auth', 'can:siswa'])->group(function () {
     Route::resource('siswa', App\Http\Controllers\siswaController::class);
     Route::get('absen-masuk', [App\Http\Controllers\SiswaController::class, 'absen'])->name('absen-masuk');
     Route::post('/absen/store', [App\Http\Controllers\SiswaController::class, 'ambilabsen'])->name('ambil-absen');
+    Route::post('upload-file', [App\Http\Controllers\SiswaController::class, 'uploadfile'])->name('upload-file');
 });
 
 
-Route::middleware(['auth', 'Wali:wali'])->group(function () {
+Route::middleware(['auth', 'can:wali'])->group(function () {
     Route::resource('wali', App\Http\Controllers\WaliController::class);
     Route::get('list-siswa', [App\Http\Controllers\WaliController::class, 'listsiswa'])->name('list-siswa');
 });
 
-Route::middleware(['auth', 'Operator:operator'])->group(function () {
+Route::middleware(['auth', 'can:operator'])->group(function () {
     Route::resource('operator', App\Http\Controllers\OperatorController::class);
     Route::get('wali-kelas-O', [App\Http\Controllers\OperatorController::class, 'walikelasO'])->name('wali-kelas-O');
     Route::get('kesiswaan-O', [App\Http\Controllers\OperatorController::class, 'kesiswaanO'])->name('kesiswaan-O');

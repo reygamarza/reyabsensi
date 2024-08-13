@@ -86,5 +86,32 @@ class UserSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
+        User::create([
+            'nama' => 'Yudi Fatir',
+            'email' => 'ortu@gmail.com',
+            'password' => password_hash("12345678", PASSWORD_DEFAULT),
+            'role' => 'walis',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        User::create([
+            'nama' => 'Shelomita Madavi',
+            'email' => 'ortu2@gmail.com',
+            'password' => password_hash("12345678", PASSWORD_DEFAULT),
+            'role' => 'walis',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        User::create([
+            'nama' => 'Rifa Radwa',
+            'email' => 'ortu3@gmail.com',
+            'password' => password_hash("12345678", PASSWORD_DEFAULT),
+            'role' => 'walis',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
     }
 }

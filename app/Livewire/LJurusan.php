@@ -11,7 +11,7 @@ class LJurusan extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
-    public $nama_jurusan, $id_jurusan;
+    public $nama_jurusan, $id_jurusan, $id_jurusan_lama;
     public $searchjurusan = '';
 
     public function render()
@@ -34,6 +34,7 @@ class LJurusan extends Component
         $this->validate($this->rules());
 
         Jurusan::create([
+            'id_jurusan' => $this->id_jurusan,
             'nama_jurusan' => $this->nama_jurusan,
         ]);
 
@@ -41,27 +42,31 @@ class LJurusan extends Component
         $this->clear();
     }
 
-    public function editjurusan($id)
+    public function editjurusan($id_jurusan)
     {
-        $daftarjurusan = Jurusan::findOrFail($id);
+        $daftarjurusan = Jurusan::findOrFail($id_jurusan);
 
         $this->id_jurusan = $daftarjurusan->id_jurusan;
+        $this->id_jurusan_lama = $daftarjurusan->id_jurusan;
         $this->nama_jurusan = $daftarjurusan->nama_jurusan;
     }
 
     public function updatejurusan()
     {
-        $jurusan = Jurusan::findOrFail($this->id_jurusan);
+        $this->validate($this->rules());
+
+        $jurusan = Jurusan::where('id_jurusan', $this->id_jurusan_lama);
         $jurusan->update([
+            'id_jurusan' => $this->id_jurusan,
             'nama_jurusan' => $this->nama_jurusan,
         ]);
 
         return redirect()->route('jurusan-O')->with('berhasil', 'Data Jurusan Berhasil Diubah');
     }
 
-    public function hapusjurusan($id)
+    public function hapusjurusan($id_jurusan)
     {
-        $jurusan = Jurusan::findOrFail($id);
+        $jurusan = Jurusan::findOrFail($id_jurusan);
         $jurusan->delete();
 
         return redirect()->route('jurusan-O')->with('berhasil', 'Data Jurusan Berhasil Dihapus');
@@ -69,12 +74,14 @@ class LJurusan extends Component
 
     public function clear()
     {
-        $this->nama_jurusan;
+        $this->id_jurusan = "";
+        $this->nama_jurusan = "";
     }
 
     protected function rules()
     {
         return [
+            'id_jurusan' => 'required',
             'nama_jurusan' => 'required',
         ];
     }

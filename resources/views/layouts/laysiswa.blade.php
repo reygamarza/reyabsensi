@@ -47,6 +47,8 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
 
 
     <style>
@@ -68,7 +70,7 @@
             margin-top: 10px;
         }
     </style>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="animsition">
@@ -147,7 +149,7 @@
                                     <img src="{{ asset('assets/siswa') }}/assets/img/man.png" alt="John Doe" />
                                 </div>
                                 <div class="content">
-                                    <a class="js-acc-btn" href="#">Satria</a>
+                                    <a class="js-acc-btn" href="#">{{ Auth::user()->nama }}</a>
                                 </div>
                                 <div class="account-dropdown js-dropdown">
                                     <div class="info clearfix">
@@ -159,9 +161,9 @@
                                         </div>
                                         <div class="content">
                                             <h5 class="name">
-                                                <a href="#">Satria Galam Pratama</a>
+                                                <a href="#">{{ Auth::user()->nama }}</a>
                                             </h5>
-                                            <span class="email">sat@gmail.com</span>
+                                            <span class="email">{{ Auth::user()->email }}</span>
                                         </div>
                                     </div>
                                     <div class="account-dropdown__body">
@@ -434,30 +436,20 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                toastr.options = {
-                    "closeButton": true,
-                    "debug": false,
-                    "newestOnTop": false,
-                    "progressBar": true,
-                    "positionClass": "toast-bottom-right",
-                    "preventDuplicates": false,
-                    "onclick": null,
-                    "showDuration": "300",
-                    "hideDuration": "1000",
-                    "timeOut": "5000",
-                    "extendedTimeOut": "1000",
-                    "showEasing": "swing",
-                    "hideEasing": "linear",
-                    "showMethod": "fadeIn",
-                    "hideMethod": "fadeOut"
-                }
-
                 @if (Session::has('berhasil'))
-                    toastr.success("{{ Session::get('berhasil') }}");
+                    Swal.fire({
+                        icon: "success",
+                        title: "Terima Kasih! 🙂",
+                        text: "{{ Session::get('berhasil') }}",
+                    });
                 @endif
 
                 @if (Session::has('gagal'))
-                    toastr.error("{{ Session::get('gagal') }}");
+                    Swal.fire({
+                        icon: "error",
+                        title: "weeladalahh 😮",
+                        text: "{{ Session::get('gagal') }}",
+                    });
                 @endif
             });
         </script>
@@ -486,7 +478,16 @@
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="{{ asset('assets/face-api.js/dist/face-api.min.js') }}"></script>
+        <script src="{{ asset('assets/kesiswaan') }}/js/kamera.js"></script>
+        <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+        <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+        <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+        <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
 
+
+        @livewireScripts
         @stack('myscript')
 
 </body>

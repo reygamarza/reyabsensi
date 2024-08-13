@@ -14,10 +14,10 @@ class WaktuAbsenSeeder extends Seeder
     public function run(): void
     {
         Waktu_Absen::create([
-            'jam_masuk' => '07:00:00',
-            'batas_jam_masuk' => '07:30:00',
-            'jam_pulang' => '15:00:00',
-            'batas_jam_pulang' => '15:30:00',
+            'jam_absen' => '06:00:00',
+            'batas_absen_masuk' => '07:15:00',
+            'jam_pulang' => '16:15:00',
+            'batas_absen_pulang' => '18:30:00',
         ]);
     }
 }

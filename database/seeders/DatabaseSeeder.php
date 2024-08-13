@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Waktu_Absen;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,10 +17,12 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             JurusanSeeder::class,
             WaliKelasSeeder::class,
+            WaliSiswaSeeder::class,
             KelasSeeder::class,
             SiswaSeeder::class,
             WaktuAbsenSeeder::class,
             KoordinatSeeder::class,
+            AbsensiSeeder::class,
         ]);
     }
 }

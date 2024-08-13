@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Wali_Kelas::class, 'id_user');
     }
+
+    public function ortu()
+    {
+        return $this->hasOne(Wali_Siswa::class, 'id_user');
+    }
 }

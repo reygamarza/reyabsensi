@@ -60,15 +60,10 @@
                             <div class="webcam-container">
                                 <div class="webcam-capture" id="webcamCapture"></div>
                                 <img id="result" class="foto">
+                                <canvas id="faceCanvas" style="position: absolute; top: 0; left: 0;"></canvas>
                             </div>
                         </div>
                         <div class="d-flex justify-content-center mt-3">
-                            <button class="buttonfoto bg-info col-md-4 col-lg-4 mx-1" onclick="bukaKamera()">
-                                <div class="button-content">
-                                    <i class="fas fa-circle-play"></i>
-                                    <h2>Mulai Kamera</h2>
-                                </div>
-                            </button>
                             <button class="buttonfoto bg-info col-md-4 col-lg-4 mx-1" onclick="ambilFoto()">
                                 <div class="button-content">
                                     <i class="fas fa-camera"></i>
@@ -87,14 +82,22 @@
                         <p class="mb-1 text-center"><b>Lokasi Anda Saat Ini</b></p>
                         <div class="statistic__item">
                             <div id="map"></div>
-                            <div class="d-flex justify-content-between align-items-center mt-2">
-                                <input id="lokasi" style="flex: 0.9; padding-right: 10px;" disabled></input>
-                                <button id="ambilabsen" class="buttonfoto bg-success col-md-6 col-lg-6">
-                                    <div class="button-content">
-                                        <h2>Submit Bukti Absen</h2>
-                                    </div>
-                                </button>
-                            </div>
+                            <p><i>*Pastikan kamu berada di dalam radius yang diizinkan (<
+                                        {{ $koordinatsekolah->radius }}M)</i>
+                            </p>
+                            <form action="{{ route('ambil-absen') }}" method="POST">
+                                @csrf
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <input type="hidden" id="faceConfidence" name="faceConfidence">
+                                    <input id="lokasi" name="lokasi" type="hidden"></input>
+                                    <input id="image" name="image" type="hidden"></input>
+                                    <button id="ambilabsen" class="buttonfoto bg-success col-md-12 col-lg-12">
+                                        <div class="button-content">
+                                            <h2>Submit Bukti Absen</h2>
+                                        </div>
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -121,42 +124,6 @@
 
 @push('myscript')
     <script>
-        let image = '';
-        let isCameraOn = false;
-
-        function bukaKamera() {
-            if (!isCameraOn) {
-                Webcam.set({
-                    height: 385,
-                    width: 520,
-                    image_format: 'jpeg',
-                    jpeg_quality: 90,
-                    flip_horiz: true
-                });
-                Webcam.attach('#webcamCapture');
-                isCameraOn = true;
-            }
-        }
-
-        function ambilFoto() {
-            if (isCameraOn) {
-                Webcam.snap(function(data_uri) {
-                    image = data_uri;
-                    document.getElementById('result').src = data_uri;
-                    document.getElementById('webcamCapture').style.display = 'none'; // Sembunyikan tampilan kamera
-                    document.getElementById('result').style.display = 'block'; // Tampilkan hasil foto
-                    isCameraOn = false;
-                });
-            }
-        }
-
-        function ambilUlang() {
-            document.getElementById('result').src = '';
-            document.getElementById('result').style.display = 'none'; // Sembunyikan hasil foto
-            document.getElementById('webcamCapture').style.display = 'block'; // Tampilkan kembali tampilan kamera
-            bukaKamera();
-        }
-
         // lokasi
         var lokasi = document.getElementById('lokasi');
         if (navigator.geolocation) {
@@ -170,12 +137,33 @@
                 maxZoom: 19,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
-            var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
-            var circle = L.circle([-6.890514063926338, 107.55833180504669], {
+            // Custom icon for user
+            var userIcon = L.icon({
+                iconUrl: '{{ asset('assets/kesiswaan') }}/images/icon/markersiswa.png',
+                iconSize: [45, 45], // size of the icon
+                iconAnchor: [19, 38], // point of the icon which will correspond to marker's location
+                popupAnchor: [0, -38] // point from which the popup should open relative to the iconAnchor
+            });
+
+            // Custom icon for school
+            var schoolIcon = L.icon({
+                iconUrl: '{{ asset('assets/kesiswaan') }}/images/icon/markerschool.png',
+                iconSize: [45, 45], // size of the icon
+                iconAnchor: [19, 38], // point of the icon which will correspond to marker's location
+                popupAnchor: [0, -38] // point from which the popup should open relative to the iconAnchor
+            });
+
+            var markerUser = L.marker([position.coords.latitude, position.coords.longitude], {
+                icon: userIcon
+            }).addTo(map);
+            var markerSchool = L.marker([{{ $koordinatsekolah->titik_koordinat }}], {
+                icon: schoolIcon
+            }).addTo(map);
+            var circle = L.circle([{{ $koordinatsekolah->titik_koordinat }}], {
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
-                radius: 200
+                radius: {{ $koordinatsekolah->radius }}
             }).addTo(map);
         }
 
@@ -195,42 +183,5 @@
                     break;
             }
         }
-
-        $("#ambilabsen").click(function(e) {
-            e.preventDefault(); // Prevent the default form submission
-            var lokasi = $('#lokasi').val();
-            $.ajax({
-                type: 'POST',
-                url: '{{ route('ambil-absen') }}', // Use the route name
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    image: image,
-                    lokasi: lokasi
-                },
-                cache: false,
-                success: function(response) {
-                    if (response.success) {
-
-                        toastr.success(response.message);
-
-                        setTimeout(function() {
-                            window.location.href = "{{ route('siswa.index') }}";
-                        }, 2000);
-
-
-                    }
-                },
-                error: function(response) {
-                    if (response.error) {
-
-                        toastr.error(response.message);
-
-                        setTimeout(function() {
-                            window.location.href = "{{ route('ambil-absen') }}";
-                        }, 2000);
-                    }
-                }
-            });
-        });
     </script>
 @endpush

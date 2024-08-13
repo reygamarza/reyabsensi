@@ -17,8 +17,11 @@ return new class extends Migration
             $table->unsignedBigInteger('id_user')->nullable();
             $table->foreign('id_user')->references('id')->on('users');
 
-            $table->unsignedInteger('id_kelas')->nullable();
-            $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onUpdate('cascade')->onDelete('set null');
+            $table->unsignedInteger('id_kelas');
+            $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onDelete('cascade');
+
+            $table->string('nik')->nullable();
+            $table->foreign('nik')->references('nik')->on('wali__siswas');
 
             $table->enum('jenis_kelamin', ['laki laki', 'perempuan']);
             $table->string('nisn')->unique();

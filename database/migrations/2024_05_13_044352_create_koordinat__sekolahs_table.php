@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('koordinat__sekolahs', function (Blueprint $table) {
             $table->increments('id_koordinat_sekolah');
-            $table->string('titik_koordinat');
+            $table->string('titik_koordinat', 255);
             $table->integer('radius');
         });
     }
