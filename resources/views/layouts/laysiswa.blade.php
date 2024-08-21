@@ -46,9 +46,8 @@
     <link rel="shortcut icon" href="{{ asset('assets/kesiswaan') }}/images/icon/iconabas.png">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
-    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
 
 
     <style>
@@ -70,7 +69,6 @@
             margin-top: 10px;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="animsition">
@@ -88,14 +86,14 @@
                     <div class="header__navbar">
                         <ul class="list-unstyled">
                             <li>
-                                <a href="{{ route('kesiswaan.index') }}">
+                                <a href="{{ route('siswa.index') }}">
                                     <i class="fas fa-tv"></i>Dashboard
                                     <span class="bot-line"></span>
                                 </a>
                             </li>
                             <li class="">
-                                <a href="{{ route('laporan-A') }}">
-                                    <i class="fas fa-duotone fa-book-open"></i>Laporan
+                                <a href="{{ route('rekap') }}">
+                                    <i class="fas fa-duotone fa-book-open"></i>Rekap Absensi
                                     <span class="bot-line"></span>
                                 </a>
                             </li>
@@ -473,19 +471,13 @@
 
         <!-- Main JS-->
         <script src="{{ asset('assets/kesiswaan') }}/js/main.js"></script>
-        <script src="{{ asset('assets/siswa/assets') }}/js/digitalclock.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="{{ asset('assets/face-api.js/dist/face-api.min.js') }}"></script>
-        <script src="{{ asset('assets/kesiswaan') }}/js/kamera.js"></script>
-        <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
-        <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-        <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
-        <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
-
+        <script src="https://cdn.jsdelivr.net/npm/moment/min/moment.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
         @livewireScripts
         @stack('myscript')

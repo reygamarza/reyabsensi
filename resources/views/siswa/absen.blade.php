@@ -123,7 +123,9 @@
 
 
 @push('myscript')
+<script src="{{ asset('assets/kesiswaan') }}/js/kamera.js"></script>
     <script>
+
         // lokasi
         var lokasi = document.getElementById('lokasi');
         if (navigator.geolocation) {

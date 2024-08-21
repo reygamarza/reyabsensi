@@ -25,6 +25,7 @@ return new class extends Migration
             $table->time('jam_pulang')->nullable();
             $table->string('titik_koordinat_masuk')->nullable();
             $table->string('titik_koordinat_pulang')->nullable();
+            $table->integer('menit_keterlambatan')->nullable();
         });
     }
 

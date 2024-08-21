@@ -69,6 +69,8 @@ Route::middleware(['auth', 'can:siswa'])->group(function () {
     Route::get('absen-masuk', [App\Http\Controllers\SiswaController::class, 'absen'])->name('absen-masuk');
     Route::post('/absen/store', [App\Http\Controllers\SiswaController::class, 'ambilabsen'])->name('ambil-absen');
     Route::post('upload-file', [App\Http\Controllers\SiswaController::class, 'uploadfile'])->name('upload-file');
+    Route::get('rekap', [App\Http\Controllers\SiswaController::class, 'Rekap'])->name('rekap');
+    Route::get('filter-rekap', [App\Http\Controllers\SiswaController::class, 'filterrekap'])->name('filter-rekap');
 });
 
 
