@@ -52,7 +52,7 @@
                 <div class="table-data__tool">
                     <div class="table-data__tool-left"></div>
                     <div class="table-data__tool-right">
-                        <form action="{{ route('filter-rekap') }}" method="GET">
+                        <form action="{{ route('rekap') }}" method="GET">
                             <div class="filter-group">
                                 <label for="from-date">From</label>
                                 <input type="date" id="from-date" name="start_date" class="au-btn-filter">
@@ -73,7 +73,7 @@
                                     <tr>
                                         <th>Tanggal</th>
                                         <th>Status</th>
-                                        <th>Detail</th>
+                                        <th>Detail Kehadiran</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -94,16 +94,73 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <span class="status bg-secondary">Detail Kehadiran</span>
+                                                <button class="status bg-secondary" data-toggle="modal"
+                                                    data-target="#DetailModal{{ $a->id_absensi }}">Lihat</button>
                                             </td>
                                         </tr>
                                     @endforeach
+
                                 </tbody>
                             </table>
-
+                            @foreach ($absensi as $a)
+                            {{-- Modal Detail Kehadiran --}}
+                            <div class="modal fade" id="DetailModal{{ $a->id_absensi }}" tabindex="-1" role="dialog"
+                                aria-labelledby="DetailModalLabel{{ $a->id }}" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content border-0 rounded-lg shadow-lg">
+                                        <div class="modal-header border-bottom-0">
+                                            <p class="modal-title" id="DetailModalLabel{{ $a->id }}">
+                                                Detail Kehadiran <strong>{{ $a->date }}</strong>
+                                            </p>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-start">
+                                            <table class="table table-borderless">
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Status:</th>
+                                                        <td>{{ $a->status }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Jam Masuk:</th>
+                                                        <td class="text-muted">
+                                                            {{ $a->jam_masuk ?? 'Tidak tersedia' }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Jam Pulang:</th>
+                                                        <td class="text-muted">
+                                                            {{ $a->jam_pulang ?? 'Tidak tersedia' }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Menit Keterlambatan:</th>
+                                                        <td class="text-muted">
+                                                            {{ $a->menit_keterlambatan ? $a->menit_keterlambatan . ' menit' : 'Tidak tersedia' }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Keterangan:</th>
+                                                        <td class="text-muted">
+                                                            {{ $a->keterangan ?? 'Tidak tersedia' }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer border-top-0">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Tutup</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- End Modal Detail Kehadiran --}}
+                            @endforeach
                         </div>
                         <div class="d-flex justify-content-center">
-                            {{ $absensi->appends(['start_date' => request('start_date'), 'end_date' => request('end_date')])->links() }}
+                            {{ $absensi->links() }}
                         </div>
                     </div>
                     <div class="col-lg-4">

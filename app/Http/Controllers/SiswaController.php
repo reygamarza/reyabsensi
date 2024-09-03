@@ -7,10 +7,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Absensi;
 use App\Models\Koordinat_Sekolah;
+use App\Models\Siswa;
+use App\Models\User;
 use App\Models\Waktu_Absen;
 use Illuminate\Support\Facades\DB;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class SiswaController extends Controller
 {
@@ -34,7 +37,7 @@ class SiswaController extends Controller
             ->first();
 
         $dataBulanIni = Absensi::whereYear('date', date('Y'))
-        ->where('nis', $nis)
+            ->where('nis', $nis)
             ->whereMonth('date', date('m'))
             ->select('status', DB::raw('count(*) as total'))
             ->groupBy('status')
@@ -42,7 +45,7 @@ class SiswaController extends Controller
             ->toArray();
 
         $dataBulanSebelumnya = Absensi::whereYear('date', date('Y'))
-        ->where('nis', $nis)
+            ->where('nis', $nis)
             ->whereMonth('date', date('m', strtotime('first day of previous month')))
             ->select('status', DB::raw('count(*) as total'))
             ->groupBy('status')
@@ -78,8 +81,8 @@ class SiswaController extends Controller
         $endOfWeek = date('Y-m-d', strtotime('sunday this week'));
 
         $riwayatmingguini = Absensi::whereBetween('date', [$startOfWeek, $endOfWeek])
-        ->where('nis', $nis) // Sesuaikan dengan kolom NIS siswa
-        ->get();
+            ->where('nis', $nis) // Sesuaikan dengan kolom NIS siswa
+            ->get();
 
         // Jika absensi ditemukan, ambil statusnya. Jika tidak, setel status ke 'Belum Absen'.
         $statusAbsen = $cekabsen ? $cekabsen->status : 'Belum Absen';
@@ -119,6 +122,51 @@ class SiswaController extends Controller
         ]);
     }
 
+    public function profile()
+    {
+        $user = Auth::user();
+        $nis = $user->siswa->nis;
+
+        $siswa = Siswa::where('nis', $nis)->with('user')->first();
+        return view('siswa.profile', compact('siswa'));
+    }
+
+    public function editprofile(Request $request)
+    {
+        $user = Auth::user();
+        $id_user = $user->id;
+        $nis = $user->siswa->nis;
+
+        if ($request->hasFile('foto')) {
+            $foto = $request->file('foto');
+            $extension = $foto->getClientOriginalExtension();
+            $folderPath = 'public/uploads/foto_profil/';
+            $fileName = $nis . '.' . $extension;
+            $file = $folderPath . $fileName;
+
+            Storage::put($file, file_get_contents($foto));
+        } else {
+            $fileName = $user->foto;
+        }
+
+        $password = $request->password ? Hash::make($request->password) : $user->password;
+
+        $data = [
+            'email' => $request->email,
+            'password' => $password,
+            'foto' => $fileName,
+        ];
+
+        $simpan = User::where('id', $id_user)->update($data); 
+
+        if ($simpan) {
+            return redirect()->route('profile')->with('berhasil', 'Profil Anda Berhasil Diubah.');
+        } else {
+            return redirect()->route('profile')->with('gagal', 'Profil Gagal Diubah.');
+        }
+    }
+
+
 
     public function Absen()
     {
@@ -128,14 +176,37 @@ class SiswaController extends Controller
         ]);
     }
 
-    public function Rekap()
+    public function Rekap(Request $request)
     {
         $user = Auth::user();
         $nis = $user->siswa->nis;
-        $hariini = date("Y-m-d");
 
-        $absensi = Absensi::where('nis', $nis)->where('date', $hariini)->paginate(7);
+        // Tentukan rentang tanggal
+        $start_date = $request->input('start_date', date('Y-m-d'));
+        $end_date = $request->input('end_date', date('Y-m-d'));
 
+        // Query untuk semua data dalam rentang tanggal
+        $allAbsensi = Absensi::where('nis', $nis)
+            ->whereBetween('date', [$start_date, $end_date])
+            ->get();
+
+        // Hitung statistik
+        $stats = $this->filterrekap($allAbsensi);
+
+        // Query dengan paginasi untuk tampilan tabel
+        $absensi = Absensi::where('nis', $nis)
+            ->whereBetween('date', [$start_date, $end_date])
+            ->paginate(7)
+            ->appends($request->only(['start_date', 'end_date']));
+
+        return view('siswa.rekap', array_merge(
+            compact('absensi', 'start_date', 'end_date'),
+            $stats
+        ));
+    }
+
+    private function filterrekap($absensi)
+    {
         $jumlahHadir = $absensi->where('status', 'Hadir')->count();
         $jumlahIzin = $absensi->whereIn('status', ['Sakit', 'Izin'])->count();
         $jumlahTerlambat = $absensi->where('status', 'Terlambat')->count();
@@ -146,46 +217,7 @@ class SiswaController extends Controller
         $totalAbsensi = $absensi->count();
         $persentaseHadir = $totalAbsensi > 0 ? round(($jumlahHadir / $totalAbsensi) * 100) : 0;
 
-        return view('siswa.rekap', compact('absensi',  'jumlahHadir', 'jumlahIzin', 'jumlahTerlambat', 'jumlahAlfa', 'jumlahTap', 'totalKeterlambatan', 'persentaseHadir'));
-    }
-
-    public function filterrekap(Request $request)
-    {
-        $start_date = $request->start_date;
-        $end_date = $request->end_date;
-        $user = Auth::user();
-        $nis = $user->siswa->nis;
-
-        $absensi = Absensi::where('nis', $nis)->whereBetween('date', [$start_date, $end_date])->paginate(7)->appends(['start_date' => $start_date, 'end_date' => $end_date]);
-
-        $start_date = $request->start_date;
-        $end_date = $request->end_date;
-        $user = Auth::user();
-        $nis = $user->siswa->nis;
-
-        // Query untuk semua data (tanpa paginasi)
-        $allAbsensi = Absensi::where('nis', $nis)
-            ->whereBetween('date', [$start_date, $end_date])
-            ->get();
-
-        // Hitung total berdasarkan semua data
-        $jumlahHadir = $allAbsensi->where('status', 'Hadir')->count();
-        $jumlahIzin = $allAbsensi->whereIn('status', ['Sakit', 'Izin'])->count();
-        $jumlahTerlambat = $allAbsensi->where('status', 'Terlambat')->count();
-        $jumlahAlfa = $allAbsensi->where('status', 'Alfa')->count();
-        $jumlahTap = $allAbsensi->where('status', 'TAP')->count();
-        $totalKeterlambatan = $allAbsensi->sum('menit_keterlambatan');
-
-        $totalAbsensi = $allAbsensi->count();
-        $persentaseHadir = $totalAbsensi > 0 ? round(($jumlahHadir / $totalAbsensi) * 100) : 0;
-    
-        // Query dengan paginasi hanya untuk menampilkan data di tabel
-        $absensi = Absensi::where('nis', $nis)
-            ->whereBetween('date', [$start_date, $end_date])
-            ->paginate(7);
-
-        return view('siswa.rekap', compact(
-            'absensi',
+        return compact(
             'jumlahHadir',
             'jumlahIzin',
             'jumlahTerlambat',
@@ -193,8 +225,7 @@ class SiswaController extends Controller
             'jumlahTap',
             'totalKeterlambatan',
             'persentaseHadir'
-        ));
-
+        );
     }
 
     // public function filterrekap(Request $request)
@@ -263,17 +294,13 @@ class SiswaController extends Controller
             ];
 
             $simpan = Absensi::create($data);
-            if($simpan)
-            {
+            if ($simpan) {
                 Storage::put($file, file_get_contents($foto));
                 return redirect()->route('siswa.index')->with('berhasil', 'Kehadiran berhasil dicatat.');
             } else {
                 return redirect()->route('siswa.index')->with('gagal', 'Fotonya gaada mas.');
             }
-
-        }
-
-         else {
+        } else {
             return redirect()->route('siswa.index')->with('gagal', 'File Tidak ada.');
         }
     }

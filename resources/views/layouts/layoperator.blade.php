@@ -84,7 +84,7 @@
                             </li>
                             <li class="has-sub">
                                 <a href="#">
-                                    <i class="fas fa-duotone fa-users-between-lines"></i>Kesiswaan | Wali Kelas
+                                    <i class="fas fa-duotone fa-users-between-lines"></i>Daftar Pengguna
                                     <span class="bot-line"></span>
                                 </a>
                                 <ul class="header3-sub-list list-unstyled">

@@ -144,7 +144,7 @@
                         <div class="account-wrap">
                             <div class="account-item account-item--style2 clearfix js-item-menu">
                                 <div class="image">
-                                    <img src="{{ asset('assets/siswa') }}/assets/img/man.png" alt="John Doe" />
+                                    <img src={{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }} alt="Foto Profil" />
                                 </div>
                                 <div class="content">
                                     <a class="js-acc-btn" href="#">{{ Auth::user()->nama }}</a>
@@ -153,8 +153,7 @@
                                     <div class="info clearfix">
                                         <div class="image">
                                             <a href="#">
-                                                <img src="{{ asset('assets/siswa') }}/assets/img/man.png"
-                                                    alt="John Doe" />
+                                                <img src={{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }} alt="Foto Profil" />
                                             </a>
                                         </div>
                                         <div class="content">
@@ -166,7 +165,7 @@
                                     </div>
                                     <div class="account-dropdown__body">
                                         <div class="account-dropdown__item">
-                                            <a href="#">
+                                            <a href="{{ route('profile') }}">
                                                 <i class="zmdi zmdi-account"></i>Profile</a>
                                         </div>
                                     </div>
