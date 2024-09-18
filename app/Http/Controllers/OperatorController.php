@@ -8,6 +8,7 @@ use App\Models\Kelas;
 use App\Models\Wali_Kelas;
 use App\Models\Siswa;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class OperatorController extends Controller
 {
@@ -25,6 +26,13 @@ class OperatorController extends Controller
     {
         return view('operator.walikelasO', [
             'title' => 'Wali Kelas'
+        ]);
+    }
+
+    public function walisiswaO()
+    {
+        return view('operator.walisiswaO', [
+            'title' => 'Wali Siswa'
         ]);
     }
 
@@ -59,6 +67,41 @@ class OperatorController extends Controller
             'title' => 'Jurusan'
         ]);
     }
+
+    public function profileO()
+    {
+        $user = Auth::user();
+        $id_user = $user->id;
+
+        $operator = User::where('id', $id_user)->first();
+        return view('operator.profileO', [
+            'title' => 'Profile',
+            'operator' => $operator,
+        ]);
+    }
+
+    public function editprofileO(Request $request)
+    {
+        $user = Auth::user();
+        $id_user = $user->id;
+
+        $password = $request->password ? Hash::make($request->password) : $user->password;
+
+        $data = [
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'password' => $password,
+        ];
+
+        $simpan = User::where('id', $id_user)->update($data);
+
+        if ($simpan) {
+            return redirect()->route('profile-O')->with('berhasil', 'Profil Anda Berhasil Diubah.');
+        } else {
+            return redirect()->route('profile-O')->with('gagal', 'Profil Gagal Diubah.');
+        }
+    }
+
 
     /**
      * Show the form for creating a new resource.

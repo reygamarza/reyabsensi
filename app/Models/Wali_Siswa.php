@@ -9,6 +9,9 @@ class Wali_Siswa extends Model
 {
     use HasFactory;
 
+    protected $table = 'wali__siswas';
+    public $primaryKey = 'nik';
+
     protected $fillable = [
         'nik',
         'id_user',
@@ -17,7 +20,7 @@ class Wali_Siswa extends Model
 
     public function siswa()
     {
-        return $this->hasMany(Siswa::class, 'nik');
+        return $this->hasMany(Siswa::class, 'nik', 'nik');
     }
 
     public function user()

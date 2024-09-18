@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'Siswa' => \App\Http\Middleware\Siswa::class,
         'Wali' => \App\Http\Middleware\Wali::class,
         'Operator' => \App\Http\Middleware\Operator::class,
+        'WaliS' => \App\Http\Middleware\WaliSiswa::class,
     ];
 }

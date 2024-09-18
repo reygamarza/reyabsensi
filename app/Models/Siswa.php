@@ -41,7 +41,7 @@ class Siswa extends Model
 
     public function ortu()
     {
-        return $this->hasOne(Wali_Siswa::class, 'nik');
+        return $this->belongsTo(Wali_Siswa::class, 'nik', 'nik');
     }
 
     public $timestamps = false;

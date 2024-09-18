@@ -8,11 +8,12 @@
                         data-target="#TambahModal" wire:click="clear()">
                         <i class="zmdi zmdi-plus"></i>Tambah</button>
                     {{-- <button class="au-btn-filter mr-2">
-                        <i></i>Semua</button> --}}
+                            <i></i>Semua</button> --}}
                 </div>
                 <div class="table-data__tool-right">
                     <div class="au-form-icon--sm">
-                        <input class="au-input--w300 au-input--style2" type="text" placeholder="Cari Wali Kelas" wire:model.live.debounce="searchwali">
+                        <input class="au-input--w300 au-input--style2" type="text" placeholder="Cari Wali Siswa"
+                            wire:model.live.debounce="searchwalisiswa">
                         <button class="au-btn--submit2" type="submit">
                             <i class="zmdi zmdi-search"></i>
                         </button>
@@ -27,28 +28,26 @@
                             <th>Email</th>
                             <th>Nama</th>
                             <th>JK</th>
-                            <th>NIP</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($daftarwali as $key => $w)
+                        @foreach ($daftarwalisiswa as $key => $ws)
                             <tr>
-                                <td>{{ $w->nuptk }}</td>
-                                <td>{{ $w->user->email }}</td>
-                                <td>{{ $w->user->nama }}</td>
-                                <td>{{ $w->jenis_kelamin }}</td>
-                                <td>{{ $w->nip }}</td>
+                                <td>{{ $ws->nik }}</td>
+                                <td>{{ $ws->user->email }}</td>
+                                <td>{{ $ws->user->nama }}</td>
+                                <td>{{ $ws->jenis_kelamin }}</td>
                                 <td>
                                     <div class="table-data-feature">
                                         <a data-toggle="modal" data-target="#EditModal">
                                             <button class="item mr-1" data-toggle="tooltip" title="Edit"
-                                                wire:click="editwali({{ $w->nuptk }})">
+                                                wire:click="editwalisiswa({{ $ws->nik }})">
                                                 <i class="zmdi zmdi-edit"></i>
                                             </button>
                                         </a>
                                         <button class="item mr-1" data-toggle="tooltip" data-placement="top"
-                                            title="Delete" wire:click="hapuswali({{ $w->nuptk }})">
+                                            title="Delete" wire:click="hapuswalisiswa({{ $ws->nik }})">
                                             <i class="zmdi zmdi-delete"></i>
                                         </button>
                                     </div>
@@ -58,21 +57,21 @@
                     </tbody>
                 </table>
                 <div class="pagination-container">
-                    {{ $daftarwali->links() }}
+                    {{ $daftarwalisiswa->links() }}
                 </div>
             </div>
         </div>
     </section>
     <!-- END DATA TABLE-->
 
-    {{-- Modal Tambah Wali Kelas --}}
+    {{-- Modal Tambah Wali Siswa --}}
     <div class="modal fade" id="TambahModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
         aria-hidden="true" wire:ignore>
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content" style="border-radius: 10px">
                 <div class="modal-header">
                     <h5 class="modal-title fw-light" id="largeModalLabel"><strong>Tambah Data</strong>
-                        <small>Wali Kelas</small>
+                        <small>Wali Siswa</small>
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -80,16 +79,16 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <!-- Biodata Wali Column -->
+                        <!-- Biodata Wali Siswa Column -->
                         <div class="col-md-6">
-                            <h6 class="fw-bold mb-3">Biodata Wali Kelas</h6>
+                            <h6 class="fw-bold mb-3">Biodata Wali Siswa</h6>
                             <div class="row form-group" style="margin-bottom: 25px;">
                                 <div class="col col-md-3">
-                                    <label for="nuptk" class="form-control-label">NUPTK</label>
+                                    <label for="nik" class="form-control-label">NIK</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" id="nuptk" name="nuptk" placeholder="Masukan NUPTK"
-                                        class="form-control" wire:model="nuptk" required>
+                                    <input type="text" id="nik" name="nik" placeholder="Masukan NIK"
+                                        class="form-control" wire:model="nik" required>
                                 </div>
                             </div>
                             <div class="row form-group" style="margin-bottom: 25px;">
@@ -121,19 +120,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row form-group" style="margin-bottom: 25px;">
-                                <div class="col col-md-3">
-                                    <label for="nip" class="form-control-label">NIP</label>
-                                </div>
-                                <div class="col-12 col-md-9">
-                                    <input type="text" id="nip" name="nip" placeholder="Masukan NIP"
-                                        class="form-control" required wire:model="nip">
-                                </div>
-                            </div>
                         </div>
-                        <!-- Akun Wali Column -->
+                        <!-- Akun Wali Siswa Column -->
                         <div class="col-md-6">
-                            <h6 class="fw-bold mb-3">Akun Wali Kelas</h6>
+                            <h6 class="fw-bold mb-3">Akun Wali Siswa</h6>
                             <div class="row form-group" style="margin-bottom: 25px;">
                                 <div class="col col-md-3">
                                     <label for="email" class="form-control-label">Email</label>
@@ -158,21 +148,21 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-success" wire:click="tambahwali()">Submit</button>
+                    <button type="submit" class="btn btn-success" wire:click="tambahwalisiswa()">Submit</button>
                 </div>
             </div>
         </div>
     </div>
     {{-- End Modal Tambah Wali --}}
 
-    {{-- Modal Edit Wali Kelas --}}
+    {{-- Modal Edit Wali Siswa --}}
     <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
         aria-hidden="true" wire:ignore>
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content" style="border-radius: 10px">
                 <div class="modal-header">
                     <h5 class="modal-title fw-light" id="largeModalLabel"><strong>Edit Data</strong>
-                        <small>Wali Kelas</small>
+                        <small>Wali Siswa</small>
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -180,16 +170,16 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <!-- Biodata Wali Column -->
+                        <!-- Biodata Wali Siswa Column -->
                         <div class="col-md-6">
-                            <h6 class="fw-bold mb-3">Biodata Wali Kelas</h6>
+                            <h6 class="fw-bold mb-3">Biodata Wali Siswa</h6>
                             <div class="row form-group" style="margin-bottom: 25px;">
                                 <div class="col col-md-3">
-                                    <label for="nuptk" class="form-control-label">NUPTK</label>
+                                    <label for="nik" class="form-control-label">NIK</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" id="nuptk" name="nuptk" placeholder="Masukan NUPTK"
-                                        class="form-control" wire:model="nuptk" required>
+                                    <input type="text" id="nik" name="nik" placeholder="Masukan NIK"
+                                        class="form-control" wire:model="nik" required>
                                 </div>
                             </div>
                             <div class="row form-group" style="margin-bottom: 25px;">
@@ -221,19 +211,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row form-group" style="margin-bottom: 25px;">
-                                <div class="col col-md-3">
-                                    <label for="nip" class="form-control-label">NIP</label>
-                                </div>
-                                <div class="col-12 col-md-9">
-                                    <input type="text" id="nip" name="nip" placeholder="Masukan NIP"
-                                        class="form-control" required wire:model="nip">
-                                </div>
-                            </div>
                         </div>
-                        <!-- Akun Wali Column -->
+                        <!-- Akun Wali Siswa Column -->
                         <div class="col-md-6">
-                            <h6 class="fw-bold mb-3">Akun Wali Kelas</h6>
+                            <h6 class="fw-bold mb-3">Akun Wali Siswa</h6>
                             <div class="row form-group" style="margin-bottom: 25px;">
                                 <div class="col col-md-3">
                                     <label for="email" class="form-control-label">Email</label>
@@ -258,7 +239,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-success" wire:click="updatewali()">Submit</button>
+                    <button type="submit" class="btn btn-success" wire:click="updatewalisiswa()">Submit</button>
                 </div>
             </div>
         </div>

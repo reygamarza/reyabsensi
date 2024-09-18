@@ -1,4 +1,4 @@
-@extends('layouts.laysiswa')
+@extends('layouts.layoperator')
 
 @section('content')
     <!-- PAGE CONTENT-->
@@ -47,44 +47,27 @@
                     <!-- Profil Siswa -->
                     <div class="col-md-4 mb-4">
                         <div class="au-card p-4 text-center shadow-sm">
-                            <img src="{{ asset('storage/uploads/foto_profil/' . $siswa->user->foto) }}" alt="Foto Profil" class="rounded-circle mb-3" width="150px" height="150px" style="object-fit: cover;">
-                            <h5 class="font-weight-bold">{{ $siswa->user->nama }}</h5>
-                            <p class="text-muted">{{ $siswa->user->email }}</p>
-
-                            <div class="mt-3">
-                                <button class="btn btn-outline-primary" onclick="document.getElementById('uploadFoto').click();">
-                                    Ganti Foto Profil
-                                </button>
-                                <!-- Menampilkan Nama File yang Dipilih -->
-                                <span id="namaFile" class="ml-2 text-muted"></span>
-                            </div>
-                            <canvas id="ratingChart" width="10" height="10"></canvas>
-
-                            <!-- Input File yang Disembunyikan -->
+                            <img src="{{ asset('assets/kesiswaan') }}/images/icon/admin.jpg"
+                            alt="Operator" class="rounded-circle mb-3" width="150px" height="150px" style="object-fit: cover;" />
+                            <h5 class="font-weight-bold">{{ $operator->nama }}</h5>
+                            <p class="text-muted">{{ $operator->email }}</p>
                         </div>
                     </div>
                     <!-- Form Edit Profil -->
                     <div class="col-md-8">
                         <div class="au-card p-4 shadow-sm">
-                            <form action="{{ route('edit-profile') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('edit-profile-O') }}" method="POST">
                                 @csrf
-                            <input type="file" id="uploadFoto" name="foto" style="display: none;" accept="image/*" onchange="tampilkanNamaFile()">
                             <div class="row form-group mb-3">
                                 <div class="col-lg-12">
-                                    <label for="nama" class="form-control-label"><b>Nama Lengkap</b></label>
-                                    <input type="text" id="nama" name="nama" placeholder="Masukan Nama Lengkap" class="form-control" value="{{ $siswa->user->nama }}" required disabled>
-                                </div>
-                            </div>
-                            <div class="row form-group mb-3">
-                                <div class="col-lg-12">
-                                    <label for="nis" class="form-control-label"><b>NIS</b></label>
-                                    <input type="text" id="nis" name="nis" placeholder="Masukan NIS" class="form-control" value="{{ $siswa->nis }}" required disabled>
+                                    <label for="nama" class="form-control-label"><b>Nama</b></label>
+                                    <input type="text" id="nama" name="nama" placeholder="Masukan Nama" class="form-control" value="{{ $operator->nama }}" required>
                                 </div>
                             </div>
                             <div class="row form-group mb-3">
                                 <div class="col-lg-12">
                                     <label for="email" class="form-control-label"><b>Email</b></label>
-                                    <input type="email" id="email" name="email" placeholder="Masukan Email" class="form-control" value="{{ $siswa->user->email }}" required>
+                                    <input type="email" id="email" name="email" placeholder="Masukan Email" class="form-control" value="{{ $operator->email }}" required>
                                 </div>
                             </div>
                             <div class="row form-group mb-3">
@@ -103,11 +86,16 @@
             </div>
         </section>
 
+
         <!-- COPYRIGHT-->
         <section class="p-t-60 p-b-20">
             <div class="container">
                 <div class="row">
-
+                    <div class="col-md-12">
+                        <div class="copyright">
+                            <p>Copyright © 2024 ABAS. All rights reserved.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -115,14 +103,4 @@
     </div>
 @endsection
 
-@push('myscript')
-
-<script>
-    function tampilkanNamaFile() {
-        var input = document.getElementById('uploadFoto');
-        var namaFile = input.files[0] ? input.files[0].name : 'Tidak ada file yang dipilih';
-        document.getElementById('namaFile').textContent = namaFile;
-    }
-</script>
-@endpush
 

@@ -20,12 +20,6 @@
                                     <li class="list-inline-item">Dashboard</li>
                                 </ul>
                             </div>
-                            <form class="au-form-icon--sm" action="" method="post">
-                                <input class="au-input--w300 au-input--style2" type="text" placeholder="Search">
-                                <button class="au-btn--submit2" type="submit">
-                                    <i class="zmdi zmdi-search"></i>
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -38,8 +32,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1 class="title-4">Selamat Datang
-                            <span>Satria Galam Pratama!</span>
+                        <h1 class="title-4">Selamat Datang,
+                            <span>{{ Auth::user()->nama }}!</span>
                         </h1>
                         <hr class="line-seprate">
                     </div>
@@ -170,8 +164,8 @@
                         </div>
                         <div class="textabsen">
                             <div class="textwrapperabsen">
-                                <h2 class="number">Mengisi Form Tidak Hadir</h2>
-                                <h2 class="number">Karena Alasan Tertentu</h2>
+                                <h2 class="number">Mengisi Form Tidak Hadir Karena Alasan Tertentu</h2>
+                                <h2 class="number"></h2>
                             </div>
                         </div>
                         </a>
@@ -401,8 +395,8 @@
                                     <tr>
                                         <th>Tanggal</th>
                                         <th>Status</th>
-                                        <th>Absen Masuk</th>
-                                        <th>Absen Pulang</th>
+                                        {{-- <th>Absen Masuk</th>
+                                        <th>Absen Pulang</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -422,8 +416,8 @@
                                                     <span class="status alfa">{{ $riwayatM->status }}</span>
                                                 @endif
                                             </td>
-                                            <td>{{ $riwayatM->jam_masuk }}</td>
-                                            <td>{{ $riwayatM->jam_pulang }}</td>
+                                            {{-- <td>{{ $riwayatM->jam_masuk }}</td>
+                                            <td>{{ $riwayatM->jam_pulang }}</td> --}}
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -433,100 +427,96 @@
                     <div class="col-lg-4">
                         <div class="au-card">
                             <h3 class="title-5 m-b-35 text-center">Jumlah Kehadiran Anda</h3>
-                            <div class="au-card-inner">
-                                <div class="card">
-                                    <div class="card-header p-0">
-                                        <div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist">
-                                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"
-                                                href="#nav-home" role="tab" aria-controls="nav-home"
-                                                aria-selected="true"><strong>Bulan Ini</strong></a>
-                                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab"
-                                                href="#nav-profile" role="tab" aria-controls="nav-profile"
-                                                aria-selected="false"><strong>Bulan Sebelumnya</strong></a>
+                            <div class="card-header p-0">
+                                <div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist">
+                                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"
+                                        href="#nav-home" role="tab" aria-controls="nav-home"
+                                        aria-selected="true"><strong>Bulan Ini</strong></a>
+                                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab"
+                                        href="#nav-profile" role="tab" aria-controls="nav-profile"
+                                        aria-selected="false"><strong>Bulan Sebelumnya</strong></a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="tab-content" id="nav-tabContent">
+                                    <!-- Tab Bulan Ini -->
+                                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
+                                        aria-labelledby="nav-home-tab">
+                                        <div class="progress mb-2">
+                                            <div class="progress-bar bg-success" role="progressbar"
+                                                style="width: {{ $persentaseHadirBulanIni }}%"
+                                                aria-valuenow="{{ $persentaseHadirBulanIni }}" aria-valuemin="0"
+                                                aria-valuemax="100">
+                                                Persentase Hadir: {{ $persentaseHadirBulanIni }}%
+                                            </div>
                                         </div>
+                                        <ul class="list-group">
+                                            <li class="list-group-item">
+                                                <i class="fas fa-check-circle text-success"></i> Hadir :
+                                                {{ $dataBulanIni['Hadir'] ?? 0 }}
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="fas fa-user-md text-info"></i> Sakit/Izin :
+                                                {{ $dataBulanIni['Sakit/Izin'] ?? 0 }}
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="fas fa-clock text-warning"></i> Terlambat :
+                                                {{ $dataBulanIni['Terlambat'] ?? 0 }}
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="fas fa-times-circle text-danger"></i> Alfa :
+                                                {{ $dataBulanIni['Alfa'] ?? 0 }}
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="fas fa-bell text-primary"></i> TAP :
+                                                {{ $dataBulanIni['TAP'] ?? 0 }}
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="fas fa-user-clock text-secondary"></i> Total
+                                                Keterlambatan :
+                                                {{ $late }} Menit
+                                            </li>
+                                        </ul>
                                     </div>
-                                    <div class="card-body">
-                                        <div class="tab-content" id="nav-tabContent">
-                                            <!-- Tab Bulan Ini -->
-                                            <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
-                                                aria-labelledby="nav-home-tab">
-                                                <div class="progress mb-2">
-                                                    <div class="progress-bar bg-success" role="progressbar"
-                                                        style="width: {{ $persentaseHadirBulanIni }}%"
-                                                        aria-valuenow="{{ $persentaseHadirBulanIni }}" aria-valuemin="0"
-                                                        aria-valuemax="100">
-                                                        Persentase Hadir: {{ $persentaseHadirBulanIni }}%
-                                                    </div>
-                                                </div>
-                                                <ul class="list-group">
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-check-circle text-success"></i> Hadir :
-                                                        {{ $dataBulanIni['Hadir'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-user-md text-info"></i> Sakit/Izin :
-                                                        {{ $dataBulanIni['Sakit/Izin'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-clock text-warning"></i> Terlambat :
-                                                        {{ $dataBulanIni['Terlambat'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-times-circle text-danger"></i> Alfa :
-                                                        {{ $dataBulanIni['Alfa'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-bell text-primary"></i> TAP :
-                                                        {{ $dataBulanIni['TAP'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-user-clock text-secondary"></i> Total
-                                                        Keterlambatan :
-                                                        {{ $late }} Menit
-                                                    </li>
-                                                </ul>
-                                            </div>
 
-                                            <!-- Tab Bulan Sebelumnya -->
-                                            <div class="tab-pane fade" id="nav-profile" role="tabpanel"
-                                                aria-labelledby="nav-profile-tab">
-                                                <div class="progress mb-2">
-                                                    <div class="progress-bar bg-success" role="progressbar"
-                                                        style="width: {{ $persentaseHadirBulanSebelumnya }}%"
-                                                        aria-valuenow="{{ $persentaseHadirBulanSebelumnya }}"
-                                                        aria-valuemin="0" aria-valuemax="100">
-                                                        Persentase Hadir: {{ $persentaseHadirBulanSebelumnya }}%
-                                                    </div>
-                                                </div>
-                                                <ul class="list-group">
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-check-circle text-success"></i> Hadir:
-                                                        {{ $dataBulanSebelumnya['Hadir'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-user-md text-info"></i> Sakit/Izin:
-                                                        {{ $dataBulanSebelumnya['Sakit/Izin'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-clock text-warning"></i> Terlambat:
-                                                        {{ $dataBulanSebelumnya['Terlambat'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-times-circle text-danger"></i> Alfa:
-                                                        {{ $dataBulanSebelumnya['Alfa'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-bell text-primary"></i> TAP:
-                                                        {{ $dataBulanSebelumnya['TAP'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-user-clock text-secondary"></i> Total
-                                                        Keterlambatan:
-                                                        {{ $late2 }} Menit
-                                                    </li>
-                                                </ul>
+                                    <!-- Tab Bulan Sebelumnya -->
+                                    <div class="tab-pane fade" id="nav-profile" role="tabpanel"
+                                        aria-labelledby="nav-profile-tab">
+                                        <div class="progress mb-2">
+                                            <div class="progress-bar bg-success" role="progressbar"
+                                                style="width: {{ $persentaseHadirBulanSebelumnya }}%"
+                                                aria-valuenow="{{ $persentaseHadirBulanSebelumnya }}"
+                                                aria-valuemin="0" aria-valuemax="100">
+                                                Persentase Hadir: {{ $persentaseHadirBulanSebelumnya }}%
                                             </div>
                                         </div>
+                                        <ul class="list-group">
+                                            <li class="list-group-item">
+                                                <i class="fas fa-check-circle text-success"></i> Hadir:
+                                                {{ $dataBulanSebelumnya['Hadir'] ?? 0 }}
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="fas fa-user-md text-info"></i> Sakit/Izin:
+                                                {{ $dataBulanSebelumnya['Sakit/Izin'] ?? 0 }}
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="fas fa-clock text-warning"></i> Terlambat:
+                                                {{ $dataBulanSebelumnya['Terlambat'] ?? 0 }}
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="fas fa-times-circle text-danger"></i> Alfa:
+                                                {{ $dataBulanSebelumnya['Alfa'] ?? 0 }}
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="fas fa-bell text-primary"></i> TAP:
+                                                {{ $dataBulanSebelumnya['TAP'] ?? 0 }}
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="fas fa-user-clock text-secondary"></i> Total
+                                                Keterlambatan:
+                                                {{ $late2 }} Menit
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -540,11 +530,7 @@
         <section class="p-t-60 p-b-20">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="copyright">
-                            <p>Copyright © 2024 ABAS. All rights reserved.</p>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </section>

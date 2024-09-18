@@ -157,7 +157,7 @@ class SiswaController extends Controller
             'foto' => $fileName,
         ];
 
-        $simpan = User::where('id', $id_user)->update($data); 
+        $simpan = User::where('id', $id_user)->update($data);
 
         if ($simpan) {
             return redirect()->route('profile')->with('berhasil', 'Profil Anda Berhasil Diubah.');

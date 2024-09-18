@@ -32,7 +32,7 @@ class Walikelas extends Component
                     ->orWhere('email', 'like', '%' . $this->searchwali . '%');
                 });
             })
-            ->paginate(10);
+        ->paginate(10);
     }
 
     public function tambahwali()

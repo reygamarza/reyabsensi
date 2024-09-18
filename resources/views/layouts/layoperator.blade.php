@@ -84,6 +84,20 @@
                             </li>
                             <li class="has-sub">
                                 <a href="#">
+                                    <i class="fas fa-duotone fa-building-user"></i>Kelas | Jurusan
+                                    <span class="bot-line"></span>
+                                </a>
+                                <ul class="header3-sub-list list-unstyled">
+                                    <li>
+                                        <a href="{{ route('kelas-O') }}">Daftar Kelas</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('jurusan-O') }}">Daftar Jurusan</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-sub">
+                                <a href="#">
                                     <i class="fas fa-duotone fa-users-between-lines"></i>Daftar Pengguna
                                     <span class="bot-line"></span>
                                 </a>
@@ -94,19 +108,8 @@
                                     <li>
                                         <a href="{{ route('wali-kelas-O') }}">Daftar Wali Kelas</a>
                                     </li>
-                                </ul>
-                            </li>
-                            <li class="has-sub">
-                                <a href="#">
-                                    <i class="fas fa-duotone fa-building-user"></i>Kelas | Jurusan
-                                    <span class="bot-line"></span>
-                                </a>
-                                <ul class="header3-sub-list list-unstyled">
                                     <li>
-                                        <a href="{{ route('kelas-O') }}">Daftar Kelas</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('jurusan-O') }}">Daftar Jurusan</a>
+                                        <a href="{{ route('wali-siswa-O') }}">Daftar Wali Siswa</a>
                                     </li>
                                 </ul>
                             </li>
@@ -161,7 +164,7 @@
                                         alt="John Doe" />
                                 </div>
                                 <div class="content">
-                                    <a class="js-acc-btn" href="#">Operator</a>
+                                    <a class="js-acc-btn" href="#">{{ Auth::user()->nama }}</a>
                                 </div>
                                 <div class="account-dropdown js-dropdown">
                                     <div class="info clearfix">
@@ -173,14 +176,14 @@
                                         </div>
                                         <div class="content">
                                             <h5 class="name">
-                                                <a href="#">Kesiswaan</a>
+                                                <a href="#">{{ Auth::user()->nama }}</a>
                                             </h5>
                                             <span class="email">{{ Auth::user()->email }}</span>
                                         </div>
                                     </div>
                                     <div class="account-dropdown__body">
                                         <div class="account-dropdown__item">
-                                            <a href="#">
+                                            <a href="{{ route('profile-O') }}">
                                                 <i class="zmdi zmdi-account"></i>Profile</a>
                                         </div>
                                     </div>

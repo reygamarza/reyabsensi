@@ -87,7 +87,7 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'nama' => 'Yudi Fatir',
+            'nama' => 'Dani Supriyadi',
             'email' => 'ortu@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'walis',
@@ -96,7 +96,7 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'nama' => 'Shelomita Madavi',
+            'nama' => 'Tati Hariyati',
             'email' => 'ortu2@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'walis',
@@ -105,7 +105,7 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'nama' => 'Rifa Radwa',
+            'nama' => 'Supratman Widodo',
             'email' => 'ortu3@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'walis',

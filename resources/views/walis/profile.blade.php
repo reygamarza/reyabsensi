@@ -1,4 +1,4 @@
-@extends('layouts.laysiswa')
+@extends('layouts.laywalis')
 
 @section('content')
     <!-- PAGE CONTENT-->
@@ -47,9 +47,9 @@
                     <!-- Profil Siswa -->
                     <div class="col-md-4 mb-4">
                         <div class="au-card p-4 text-center shadow-sm">
-                            <img src="{{ asset('storage/uploads/foto_profil/' . $siswa->user->foto) }}" alt="Foto Profil" class="rounded-circle mb-3" width="150px" height="150px" style="object-fit: cover;">
-                            <h5 class="font-weight-bold">{{ $siswa->user->nama }}</h5>
-                            <p class="text-muted">{{ $siswa->user->email }}</p>
+                            <img src="{{ asset('storage/uploads/foto_profil/' . $ortu->user->foto) }}" alt="Foto Profil" class="rounded-circle mb-3" width="150px" height="150px" style="object-fit: cover;">
+                            <h5 class="font-weight-bold">{{ $ortu->user->nama }}</h5>
+                            <p class="text-muted">{{ $ortu->user->email }}</p>
 
                             <div class="mt-3">
                                 <button class="btn btn-outline-primary" onclick="document.getElementById('uploadFoto').click();">
@@ -58,7 +58,6 @@
                                 <!-- Menampilkan Nama File yang Dipilih -->
                                 <span id="namaFile" class="ml-2 text-muted"></span>
                             </div>
-                            <canvas id="ratingChart" width="10" height="10"></canvas>
 
                             <!-- Input File yang Disembunyikan -->
                         </div>
@@ -66,25 +65,25 @@
                     <!-- Form Edit Profil -->
                     <div class="col-md-8">
                         <div class="au-card p-4 shadow-sm">
-                            <form action="{{ route('edit-profile') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('edit-profile-WS') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                             <input type="file" id="uploadFoto" name="foto" style="display: none;" accept="image/*" onchange="tampilkanNamaFile()">
                             <div class="row form-group mb-3">
                                 <div class="col-lg-12">
                                     <label for="nama" class="form-control-label"><b>Nama Lengkap</b></label>
-                                    <input type="text" id="nama" name="nama" placeholder="Masukan Nama Lengkap" class="form-control" value="{{ $siswa->user->nama }}" required disabled>
+                                    <input type="text" id="nama" name="nama" placeholder="Masukan Nama Lengkap" class="form-control" value="{{ $ortu->user->nama }}" required disabled>
                                 </div>
                             </div>
                             <div class="row form-group mb-3">
                                 <div class="col-lg-12">
-                                    <label for="nis" class="form-control-label"><b>NIS</b></label>
-                                    <input type="text" id="nis" name="nis" placeholder="Masukan NIS" class="form-control" value="{{ $siswa->nis }}" required disabled>
+                                    <label for="nik" class="form-control-label"><b>NIK</b></label>
+                                    <input type="text" id="nik" name="nik" placeholder="Masukan NIK" class="form-control" value="{{ $ortu->nik }}" required disabled>
                                 </div>
                             </div>
                             <div class="row form-group mb-3">
                                 <div class="col-lg-12">
                                     <label for="email" class="form-control-label"><b>Email</b></label>
-                                    <input type="email" id="email" name="email" placeholder="Masukan Email" class="form-control" value="{{ $siswa->user->email }}" required>
+                                    <input type="email" id="email" name="email" placeholder="Masukan Email" class="form-control" value="{{ $ortu->user->email }}" required>
                                 </div>
                             </div>
                             <div class="row form-group mb-3">

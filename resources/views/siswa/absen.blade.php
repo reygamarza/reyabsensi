@@ -20,12 +20,6 @@
                                     <li class="list-inline-item">Dashboard</li>
                                 </ul>
                             </div>
-                            <form class="au-form-icon--sm" action="" method="post">
-                                <input class="au-input--w300 au-input--style2" type="text" placeholder="Search">
-                                <button class="au-btn--submit2" type="submit">
-                                    <i class="zmdi zmdi-search"></i>
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -41,7 +35,7 @@
                         <div style="display: flex; align-items: center; justify-content: center;">
                             <a href="siswa" class="fas fa-chevron-left" style="font-size: 40px; color: #393939;"></a>
                             <div style="flex: 1;">
-                                <h1 class="title-4 text-center" style="margin-bottom: 0;">Ambil Foto Absen Masuk</h1>
+                                <h1 class="title-4 text-center" style="margin-bottom: 0;">Ambil Foto Absen</h1>
                             </div>
                         </div>
                         <hr class="line-seprate">
@@ -109,11 +103,7 @@
         <section class="p-t-60 p-b-20">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="copyright">
-                            <p>Copyright © 2024 ABAS. All rights reserved.</p>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </section>
