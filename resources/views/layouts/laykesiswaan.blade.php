@@ -10,7 +10,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>ABAS | {{ $title }} </title>
+    <title>ABAS | </title>
 
     <!-- Fontfaces CSS-->
     <link href="{{ asset('assets/kesiswaan') }}/css/font-face.css" rel="stylesheet" media="all">
@@ -71,57 +71,12 @@
                                     <span class="bot-line"></span>
                                 </a>
                             </li>
-                            <li class="has-sub">
-                                <a href="#">
-                                    <i class="fas fa-duotone fa-building-user"></i>Kelas | Jurusan
-                                    <span class="bot-line"></span>
-                                </a>
-                                <ul class="header3-sub-list list-unstyled">
-                                    <li>
-                                        <a href="{{ route('list-kelas') }}">List Kelas</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('list-jurusan') }}">List Jurusan</a>
-                                    </li>
-                                </ul>
-                            </li>
                             <li class="">
-                                <a href="{{ route('laporan-A') }}">
+                                <a href="{{ route('kesiswaan.kelas') }}">
                                     <i class="fas fa-duotone fa-book-open"></i>Laporan Absensi
                                     <span class="bot-line"></span>
                                 </a>
                             </li>
-                            <li class="">
-                                <a href="{{ route('daftar-wali') }}">
-                                    <i class="fas fa-duotone fa-users-between-lines"></i>Daftar Wali Kelas
-                                    <span class="bot-line"></span>
-                                </a>
-                                {{-- <ul class="header3-sub-list list-unstyled">
-                                    <li>
-                                        <a href="{{ route('list-siswa-A') }}">List Siswa</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('list-guru') }}">List Guru</a>
-                                    </li>
-                                </ul> --}}
-                            </li>
-                            {{-- <li class="has-sub">
-                                <a href="#">
-                                    <i class="fas fa-duotone fa-thumbtack"></i>Lokasi | Jadwal
-                                    <span class="bot-line"></span>
-                                </a>
-                                <ul class="header3-sub-list list-unstyled">
-                                    <li>
-                                        <a href="index.html">Titik Koordinat</a>
-                                    </li>
-                                    <li>
-                                        <a href="index2.html">Waktu Absen</a>
-                                    </li>
-                                    <li>
-                                        <a href="index2.html">Hari Libur</a>
-                                    </li>
-                                </ul>
-                            </li> --}}
                         </ul>
                     </div>
                     <div class="header__tool">
@@ -169,8 +124,8 @@
                         <div class="account-wrap">
                             <div class="account-item account-item--style2 clearfix js-item-menu">
                                 <div class="image">
-                                    <img src="{{ asset('assets/kesiswaan') }}/images/icon/admin.jpg"
-                                        alt="John Doe" />
+                                    <img src={{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}
+                                    alt="Foto Profil" />
                                 </div>
                                 <div class="content">
                                     <a class="js-acc-btn" href="#">Kesiswaan</a>
@@ -179,8 +134,8 @@
                                     <div class="info clearfix">
                                         <div class="image">
                                             <a href="#">
-                                                <img src="{{ asset('assets/kesiswaan') }}/images/icon/admin.jpg"
-                                                    alt="John Doe" />
+                                                <img src={{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}
+                                                alt="Foto Profil" />
                                             </a>
                                         </div>
                                         <div class="content">
@@ -192,7 +147,7 @@
                                     </div>
                                     <div class="account-dropdown__body">
                                         <div class="account-dropdown__item">
-                                            <a href="#">
+                                            <a href="{{ route('kesiswaan.profile') }}">
                                                 <i class="zmdi zmdi-account"></i>Profile</a>
                                         </div>
                                     </div>
@@ -512,8 +467,12 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
             integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" defer></script>
-</body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        @stack('myscript')
+    </body>
+
 
 </html>
 <!-- end document-->

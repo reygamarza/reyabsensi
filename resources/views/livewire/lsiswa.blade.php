@@ -7,8 +7,9 @@
                     <button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal"
                         data-target="#TambahModal" wire:click="clear()">
                         <i class="zmdi zmdi-plus"></i>Tambah</button>
-                    {{-- <button class="au-btn-filter mr-2">
-                        <i></i>Semua</button> --}}
+                    <button class="au-btn au-btn-icon au-btn--blue au-btn--small" data-toggle="modal"
+                        data-target="#ImportModal">
+                        <i class="zmdi zmdi-file"></i>Import</button>
                 </div>
                 <div class="table-data__tool-right">
                     <div class="au-form-icon--sm">
@@ -142,7 +143,8 @@
                                 <div class="col-12 col-md-9">
                                     <select name="nik" tabindex="1" wire:model="nik" class="form-control">
                                         @foreach ($daftarortu as $o)
-                                            <option value="{{ $o->nik }}">{{ $o->user->nama }} - {{ $o->nik }}</option>
+                                            <option value="{{ $o->nik }}">{{ $o->user->nama }} -
+                                                {{ $o->nik }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -270,7 +272,8 @@
                                 <div class="col-12 col-md-9">
                                     <select name="nik" tabindex="1" wire:model="nik" class="form-control">
                                         @foreach ($daftarortu as $o)
-                                            <option value="{{ $o->nik }}">{{ $o->user->nama }} - {{ $o->nik }}</option>
+                                            <option value="{{ $o->nik }}">{{ $o->user->nama }} -
+                                                {{ $o->nik }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -325,6 +328,41 @@
         </div>
     </div>
     {{-- End Modal Edit Siswa --}}
+
+    {{-- Modal Import Siswa --}}
+    <div class="modal fade" id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
+        aria-hidden="true" wire:ignore>
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" style="border-radius: 10px">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-light" id="largeModalLabel"><strong>Import Data</strong>
+                        <small>Siswa</small>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form wire:submit.prevent="import" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="nomor_kelas" class="form-control-label">Pilih File</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="file" id="file" name="file" placeholder="Input file"
+                                    wire:model="file" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{-- End Modal Import Siswa --}}
 
 
 </div>

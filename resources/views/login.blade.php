@@ -29,7 +29,7 @@
       <!-- Login Form -->
       <form method="POST" action="{{ route('login') }}">
         @csrf
-        <input id="email" type="text" class="form-control @error('email') is-invalid @enderror fadeIn second" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Email Address">
+        <input id="identifier" type="text" class="form-control @error('identifier') is-invalid @enderror fadeIn second" name="identifier" value="{{ old('identifier') }}" required autocomplete="identifier" autofocus placeholder="Username">
         <input id="password" type="password" class="form-control @error('password') is-invalid @enderror fadeIn third" name="password" required autocomplete="current-password" placeholder="Password">
         <input type="submit" class="fadeIn fourth" value="Log In">
       </form>

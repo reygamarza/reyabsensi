@@ -58,7 +58,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="statistic__item">
-                            <h3 class="title-5 m-b-25">Koordinat Sekolah</h3>
+                            <h3 class="title-5 m-b-25 text-center">Koordinat Sekolah</h3>
                             @livewire('koordinat')
                         </div>
                     </div>

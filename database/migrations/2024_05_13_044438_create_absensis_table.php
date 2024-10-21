@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments('id_absensi');
 
             $table->string('nis');
-            $table->foreign('nis')->references('nis')->on('siswas');
+            $table->foreign('nis')->references('nis')->on('siswas')->onDelete('cascade')->onUpdate('cascade');
             $table->enum('status', ['Hadir', 'Sakit', 'Izin', 'Alfa', 'Terlambat', 'TAP'])->default('Alfa');
             $table->string('photo_in')->nullable();
             $table->string('photo_out')->nullable();

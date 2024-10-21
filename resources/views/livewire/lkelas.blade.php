@@ -7,9 +7,9 @@
                     <button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal"
                         data-target="#TambahModal" wire:click="clear()">
                         <i class="zmdi zmdi-plus"></i>Tambah</button>
-                    <button class="au-btn au-btn-icon au-btn--blue au-btn--small" data-toggle="modal"
+                    {{-- <button class="au-btn au-btn-icon au-btn--blue au-btn--small" data-toggle="modal"
                         data-target="#ImportModal">
-                        <i class="zmdi zmdi-file"></i>Import</button>
+                        <i class="zmdi zmdi-file"></i>Import</button> --}}
 
                     {{-- <button class="au-btn-filter mr-2">
                         <i></i>Semua</button> --}}
@@ -45,7 +45,7 @@
                                         <strong>Belum Mempunyai Wali Kelas</strong>
                                     @endif
                                 </td>
-                                <td>55 </td>
+                                <td>{{ $k->siswa_count }}</td>
                                 <td>
                                     <div class="table-data-feature">
                                         <a data-toggle="modal" data-target="#EditModal">
@@ -216,37 +216,38 @@
     </div>
     {{-- End Modal Edit Kelas --}}
 
-    {{-- Modal Edit Kelas --}}
-    <div class="modal fade" id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
+    {{-- Modal Import Kelas --}}
+    {{-- <div class="modal fade" id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
         aria-hidden="true" wire:ignore>
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content" style="border-radius: 10px">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-light" id="largeModalLabel"><strong>Edit Data</strong>
+                    <h5 class="modal-title fw-light" id="largeModalLabel"><strong>Import Data</strong>
                         <small>Kelas</small>
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="nomor_kelas" class="form-control-label">Pilih File</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <input type="file" id="import_file" name="import_file"
-                                placeholder="Masukan Nomor Kelas" wire:model="import_file"
-                                required>
+                <form wire:submit.prevent="import" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="nomor_kelas" class="form-control-label">Pilih File</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="file" id="file" name="file"
+                                    placeholder="Masukan Nomor Kelas" wire:model="file" required>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-success">Submit</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
-    {{-- End Modal Edit Kelas --}}
+    </div> --}}
+    {{-- End Modal Import Kelas --}}
 </div>

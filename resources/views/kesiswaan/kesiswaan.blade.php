@@ -20,12 +20,6 @@
                                     <li class="list-inline-item">Dashboard</li>
                                 </ul>
                             </div>
-                            <form class="au-form-icon--sm" action="" method="post">
-                                <input class="au-input--w300 au-input--style2" type="text" placeholder="Cari">
-                                <button class="au-btn--submit2" type="submit">
-                                    <i class="zmdi zmdi-search"></i>
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -39,7 +33,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h1 class="title-4">Selamat Datang
-                            <span>Pak Kesiswaan!</span>
+                            <span>{{ Auth::user()->nama }}!</span>
                         </h1>
                         <hr class="line-seprate">
                     </div>
@@ -52,29 +46,30 @@
         <section class="statistic statistic2">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6 col-lg-3">
-                        <div class="statistic__item statistic__item--green">
-                            <h2 class="number">195</h2>
-                            <span class="desc">Jumlah Siswa Hadir</span>
+                    <div class="col-md-12">
+                        <div class="statistic_kesiswaan-container">
+                            <div class="statistic__item statistic__item--green">
+                                <h2 class="number">{{ $attendanceTotal['Hadir'] }}</h2>
+                                <span class="desc">Total Hadir</span>
+                            </div>
+                            <div class="statistic__item statistic__item--orange">
+                                <h2 class="number">{{ $attendanceTotal['Izin'] }}</h2>
+                                <span class="desc">Total Sakit/Izin</span>
+                            </div>
+                            <div class="statistic__item statistic__item--blue">
+                                <h2 class="number">{{ $attendanceTotal['Terlambat'] }}</h2>
+                                <span class="desc">Total Terlambat</span>
+                            </div>
+                            <div class="statistic__item statistic__item--red">
+                                <h2 class="number">{{ $attendanceTotal['Alfa'] }}</h2>
+                                <span class="desc">Total Belum Absen</span>
+                            </div>
+                            <div class="statistic__item statistic__item--purple ">
+                                <h2 class="number">{{ $attendanceTotal['TAP'] }}</h2>
+                                <span class="desc">Total TAP</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="statistic__item statistic__item--orange">
-                            <h2 class="number">10</h2>
-                            <span class="desc">Jumlah Siswa Sakit/Izin</span>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="statistic__item statistic__item--blue">
-                            <h2 class="number">7</h2>
-                            <span class="desc">Jumlah Siswa Terlambat</span>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="statistic__item statistic__item--red">
-                            <h2 class="number">12</h2>
-                            <span class="desc">Jumlah Siswa Belum Hadir</span>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -83,119 +78,19 @@
 
 
         <!-- DATA TABLE-->
-        <section class="p-t-20">
+        <section class="">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h3 class="title-5 m-b-35 text-center">Ringkasan Data Kehadiran Siswa Setiap Kelas</h3>
-                        <section class="p-t-10">
+                        <section class="">
                             <div class="container">
-                                <div class="table-data__tool">
-                                    <div class="table-data__tool-left">
-                                        <button class="au-btn-filter mr-2">
-                                            <i></i>Kelas X</button>
-                                        <button class="au-btn-filter mr-2">
-                                            <i></i> Kelas XI</button>
-                                        <button class="au-btn-filter mr-2">
-                                            <i></i>Kelas XII</button>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h3 class="title-5 m-b-35 text-center">Persentase Kehadiran Siswa Minggu Ini</h3>
+                                        <div class="statistic__item">
+                                            <canvas id="attendanceChart" height="100"></canvas>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="table-responsive m-b-40">
-                                    <table class="table table-borderless table-data3">
-                                        <thead>
-                                            <tr>
-                                                <th>Kelas</th>
-                                                <th>Hadir</th>
-                                                <th>Sakit</th>
-                                                <th>Izin</th>
-                                                <th>Terlambat</th>
-                                                <th>Tidak Hadir</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>XI TKJ</td>
-                                                <td>32</td>
-                                                <td>1</td>
-                                                <td>2</td>
-                                                <td>2</td>
-                                                <td>1</td>
-                                                <td>
-                                                    <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top"
-                                                            title="Detail">
-                                                            <i class="zmdi zmdi-more"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>XI DKV</td>
-                                                <td>32</td>
-                                                <td>1</td>
-                                                <td>2</td>
-                                                <td>2</td>
-                                                <td>1</td>
-                                                <td>
-                                                    <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top"
-                                                            title="Detail">
-                                                            <i class="zmdi zmdi-more"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>X MPLB</td>
-                                                <td>32</td>
-                                                <td>1</td>
-                                                <td>2</td>
-                                                <td>2</td>
-                                                <td>1</td>
-                                                <td>
-                                                    <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top"
-                                                            title="Detail">
-                                                            <i class="zmdi zmdi-more"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>X PPLG</td>
-                                                <td>32</td>
-                                                <td>1</td>
-                                                <td>2</td>
-                                                <td>2</td>
-                                                <td>1</td>
-                                                <td>
-                                                    <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top"
-                                                            title="Detail">
-                                                            <i class="zmdi zmdi-more"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>XI RPL</td>
-                                                <td>32</td>
-                                                <td>1</td>
-                                                <td>2</td>
-                                                <td>2</td>
-                                                <td>1</td>
-                                                <td>
-                                                    <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top"
-                                                            title="Detail">
-                                                            <i class="zmdi zmdi-more"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
                         </section>
@@ -223,3 +118,58 @@
 
     </div>
 @endsection
+
+@push('myscript')
+<script>
+    const attendanceData = {
+        'kelas10': @json($attendanceData['kelas10']),
+        'kelas11': @json($attendanceData['kelas11']),
+        'kelas12': @json($attendanceData['kelas12']),
+        'dates': ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'] // Atur sesuai kebutuhan
+    };
+
+    const ctx = document.getElementById('attendanceChart').getContext('2d');
+    const attendanceChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: attendanceData.dates,
+            datasets: [{
+                    label: 'Kelas 10',
+                    data: attendanceData.kelas10,
+                    backgroundColor: 'rgba(66, 135, 245, 0.8)',
+                    borderColor: 'rgba(66, 135, 245, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Kelas 11',
+                    data: attendanceData.kelas11,
+                    backgroundColor: 'rgba(245, 203, 66, 0.8)',
+                    borderColor: 'rgba(245, 203, 66, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Kelas 12',
+                    data: attendanceData.kelas12,
+                    backgroundColor: 'rgba(66, 245, 157, 0.8)',
+                    borderColor: 'rgba(66, 245, 157, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Jumlah Kehadiran (%)'
+                    }
+                }
+            }
+        }
+    });
+</script>
+@endpush
+
+

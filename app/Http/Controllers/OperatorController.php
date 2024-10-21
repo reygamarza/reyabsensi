@@ -39,7 +39,7 @@ class OperatorController extends Controller
     public function kesiswaanO()
     {
         return view('operator.kesiswaanO', [
-            'title' => 'Kesiswaan'
+            'title' => 'Kesiswaan' 
         ]);
     }
 

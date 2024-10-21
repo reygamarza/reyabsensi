@@ -6,6 +6,7 @@ use App\Imports\KelasImport;
 use App\Models\Kelas;
 use App\Models\Wali_Kelas;
 use App\Models\Jurusan;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
@@ -15,10 +16,11 @@ use Maatwebsite\Excel\Facades\Excel;
 class Lkelas extends Component
 {
     use WithPagination;
+    use WithFileUploads;
     protected $paginationTheme = 'bootstrap';
 
     public $id_kelas, $id_jurusan, $nuptk, $nomor_kelas, $tingkat;
-    public $import_file;
+    public $file;
     public $searchkelas = '';
 
     public function render()
@@ -33,6 +35,7 @@ class Lkelas extends Component
     protected function getKelas()
     {
         return Kelas::with('jurusan', 'waliKelas.user')
+        ->withCount('siswa')
             ->when($this->searchkelas, function ($query) {
                 $query->whereHas('jurusan', function ($q) {
                     $q->where('id_jurusan', 'like', '%' . $this->searchkelas . '%');
@@ -92,18 +95,21 @@ class Lkelas extends Component
         return redirect()->route('kelas-O')->with('berhasil', 'Data Kelas Berhasil Dihapus');
     }
 
-    // public function importkelas()
+    // public function import()
     // {
     //     $this->validate([
-    //         'import_file' => 'required|file|mimes:xls,xlsx',
+    //         'file' => 'required|mimes:xlsx,csv',
     //     ]);
 
-    //     try {
-    //         Excel::import(new KelasImport, $this->import_file->getRealPath());
-    //         return redirect()->route('kelas-O')->with('berhasil', 'Data Kelas Berhasil Diimport');
-    //     } catch (\Exception $e) {
-    //         return redirect()->route('kelas-O')->with('gagal', 'Terjadi Kesalahan Saat Mengimport Data');
-    //     }
+    //     $filePath = $this->file->store('temp');
+
+    //     // Panggil metode untuk memproses file
+    //     Excel::import(new KelasImport, storage_path('app/' . $filePath));
+
+    //     // Hapus file sementara setelah diimpor
+    //     Storage::delete($filePath);
+
+    //     return redirect()->route('kelas-O')->with('berhasil', 'Data Berhasil Diimpor');
     // }
 
     public function clear()

@@ -2,18 +2,23 @@
 
 namespace App\Livewire;
 
+use App\Imports\WaliKelasImport;
 use App\Models\User;
 use App\Models\Wali_Kelas;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Walikelas extends Component
 {
     use WithPagination;
+    use WithFileUploads;
     protected $paginationTheme = 'bootstrap';
 
     public $email, $password, $nama, $nuptk, $jenis_kelamin, $nip, $nuptk_lama, $id_user;
+    public $file;
     public $searchwali = '';
 
     public function render()
@@ -97,6 +102,17 @@ class Walikelas extends Component
         $wali->user->delete();
 
         return redirect()->route('wali-kelas-O')->with('berhasil', 'Data Wali Kelas Berhasil Dihapus');
+    }
+
+    public function import()
+    {
+        $this->validate([
+            'file' => 'required|mimes:xls,xlsx'
+        ]);
+
+        Excel::import(new WaliKelasImport, $this->file);
+
+        return redirect()->route('wali-kelas-O')->with('berhasil', 'Data Wali Kelas Berhasil Diimport');
     }
 
     public function clear()

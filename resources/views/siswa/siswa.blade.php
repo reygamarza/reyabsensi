@@ -487,33 +487,33 @@
                                                 style="width: {{ $persentaseHadirBulanSebelumnya }}%"
                                                 aria-valuenow="{{ $persentaseHadirBulanSebelumnya }}"
                                                 aria-valuemin="0" aria-valuemax="100">
-                                                Persentase Hadir: {{ $persentaseHadirBulanSebelumnya }}%
+                                                Persentase Hadir : {{ $persentaseHadirBulanSebelumnya }}%
                                             </div>
                                         </div>
                                         <ul class="list-group">
                                             <li class="list-group-item">
-                                                <i class="fas fa-check-circle text-success"></i> Hadir:
+                                                <i class="fas fa-check-circle text-success"></i> Hadir :
                                                 {{ $dataBulanSebelumnya['Hadir'] ?? 0 }}
                                             </li>
                                             <li class="list-group-item">
-                                                <i class="fas fa-user-md text-info"></i> Sakit/Izin:
+                                                <i class="fas fa-user-md text-info"></i> Sakit/Izin :
                                                 {{ $dataBulanSebelumnya['Sakit/Izin'] ?? 0 }}
                                             </li>
                                             <li class="list-group-item">
-                                                <i class="fas fa-clock text-warning"></i> Terlambat:
+                                                <i class="fas fa-clock text-warning"></i> Terlambat :
                                                 {{ $dataBulanSebelumnya['Terlambat'] ?? 0 }}
                                             </li>
                                             <li class="list-group-item">
-                                                <i class="fas fa-times-circle text-danger"></i> Alfa:
+                                                <i class="fas fa-times-circle text-danger"></i> Alfa :
                                                 {{ $dataBulanSebelumnya['Alfa'] ?? 0 }}
                                             </li>
                                             <li class="list-group-item">
-                                                <i class="fas fa-bell text-primary"></i> TAP:
+                                                <i class="fas fa-bell text-primary"></i> TAP :
                                                 {{ $dataBulanSebelumnya['TAP'] ?? 0 }}
                                             </li>
                                             <li class="list-group-item">
                                                 <i class="fas fa-user-clock text-secondary"></i> Total
-                                                Keterlambatan:
+                                                Keterlambatan :
                                                 {{ $late2 }} Menit
                                             </li>
                                         </ul>

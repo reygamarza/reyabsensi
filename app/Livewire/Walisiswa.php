@@ -2,18 +2,24 @@
 
 namespace App\Livewire;
 
+use App\Imports\WaliSiswaImport;
 use App\Models\User;
 use App\Models\Wali_Siswa;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Walisiswa extends Component
 {
     use WithPagination;
+    use WithFileUploads;
+
     protected $paginationTheme = 'bootstrap';
 
     public $nama, $email, $password, $id, $nik, $jenis_kelamin, $nik_lama, $id_user;
+    public $file;
     public $searchwalisiswa = '';
 
     public function render()
@@ -29,10 +35,10 @@ class Walisiswa extends Component
             ->when($this->searchwalisiswa, function ($query) {
                 $query->whereHas('user', function ($q) {
                     $q->where('nama', 'like', '%' . $this->searchwalisiswa . '%')
-                    ->orWhere('email', 'like', '%' . $this->searchwalisiswa . '%');
+                        ->orWhere('email', 'like', '%' . $this->searchwalisiswa . '%');
                 });
             })
-        ->paginate(10);
+            ->paginate(10);
     }
 
     public function tambahwalisiswa()
@@ -98,7 +104,18 @@ class Walisiswa extends Component
         $walisiswa->delete();
         $walisiswa->user->delete();
 
-        return redirect()->route('wali-kelas-O')->with('berhasil', 'Data Wali Kelas Berhasil Dihapus');
+        return redirect()->route('wali-siswa-O')->with('berhasil', 'Data Wali Siswa Berhasil Dihapus');
+    }
+
+    public function import()
+    {
+        $this->validate([
+            'file' => 'required|mimes:xls,xlsx'
+        ]);
+
+        Excel::import(new WaliSiswaImport, $this->file);
+
+        return redirect()->route('wali-siswa-O')->with('berhasil', 'Data Wali Siswa Berhasil Diimport');
     }
 
     protected function rules()

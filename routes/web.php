@@ -35,40 +35,25 @@ Route::get('/', function () {
     return view('login');
 });
 
+
+Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
 Route::middleware(['auth', 'Kesiswaan:kesiswaan'])->group(function () {
-
-    // Dashboard
     Route::resource('kesiswaan', App\Http\Controllers\KesiswaanController::class);
-
-    // Daftar Kelas
-    Route::get('list-kelas', [App\Http\Controllers\KesiswaanController::class, 'listkelas'])->name('list-kelas');
-
-    // Daftar Kelas -> Daftar Siswa
-    Route::post('/tambah-siswa', [App\Http\Controllers\KesiswaanController::class, 'tambahsiswa'])->name('tambah-siswa'); // create
-    Route::get('list-kelas/{id_kelas}/siswa', [App\Http\Controllers\KesiswaanController::class, 'listsiswaA'])->name('list-siswa-AD'); // Read
-    Route::get('/edit-siswa/{nis}', [App\Http\Controllers\KesiswaanController::class, 'editsiswa'])->name('edit-siswa'); // form update
-    Route::put('/update-siswa/{nis}', [App\Http\Controllers\KesiswaanController::class, 'updatesiswa'])->name('update-siswa'); // update
-    Route::delete('/hapus-siswa/{nis}', [App\Http\Controllers\KesiswaanController::class, 'hapussiswa'])->name('hapus-siswa'); // delete
-
-    // Laporan Absensi
-    Route::get('laporan-A', [App\Http\Controllers\KesiswaanController::class, 'laporan'])->name('laporan-A');
-
-    // Daftar Wali Kelas
-    Route::get('daftar-wali', [App\Http\Controllers\KesiswaanController::class, 'daftarwali'])->name('daftar-wali');
-
-    // Daftar Jurusan
-    Route::get('list-jurusan', [App\Http\Controllers\KesiswaanController::class, 'listjurusan'])->name('list-jurusan');
-
+    Route::get('laporan-kelas', [App\Http\Controllers\KesiswaanController::class, 'laporankelas'])->name('kesiswaan.kelas');
+    Route::get('laporan-siswa/{kelas_id}', [App\Http\Controllers\KesiswaanController::class, 'laporansiswa'])->name('kesiswaan.siswa');
+    Route::get('laporan-detailsiswa/{id}', [App\Http\Controllers\KesiswaanController::class, 'laporandetailsiswa'])->name('kesiswaan.detailsiswa');
+    Route::get('profile-K', [App\Http\Controllers\KesiswaanController::class, 'profileK'])->name('kesiswaan.profile');
+    Route::post('editprofile-K', [App\Http\Controllers\KesiswaanController::class, 'editprofileK'])->name('kesiswaan.editprofile');
 });
 
 
 Route::middleware(['auth', 'Siswa:siswa'])->group(function () {
-    Route::resource('siswa', App\Http\Controllers\siswaController::class);
+    Route::resource('siswa', App\Http\Controllers\SiswaController::class);
     Route::get('absen-masuk', [App\Http\Controllers\SiswaController::class, 'absen'])->name('absen-masuk');
     Route::post('/absen/store', [App\Http\Controllers\SiswaController::class, 'ambilabsen'])->name('ambil-absen');
     Route::post('upload-file', [App\Http\Controllers\SiswaController::class, 'uploadfile'])->name('upload-file');
@@ -86,7 +71,8 @@ Route::middleware(['auth', 'WaliS:walis'])->group(function () {
 
 Route::middleware(['auth', 'Wali:wali'])->group(function () {
     Route::resource('wali', App\Http\Controllers\WaliController::class);
-    Route::get('list-siswa', [App\Http\Controllers\WaliController::class, 'listsiswa'])->name('list-siswa');
+    Route::get('laporan-siswa', [App\Http\Controllers\WaliController::class, 'siswa'])->name('WaliKelas.siswa');
+    Route::get('laporan-detailsiswa{id}', [App\Http\Controllers\WaliController::class, 'detailsiswa'])->name('WaliKelas.detailsiswa');
 });
 
 Route::middleware(['auth', 'Operator:operator'])->group(function () {

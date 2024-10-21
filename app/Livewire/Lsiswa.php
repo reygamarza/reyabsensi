@@ -2,22 +2,32 @@
 
 namespace App\Livewire;
 
+use App\Imports\SiswaImport;
 use App\Models\User;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\Wali_Siswa;
 use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Livewire\WithPagination;
-
+use Livewire\WithFileUploads;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Lsiswa extends Component
 {
     use WithPagination;
+    use WithFileUploads;
     protected $paginationTheme = 'bootstrap';
 
     public $email, $password, $nama, $nis, $jenis_kelamin, $nisn, $id_kelas, $id_user, $nis_lama, $nik;
+    public $file;
     public $searchsiswa = '';
+
+    public function mount($id_kelas)
+    {
+        $this->id_kelas = $id_kelas;
+    }
 
     public function render()
     {
@@ -109,6 +119,17 @@ class Lsiswa extends Component
         $siswa->user->delete();
 
         return redirect()->route('siswa-O', ['id_kelas' => $this->id_kelas])->with('berhasil', 'Data Siswa Berhasil Dihapus');
+    }
+
+    public function import()
+    {
+        $this->validate([
+            'file' => 'required|mimes:xls,xlsx'
+        ]);
+
+        Excel::import(new SiswaImport($this->id_kelas), $this->file);
+
+        return redirect()->route('siswa-O', ['id_kelas' => $this->id_kelas])->with('berhasil', 'Data Siswa Berhasil Diimport');
     }
 
     public function clear()

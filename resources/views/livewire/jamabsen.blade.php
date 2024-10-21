@@ -1,7 +1,7 @@
 <div>
-    <h3 class="title-5 m-b-25">Waktu Absen</h3>
+    <h3 class="title-5 m-b-25 text-center">Waktu Absen</h3>
     <div class="form-group">
-        <label for="jam_absen">Jam Masuk</label>
+        <label for="jam_absen text-start">Jam Masuk</label>
         <input type="time" id="jam_absen" name="jam_absen" class="form-control" wire:model="jam_absen" step="60">
     </div>
     <div class="form-group">
