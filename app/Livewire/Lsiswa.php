@@ -20,7 +20,7 @@ class Lsiswa extends Component
     use WithFileUploads;
     protected $paginationTheme = 'bootstrap';
 
-    public $email, $password, $nama, $nis, $jenis_kelamin, $nisn, $id_kelas, $id_user, $nis_lama, $nik;
+    public $email, $password, $nama, $nis, $jenis_kelamin, $nisn, $id_kelas, $id_user, $nis_lama, $nik_ayah, $nik_ibu, $nik_wali;
     public $file;
     public $searchsiswa = '';
 
@@ -68,7 +68,9 @@ class Lsiswa extends Component
             'nisn' => $this->nisn,
             'id_user' => $user->id,
             'id_kelas' => $this->id_kelas,
-            'nik' => $this->nik,
+            'nik_ayah' => empty($this->nik_ayah) ? null : $this->nik_ayah,
+            'nik_ibu' => empty($this->nik_ibu) ? null : $this->nik_ibu,
+            'nik_wali' => empty($this->nik_wali) ? null : $this->nik_wali,
         ]);
 
         return redirect()->route('siswa-O', ['id_kelas' => $this->id_kelas])->with('berhasil', 'Data Siswa Berhasil Ditambahkan');
@@ -83,7 +85,9 @@ class Lsiswa extends Component
         $this->nis_lama = $daftarsiswa->nis;
         $this->jenis_kelamin = $daftarsiswa->jenis_kelamin;
         $this->nisn = $daftarsiswa->nisn;
-        $this->nik = $daftarsiswa->nik;
+        $this->nik_ayah = $daftarsiswa->nik_ayah;
+        $this->nik_ibu = $daftarsiswa->nik_ibu;
+        $this->nik_wali = $daftarsiswa->nik_wali;
         $this->email = $daftarsiswa->user->email;
         $this->nama = $daftarsiswa->user->nama;
         $this->id_user = $daftarsiswa->user->id;
@@ -106,7 +110,9 @@ class Lsiswa extends Component
             'jenis_kelamin' => $this->jenis_kelamin,
             'nisn' => $this->nisn,
             'id_kelas' => $this->id_kelas,
-            'nik' => $this->nik
+            'nik_ayah' => empty($this->nik_ayah) ? null : $this->nik_ayah,
+            'nik_ibu' => empty($this->nik_ibu) ? null : $this->nik_ibu,
+            'nik_wali' => empty($this->nik_wali) ? null : $this->nik_wali,
         ]);
 
         return redirect()->route('siswa-O', ['id_kelas' => $this->id_kelas])->with('berhasil', 'Data Siswa Berhasil Diubah');
@@ -134,7 +140,7 @@ class Lsiswa extends Component
 
     public function clear()
     {
-        $this->nis = $this->nama = $this->jenis_kelamin = $this->nisn = $this->nik = $this->email = $this->password = '';
+        $this->nis = $this->nama = $this->jenis_kelamin = $this->nisn = $this->nik_ayah = $this->nik_ibu = $this->nik_wali = $this->email = $this->password = '';
     }
 
     protected function rules()
@@ -144,7 +150,9 @@ class Lsiswa extends Component
             'nama' => 'required',
             'jenis_kelamin' => 'required|in:laki laki,perempuan',
             'nisn' => 'required',
-            'nik' => 'required',
+            'nik_ayah' => 'nullable',
+            'nik_ibu' => 'nullable',
+            'nik_wali' => 'nullable',
             'email' => 'required|email',
         ];
     }

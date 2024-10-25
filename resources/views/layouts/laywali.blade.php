@@ -81,30 +81,30 @@
                         <div class="account-wrap">
                             <div class="account-item account-item--style2 clearfix js-item-menu">
                                 <div class="image">
-                                    <img src="{{ asset('assets/kesiswaan') }}/images/icon/teacher.png"
-                                        alt="John Doe" />
+                                    <img src={{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}
+                                    alt="Foto Profil" />
                                 </div>
                                 <div class="content">
-                                    <a class="js-acc-btn" href="#">Wali 11 RPL 1</a>
+                                    <a class="js-acc-btn" href="#">{{ Auth::user()->nama }}</a>
                                 </div>
                                 <div class="account-dropdown js-dropdown">
                                     <div class="info clearfix">
                                         <div class="image">
                                             <a href="#">
-                                                <img src="{{ asset('assets/kesiswaan') }}/images/icon/teacher.png"
-                                                    alt="John Doe" />
+                                                <img src={{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}
+                                                alt="Foto Profil" />
                                             </a>
                                         </div>
                                         <div class="content">
                                             <h5 class="name">
-                                                <a href="#">Wali 11 RPL 1</a>
+                                                <a href="#">{{ Auth::user()->nama }}</a>
                                             </h5>
-                                            <span class="email">Wali11RPL1@gmail.com</span>
+                                            <span class="email">{{ Auth::user()->email }}</span>
                                         </div>
                                     </div>
                                     <div class="account-dropdown__body">
                                         <div class="account-dropdown__item">
-                                            <a href="#">
+                                            <a href="{{ route('WaliKelas.profile') }}">
                                                 <i class="zmdi zmdi-account"></i>Profile</a>
                                         </div>
                                     </div>
@@ -130,6 +130,41 @@
         <!-- END HEADER DESKTOP-->
 
         <!-- HEADER MOBILE-->
+        <header class="header-mobile header-mobile-2 d-block d-lg-none">
+            <div class="header-mobile__bar">
+                <div class="container-fluid">
+                    <div class="header-mobile-inner">
+                        <a class="logo" href="index.html">
+                            <img src="{{ asset('assets/kesiswaan') }}/images/icon/logoabas1.png" width="140px"
+                                height="auto" alt="CoolAdmin" />
+                        </a>
+                        <button class="hamburger hamburger--slider" type="button">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <nav class="navbar-mobile">
+                <div class="container-fluid">
+                    <ul class="navbar-mobile__list list-unstyled">
+                        <li>
+                            <a href="{{ route('wali.index') }}">
+                                <i class="fas fa-tv"></i>Dashboard
+                                <span class="bot-line"></span>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="{{ route('WaliKelas.siswa') }}">
+                                <i class="fas fa-duotone fa-book-open"></i>Rekap Absensi
+                                <span class="bot-line"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
         <div class="sub-header-mobile-2 d-block d-lg-none">
             <div class="header__tool">
                 <div class="header-button-item has-noti js-item-menu">
@@ -141,43 +176,44 @@
                 <div class="account-wrap">
                     <div class="account-item account-item--style2 clearfix js-item-menu">
                         <div class="image">
-                            <img src="{{ asset('assets/kesiswaan') }}/images/icon/avatar-01.jpg" alt="John Doe" />
+                            <img src={{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}
+                            alt="Foto Profil" />
                         </div>
                         <div class="content">
-                            <a class="js-acc-btn" href="#">john doe</a>
+                            <a class="js-acc-btn" href="#">{{ Auth::user()->nama }}</a>
                         </div>
                         <div class="account-dropdown js-dropdown">
                             <div class="info clearfix">
                                 <div class="image">
                                     <a href="#">
-                                        <img src="{{ asset('assets/kesiswaan') }}/images/icon/avatar-01.jpg"
-                                            alt="John Doe" />
+                                        <img src={{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}
+                                        alt="Foto Profil" />
                                     </a>
                                 </div>
                                 <div class="content">
                                     <h5 class="name">
-                                        <a href="#">john doe</a>
+                                        <a href="#">{{ Auth::user()->nama }}</a>
                                     </h5>
-                                    <span class="email">johndoe@example.com</span>
+                                    <span class="email">{{ Auth::user()->email }}</span>
                                 </div>
                             </div>
                             <div class="account-dropdown__body">
                                 <div class="account-dropdown__item">
-                                    <a href="#">
-                                        <i class="zmdi zmdi-account"></i>Account</a>
-                                </div>
-                                <div class="account-dropdown__item">
-                                    <a href="#">
-                                        <i class="zmdi zmdi-settings"></i>Setting</a>
-                                </div>
-                                <div class="account-dropdown__item">
-                                    <a href="#">
-                                        <i class="zmdi zmdi-money-box"></i>Billing</a>
+                                    <a href="{{ route('WaliKelas.profile') }}">
+                                        <i class="zmdi zmdi-account"></i>Profile</a>
                                 </div>
                             </div>
                             <div class="account-dropdown__footer">
-                                <a href="#">
-                                    <i class="zmdi zmdi-power"></i>Logout</a>
+                                <a href="{{ route('logout') }}" class="dropdown-item zmdi zmdi-power"
+                                    onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">
+                                    <i class="icon-key"></i>
+                                    <span class="ml-2">Logout </span>
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    class="d-none">
+                                    @csrf
+                                </form>
                             </div>
                         </div>
                     </div>

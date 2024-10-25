@@ -14,7 +14,7 @@
                                     <li class="list-inline-item active">
                                         <a href="#">> </a>
                                     </li>
-                                    <li class="list-inline-item">Kesiswaan | Wali Kelas / Daftar Kesiswaan</li>
+                                    <li class="list-inline-item">Daftar Pengguna / Daftar Kesiswaan</li>
                                 </ul>
                             </div>
                             {{-- <div class="au-form-icon--sm">

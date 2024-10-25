@@ -84,7 +84,13 @@
                             <div class="row form-group mb-3">
                                 <div class="col-lg-12">
                                     <label for="email" class="form-control-label"><b>Email</b></label>
-                                    <input type="email" id="email" name="email" placeholder="Masukan Email" class="form-control" value="{{ $siswa->user->email }}" required>
+                                    <input type="email" id="email" name="email" placeholder="Masukan Email" class="form-control" value="{{ $siswa->user->email }}" required disabled>
+                                </div>
+                            </div>
+                            <div class="row form-group mb-3">
+                                <div class="col-lg-12">
+                                    <label for="kelas" class="form-control-label"><b>Kelas</b></label>
+                                    <input type="kelas" id="kelas" name="kelas" placeholder="Masukan Kelas" class="form-control" value="{{ $siswa->kelas->tingkat }} {{ $siswa->kelas->id_jurusan }} {{ $siswa->kelas->nomor_kelas }}" required disabled>
                                 </div>
                             </div>
                             <div class="row form-group mb-3">

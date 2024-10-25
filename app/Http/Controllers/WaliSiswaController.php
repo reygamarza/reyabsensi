@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensi;
+use App\Models\Siswa;
 use App\Models\User;
+use App\Models\Waktu_Absen;
 use App\Models\Wali_Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,82 +20,85 @@ class WaliSiswaController extends Controller
      */
     public function index()
     {
-        $siswa = Auth::user()->ortu->siswa;
-        // dd($siswa);
+        $walisiswa = Wali_Siswa::where('id_user', Auth::user()->id)->with('user')->first();
+
+        if ($walisiswa->jenis_kelamin == "laki laki") {
+            $siswa = Siswa::with('user', 'kelas')->where('nik_ayah', '=', $walisiswa->nik)->orWhere('nik_wali', '=', $walisiswa->nik)->get();
+        } elseif ($walisiswa->jenis_kelamin == "perempuan") {
+            $siswa = Siswa::with('user', 'kelas')->where('nik_ibu', '=', $walisiswa->nik)->orWhere('nik_wali', '=', $walisiswa->nik)->get();
+        }
+
         $dataAbsensiAnak = [];
         foreach ($siswa as $s) {
-            $nis = $s->nis;
-            $late2 = Absensi::where('nis', $nis)->whereMonth('date', date('m', strtotime('first day of previous month')))->sum('menit_keterlambatan');
-            $late = Absensi::where('nis', $nis)->whereMonth('date', date('m'))->sum('menit_keterlambatan');
+            $tahunIni = Absensi::where('nis', $s->nis)->whereYear('date', date('Y'))->get();
+            $ini = Absensi::whereYear('date', date('Y'))->where('nis', $s->nis)->whereMonth('date', date('m'))->get();
+            $lalu = Absensi::whereYear('date', date('Y'))->where('nis', $s->nis)->whereMonth('date', date('m', strtotime('first day of previous month')))->get();
 
-            // Data absen bulan ini
-            $dataBulanIni = Absensi::whereYear('date', date('Y'))
-                ->where('nis', $nis)
-                ->whereMonth('date', date('m'))
-                ->select('status', DB::raw('count(*) as total'))
-                ->groupBy('status')
-                ->pluck('total', 'status')
-                ->toArray();
+            $jumlah = [
+                'tahunIni' => $tahunIni->count(),
+                'hadirTahunIni' => $tahunIni->where('status', "Hadir")->count(),
+                'terlambatTahunIni' => $tahunIni->where('status', "Terlambat")->count(),
+                'tapTahunIni' => $tahunIni->where('status', "TAP")->count(),
+                'alfaTahunIni' => $tahunIni->where('status', "Alfa")->count(),
+                'sakitIzinTahunIni' => $tahunIni->whereIn('status', ["Sakit", "Izin"])->count(),
+                'menitTerlambatTahunIni' => $tahunIni->sum('menit_keterlambatan'),
 
-            // Data absen bulan sebelumnya
-            $dataBulanSebelumnya = Absensi::whereYear('date', date('Y'))
-                ->where('nis', $nis)
-                ->whereMonth('date', date('m', strtotime('first day of previous month')))
-                ->select('status', DB::raw('count(*) as total'))
-                ->groupBy('status')
-                ->pluck('total', 'status')
-                ->toArray();
+                'ini' => $ini->count(),
+                'hadirIni' => $ini->where('status', "Hadir")->count(),
+                'terlambatIni' => $ini->where('status', "Terlambat")->count(),
+                'tapIni' => $ini->where('status', "TAP")->count(),
+                'alfaIni' => $ini->where('status', "Alfa")->count(),
+                'sakitIzinIni' => $ini->whereIn('status', ["Sakit", "Izin"])->count(),
+                'menitTerlambatBulanIni' => $ini->sum('menit_keterlambatan'),
 
-            // Gabungkan 'Sakit' dan 'Izin' menjadi satu kategori
-            $dataBulanIni['Sakit/Izin'] = ($dataBulanIni['Sakit'] ?? 0) + ($dataBulanIni['Izin'] ?? 0);
-            unset($dataBulanIni['Sakit'], $dataBulanIni['Izin']);
+                'lalu' => $lalu->count(),
+                'hadirLalu' => $lalu->where('status', "Hadir")->count(),
+                'terlambatLalu' => $lalu->where('status', "Terlambat")->count(),
+                'tapLalu' => $lalu->where('status', "TAP")->count(),
+                'alfaLalu' => $lalu->where('status', "Alfa")->count(),
+                'sakitIzinLalu' => $lalu->whereIn('status', ["Sakit", "Izin"])->count(),
+                'menitTerlambatBulanLalu' => $lalu->sum('menit_keterlambatan'),
+            ];
 
-            $dataBulanSebelumnya['Sakit/Izin'] = ($dataBulanSebelumnya['Sakit'] ?? 0) + ($dataBulanSebelumnya['Izin'] ?? 0);
-            unset($dataBulanSebelumnya['Sakit'], $dataBulanSebelumnya['Izin']);
+            $persentase = [
+                'PersentaseBulanIni' => $jumlah['hadirIni'] > 0 ? round(($jumlah['hadirIni'] / $jumlah['ini']) * 100, 1) : 0,
+                'PersentaseBulanLalu' => $jumlah['hadirLalu'] > 0 ? round(($jumlah['hadirLalu'] / $jumlah['lalu']) * 100, 1) : 0,
+                'PersentaseTahunIni' => $jumlah['hadirTahunIni'] > 0 ? round(($jumlah['hadirTahunIni'] / $jumlah['tahunIni']) * 100, 1) : 0,
+            ];
 
-            // Status yang tersisa
-            $statuses = ['Hadir', 'Sakit/Izin', 'Alfa', 'Terlambat', 'TAP'];
-            foreach ($statuses as $status) {
-                if (!array_key_exists($status, $dataBulanIni)) {
-                    $dataBulanIni[$status] = 0;
-                }
-                if (!array_key_exists($status, $dataBulanSebelumnya)) {
-                    $dataBulanSebelumnya[$status] = 0;
-                }
-            }
-
-            // Menghitung total absen dan persentase hadir bulan ini
-            $totalAbsenBulanIni = array_sum($dataBulanIni);
-            $persentaseHadirBulanIni = $totalAbsenBulanIni > 0 ? round(($dataBulanIni['Hadir'] / $totalAbsenBulanIni) * 100) : 0;
-
-            // Menghitung total absen dan persentase hadir bulan sebelumnya
-            $totalAbsenBulanSebelumnya = array_sum($dataBulanSebelumnya);
-            $persentaseHadirBulanSebelumnya = $totalAbsenBulanSebelumnya > 0 ? round(($dataBulanSebelumnya['Hadir'] / $totalAbsenBulanSebelumnya) * 100) : 0;
-
-            // Menyimpan data absensi per siswa
             $dataAbsensiAnak[] = [
-                'nama' => $s->user->nama,
-                'nis' => $nis,
+                'nis' => $s->nis,
+                'nama' => strtolower($s->user->nama),
                 'BulanIni' => [
-                    'Hadir' => $dataBulanIni['Hadir'],
-                    'Sakit/Izin' => $dataBulanIni['Sakit/Izin'],
-                    'Alfa' => $dataBulanIni['Alfa'],
-                    'Terlambat' => $dataBulanIni['Terlambat'],
-                    'TAP' => $dataBulanIni['TAP']
+                    'Hadir' => $jumlah['hadirIni'],
+                    'Terlambat' => $jumlah['terlambatIni'],
+                    'Sakit/Izin' => $jumlah['sakitIzinIni'],
+                    'Alfa' => $jumlah['alfaIni'],
+                    'TAP' => $jumlah['tapIni'],
+                    'late' => $jumlah['menitTerlambatBulanIni'],
                 ],
                 'BulanLalu' => [
-                    'Hadir' => $dataBulanSebelumnya['Hadir'],
-                    'Sakit/Izin' => $dataBulanSebelumnya['Sakit/Izin'],
-                    'Alfa' => $dataBulanSebelumnya['Alfa'],
-                    'Terlambat' => $dataBulanSebelumnya['Terlambat'],
-                    'TAP' => $dataBulanSebelumnya['TAP']
+                    'Hadir' => $jumlah['hadirLalu'],
+                    'Terlambat' => $jumlah['terlambatLalu'],
+                    'Sakit/Izin' => $jumlah['sakitIzinLalu'],
+                    'Alfa' => $jumlah['alfaLalu'],
+                    'TAP' => $jumlah['tapLalu'],
+                    'late' => $jumlah['menitTerlambatBulanLalu'],
                 ],
-                'PersentaseBulanIni' => $persentaseHadirBulanIni,
-                'PersentaseBulanLalu' => $persentaseHadirBulanSebelumnya,
-                'late' => $late,
-                'late2' => $late2,
+                'TahunIni' => [
+                    'Hadir' => $jumlah['hadirTahunIni'],
+                    'Terlambat' => $jumlah['terlambatTahunIni'],
+                    'Sakit/Izin' => $jumlah['sakitIzinTahunIni'],
+                    'Alfa' => $jumlah['alfaTahunIni'],
+                    'TAP' => $jumlah['tapTahunIni'],
+                    'late' => $jumlah['menitTerlambatTahunIni'],
+                ],
+                'PersentaseBulanIni' => $persentase['PersentaseBulanIni'],
+                'PersentaseBulanLalu' => $persentase['PersentaseBulanLalu'],
+                'PersentaseTahunIni' => $persentase['PersentaseTahunIni'],
             ];
         }
+
 
         return view('walis.walis', compact('dataAbsensiAnak'));
     }

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->foreign('id_user')->references('id')->on('users');
 
             $table->enum('jenis_kelamin', ['laki laki', 'perempuan']);
+
+            $table->string('alamat', 128);
         });
     }
 

@@ -47,7 +47,7 @@
                     <!-- Profil Siswa -->
                     <div class="col-md-4 mb-4">
                         <div class="au-card p-4 text-center shadow-sm">
-                            <img src="{{ asset('storage/uploads/foto_profil/' . $kesiswaan->foto) }}" alt="Foto Profil" class="rounded-circle mb-3" width="150px" height="150px" style="object-fit: cover;">
+                            <img src="{{ asset('storage/uploads/foto_profil/' . $kesiswaan->foto) }}" alt="Foto Profil" class="rounded-circle mb-3" width="150px" height="150px" style="object-fit: cover">
                             <h5 class="font-weight-bold">{{ $kesiswaan->nama }}</h5>
                             <p class="text-muted">{{ $kesiswaan->email }}</p>
 

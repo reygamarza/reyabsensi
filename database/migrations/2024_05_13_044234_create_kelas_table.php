@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('id_jurusan')->nullable();
             $table->foreign('id_jurusan')->references('id_jurusan')->on('jurusans')->onUpdate('cascade')->onDelete('set null');
 
-            $table->string('nuptk')->nullable();
-            $table->foreign('nuptk')->references('nuptk')->on('wali__kelas')->onUpdate('cascade')->onDelete('set null');
+            $table->string('nip')->nullable();
+            $table->foreign('nip')->references('nip')->on('wali__kelas')->onUpdate('cascade')->onDelete('set null');
 
             $table->integer('nomor_kelas')->nullable();
             $table->enum('tingkat', ['10', '11', '12']);

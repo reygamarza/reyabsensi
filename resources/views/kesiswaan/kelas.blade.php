@@ -20,12 +20,6 @@
                                     <li class="list-inline-item"></li>
                                 </ul>
                             </div>
-                            <form class="au-form-icon--sm" action="" method="post">
-                                <input class="au-input--w300 au-input--style2" type="text" placeholder="Cari">
-                                <button class="au-btn--submit2" type="submit">
-                                    <i class="zmdi zmdi-search"></i>
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -52,57 +46,73 @@
         <section class="p-t-20">
             <div class="container">
                 <div class="table-data__tool">
-                    <div class="table-data__tool-left">
-                        <button class="au-btn au-btn-icon au-btn--grey au-btn--small">
+                    <div class="table-data__tool-left" style="display:flex; align-items:center;">
+                        <button class="au-btn au-btn-icon au-btn--grey au-btn--small mr-2">
                             <i class="zmdi zmdi-download"></i>Export</button>
-                        {{-- <div class="rs-select2--light rs-select2--sm">
-                            <select class="js-select2" name="time">
-                                <option selected="selected">Kelas</option>
-                                <option value="">XII</option>
-                                <option value="">XI</option>
-                                <option value="">X</option>
-                            </select>
-                            <div class="dropDownSelect2"></div>
-                        </div> --}}
-                        {{-- <input type="date" name="" id="" class="au-btn-filter mr-2"> --}}
+                        <form action="{{ route('kesiswaan.kelas') }}" method="GET">
+                            <div class="rs-select2--light rs-select2--md mr-2">
+                                <select class="js-select2" name="tingkat">
+                                    <option selected="selected" value="">Semua Tingkat</option>
+                                    <option value="10" {{ request('tingkat') == 10 ? 'selected' : '' }}>10</option>
+                                    <option value="11" {{ request('tingkat') == 11 ? 'selected' : '' }}>11</option>
+                                    <option value="12" {{ request('tingkat') == 12 ? 'selected' : '' }}>12</option>
+                                </select>
+                                <div class="dropDownSelect2"></div>
+                            </div>
+                            <div class="rs-select2--light rs-select2--md">
+                                <select class="js-select2" name="id_jurusan">
+                                    <option selected="selected" value="">Semua Jurusan</option>
+                                    @foreach ($jurusans as $j)
+                                        <option value="{{ $j->id_jurusan }}" {{ request('id_jurusan') == $j->id_jurusan ? 'selected' : '' }}>{{ $j->id_jurusan }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="dropDownSelect2"></div>
+                            </div>
                     </div>
                     <div class="table-data__tool-right">
-                        <form action="{{ route('kesiswaan.kelas') }}" method="GET">
-                            <div class="filter-group">
-                                <label for="from-date">From</label>
-                                <input type="date" id="from-date" name="start" class="au-btn-filter" value="{{ $startDate }}">
-                                <label for="to-date">To</label>
-                                <input type="date" id="to-date" name="end" class="au-btn-filter" value="{{ $endDate }}">
-                                <button class="au-btn au-btn-icon au-btn--blue au-btn--small" type="submit">
-                                    <i class="zmdi zmdi-search"></i>Filter
-                                </button>
-                            </div>
+                        <div class="filter-group">
+                            <label for="from-date">From</label>
+                            <input type="date" id="from-date" name="start" class="au-btn-filter"
+                                value="{{ $startDate }}">
+                            <label for="to-date">To</label>
+                            <input type="date" id="to-date" name="end" class="au-btn-filter"
+                                value="{{ $endDate }}">
+                            <button class="au-btn au-btn-icon au-btn--blue au-btn--small" type="submit">
+                                <i class="zmdi zmdi-search"></i>Filter
+                            </button>
+                        </div>
                         </form>
                     </div>
                 </div>
                 <div>
                     <div class="row">
                         @foreach ($kelasData as $kelas)
-                        <div class="col-md-6">
-                            <div class="attendance-card">
-                                <div class="attendance-header">
-                                    <span class="class-name">{{ $kelas['kelas'] }}</span>
-                                    <a href="{{ route('kesiswaan.siswa', ['kelas_id' => $kelas['kelas_id']]) }}">
-                                        <div class="attendance-detail-button">
-                                            <i class="fas fa-eye"></i> Detail
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="attendance-content">
-                                    <div class="attendance-bar">
-                                        <div class="attendance-progress" style="width: {{ number_format($kelas['percentageHadir']) }}%;">
-                                            <span class="attendance-percentage">{{ number_format($kelas['percentageHadir']) }}%</span>
+                            <div class="col-md-6">
+                                <div class="attendance-card">
+                                    <div class="attendance-header">
+                                        <span class="class-name">{{ $kelas['kelas'] }}</span>
+                                        <a href="{{ route('kesiswaan.siswa', ['kelas_id' => $kelas['kelas_id']]) }}">
+                                            <div class="attendance-detail-button">
+                                                <i class="fas fa-eye"></i> Detail
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="attendance-content">
+                                        <p class="text-center">Persentase Hadir</p>
+                                        <div class="attendance-bar">
+                                            <div class="attendance-progress"
+                                                style="width: {{ number_format($kelas['percentageHadir']) }}%;">
+                                                <span
+                                                    class="attendance-percentage">{{ number_format($kelas['percentageHadir']) }}%</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         @endforeach
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        {{ $kelasData->links() }}
                     </div>
                 </div>
             </div>

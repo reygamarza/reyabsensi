@@ -10,15 +10,15 @@ class Wali_Kelas extends Model
     use HasFactory;
 
     protected $table = 'wali__kelas';
-    public $primaryKey = 'nuptk';
+    public $primaryKey = 'nip';
     // public $incrementing = false;
     // protected $keyType = 'string';
 
     protected $fillable = [
-        'nuptk',
+        'nip',
         'id_user',
         'jenis_kelamin',
-        'nip',
+        'nuptk',
     ];
 
     public function user()

@@ -9,6 +9,7 @@ use App\Models\Wali_Kelas;
 use App\Models\Siswa;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class OperatorController extends Controller
 {
@@ -39,7 +40,7 @@ class OperatorController extends Controller
     public function kesiswaanO()
     {
         return view('operator.kesiswaanO', [
-            'title' => 'Kesiswaan' 
+            'title' => 'Kesiswaan'
         ]);
     }
 
@@ -85,12 +86,25 @@ class OperatorController extends Controller
         $user = Auth::user();
         $id_user = $user->id;
 
+        if ($request->hasFile('foto')) {
+            $foto = $request->file('foto');
+            $extension = $foto->getClientOriginalExtension();
+            $folderPath = 'public/uploads/foto_profil/';
+            $fileName = $user->nama . '.' . $extension;
+            $file = $folderPath . $fileName;
+
+            Storage::put($file, file_get_contents($foto));
+        } else {
+            $fileName = $user->foto;
+        }
+
         $password = $request->password ? Hash::make($request->password) : $user->password;
 
         $data = [
             'nama' => $request->nama,
             'email' => $request->email,
             'password' => $password,
+            'foto' => $fileName,
         ];
 
         $simpan = User::where('id', $id_user)->update($data);

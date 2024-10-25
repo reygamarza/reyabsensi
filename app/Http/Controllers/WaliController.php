@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Absensi;
 use App\Models\Kelas;
 use App\Models\Siswa;
+use App\Models\User;
 use App\Models\Wali_Kelas;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class WaliController extends Controller
 {
@@ -17,7 +21,7 @@ class WaliController extends Controller
     public function index()
     {
         $user = Wali_Kelas::where('id_user', auth()->id())->with('kelas')->first();
-        $kelas = Kelas::where('nuptk', $user->nuptk)->first();
+        $kelas = Kelas::where('nip', $user->nip)->first();
 
         // Hitung jumlah siswa di kelas
         $jumlahsiswa = Siswa::where('id_kelas', $kelas->id_kelas)->count();
@@ -78,7 +82,7 @@ class WaliController extends Controller
         }
 
         $user = Wali_Kelas::where('id_user', auth()->id())->with('kelas')->first();
-        $kelas = Kelas::where('nuptk', $user->nuptk)->first();
+        $kelas = Kelas::where('nip', $user->nip)->first();
         $students = Siswa::where('id_kelas', $kelas->id_kelas)->with('user')->get();
         $siswaIds = $students->pluck('nis');
 
@@ -177,6 +181,49 @@ class WaliController extends Controller
         ];
 
         return view('wali.detailsiswa', compact('present', 'students', 'attendanceCounts', 'attendancePercentage', 'startDate', 'endDate'));
+    }
+
+    public function profile()
+    {
+        $user = Auth::user();
+        $nip = $user->walikelas->nip;
+
+        $wali = Wali_Kelas::where('nip', $nip)->with('user')->first();
+        return view('wali.profile', compact('wali'));
+    }
+
+    public function editprofile(Request $request)
+    {
+        $user = Auth::user();
+        $id_user = $user->id;
+        $nuptk = $user->walikelas->nuptk;
+
+        if ($request->hasFile('foto')) {
+            $foto = $request->file('foto');
+            $extension = $foto->getClientOriginalExtension();
+            $folderPath = 'public/uploads/foto_profil/';
+            $fileName = $nuptk . '.' . $extension;
+            $file = $folderPath . $fileName;
+
+            Storage::put($file, file_get_contents($foto));
+        } else {
+            $fileName = $user->foto;
+        }
+
+        $password = $request->password ? Hash::make($request->password) : $user->password;
+
+        $data = [
+            'password' => $password,
+            'foto' => $fileName,
+        ];
+
+        $simpan = User::where('id', $id_user)->update($data);
+
+        if ($simpan) {
+            return redirect()->route('WaliKelas.profile')->with('berhasil', 'Profil Anda Berhasil Diubah.');
+        } else {
+            return redirect()->route('WaliKelas.profile')->with('gagal', 'Profil Gagal Diubah.');
+        }
     }
 
     /**

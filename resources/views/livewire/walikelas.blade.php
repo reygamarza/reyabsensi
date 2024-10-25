@@ -25,32 +25,32 @@
                 <table class="table table-borderless table-data3">
                     <thead>
                         <tr>
-                            <th>NUPTK</th>
+                            <th>NIP</th>
                             <th>Email</th>
                             <th>Nama</th>
                             <th>JK</th>
-                            <th>NIP</th>
+                            <th>NUPTK</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($daftarwali as $w)
                             <tr>
-                                <td>{{ $w->nuptk }}</td>
+                                <td>{{ $w->nip }}</td>
                                 <td>{{ $w->user->email }}</td>
                                 <td>{{ $w->user->nama }}</td>
                                 <td>{{ $w->jenis_kelamin }}</td>
-                                <td>{{ $w->nip }}</td>
+                                <td>{{ $w->nuptk }}</td>
                                 <td>
                                     <div class="table-data-feature">
                                         <a data-toggle="modal" data-target="#EditModal">
                                             <button class="item mr-1" data-toggle="tooltip" title="Edit"
-                                                wire:click="editwali({{ $w->nuptk }})">
+                                                wire:click="editwali({{ $w->nip }})">
                                                 <i class="zmdi zmdi-edit"></i>
                                             </button>
                                         </a>
                                         <button class="item mr-1" data-toggle="tooltip" data-placement="top"
-                                            title="Delete" wire:click="hapuswali({{ $w->nuptk }})">
+                                            title="Delete" wire:click="hapuswali({{ $w->nip }})">
                                             <i class="zmdi zmdi-delete"></i>
                                         </button>
                                     </div>
@@ -87,11 +87,11 @@
                             <h6 class="fw-bold mb-3">Biodata Wali Kelas</h6>
                             <div class="row form-group" style="margin-bottom: 25px;">
                                 <div class="col col-md-3">
-                                    <label for="nuptk" class="form-control-label">NUPTK</label>
+                                    <label for="nip" class="form-control-label">NIP</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" id="nuptk" name="nuptk" placeholder="Masukan NUPTK"
-                                        class="form-control" wire:model="nuptk" required>
+                                    <input type="text" id="nip" name="nip" placeholder="Masukan NIP"
+                                        class="form-control" required wire:model="nip">
                                 </div>
                             </div>
                             <div class="row form-group" style="margin-bottom: 25px;">
@@ -125,11 +125,11 @@
                             </div>
                             <div class="row form-group" style="margin-bottom: 25px;">
                                 <div class="col col-md-3">
-                                    <label for="nip" class="form-control-label">NIP</label>
+                                    <label for="nuptk" class="form-control-label">NUPTK</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" id="nip" name="nip" placeholder="Masukan NIP"
-                                        class="form-control" required wire:model="nip">
+                                    <input type="text" id="nuptk" name="nuptk" placeholder="Masukan NUPTK"
+                                        class="form-control" wire:model="nuptk" required>
                                 </div>
                             </div>
                         </div>
@@ -187,11 +187,11 @@
                             <h6 class="fw-bold mb-3">Biodata Wali Kelas</h6>
                             <div class="row form-group" style="margin-bottom: 25px;">
                                 <div class="col col-md-3">
-                                    <label for="nuptk" class="form-control-label">NUPTK</label>
+                                    <label for="nip" class="form-control-label">NIP</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" id="nuptk" name="nuptk" placeholder="Masukan NUPTK"
-                                        class="form-control" wire:model="nuptk" required>
+                                    <input type="text" id="nip" name="nip" placeholder="Masukan NIP"
+                                        class="form-control" required wire:model="nip">
                                 </div>
                             </div>
                             <div class="row form-group" style="margin-bottom: 25px;">
@@ -225,11 +225,11 @@
                             </div>
                             <div class="row form-group" style="margin-bottom: 25px;">
                                 <div class="col col-md-3">
-                                    <label for="nip" class="form-control-label">NIP</label>
+                                    <label for="nuptk" class="form-control-label">NUPTK</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" id="nip" name="nip" placeholder="Masukan NIP"
-                                        class="form-control" required wire:model="nip">
+                                    <input type="text" id="nuptk" name="nuptk" placeholder="Masukan NUPTK"
+                                        class="form-control" wire:model="nuptk" required>
                                 </div>
                             </div>
                         </div>

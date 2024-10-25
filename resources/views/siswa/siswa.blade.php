@@ -209,14 +209,61 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row form-group">
-                                <div class="col col-md-3">
-                                    <label class="form-control-label">Kirim File</label>
+
+                            <!-- Tabs untuk Pilihan Kirim File atau Webcam -->
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="file-tab" data-toggle="tab" href="#file"
+                                        role="tab" aria-controls="file" aria-selected="true">Kirim File</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="webcam-tab" data-toggle="tab" href="#webcam" role="tab"
+                                        aria-controls="webcam" aria-selected="false">Gunakan Webcam</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <!-- Tab Kirim File -->
+                                <div class="tab-pane fade show active" id="file" role="tabpanel"
+                                    aria-labelledby="file-tab">
+                                    <div class="row form-group mt-3">
+                                        <div class="col col-md-3">
+                                            <label class="form-control-label">Kirim File</label>
+                                        </div>
+                                        <div class="col-12 col-md-9">
+                                            <input type="file" class="form-control" name="photo_in"
+                                                accept="image/png, image/jpeg" required>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-12 col-md-9">
-                                    <input type="file" class="form-control" name="photo_in" required>
+
+                                <!-- Tab Gunakan Webcam -->
+                                <div class="tab-pane fade" id="webcam" role="tabpanel" aria-labelledby="webcam-tab">
+                                    <div class="row form-group mt-3">
+                                        <div class="col col-md-3">
+                                            <label class="form-control-label">Ambil Foto</label>
+                                        </div>
+                                        <div class="col-12 col-md-9">
+                                            <!-- Placeholder untuk Webcam -->
+                                            <div id="my_camera"
+                                                style="border: 2px solid #ddd; border-radius: 10px; width: 320px; height: 240px;">
+                                            </div>
+                                            <!-- Tempat untuk menampilkan hasil foto -->
+                                            <img id="result" style="display:none; margin-top: 10px;" />
+                                            <!-- Tombol untuk mengambil gambar -->
+                                            <button type="button" class="btn btn-primary mt-2"
+                                                onclick="ambilFoto()">Ambil Foto</button>
+                                            <!-- Tombol untuk mengambil ulang gambar -->
+                                            <button type="button" class="btn btn-warning mt-2"
+                                                onclick="ambilUlang()">Ambil Ulang</button>
+                                            <!-- Input tersembunyi untuk menyimpan base64 dari gambar -->
+                                            <input type="hidden" id="photo_webcam" name="photo_webcam">
+                                        </div>
+                                    </div>
                                 </div>
+
                             </div>
+
+                            <!-- Keterangan -->
                             <div class="row form-group">
                                 <div class="col col-md-3">
                                     <label for="keterangan" class="form-control-label">Keterangan</label>
@@ -235,6 +282,8 @@
                 </div>
             </div>
         </div>
+
+
         <!-- End Modal Formulir-->
         <section class="riwayatkehadiran p-t-50">
             <div class="container">
@@ -446,8 +495,7 @@
                                             <div class="progress-bar bg-success" role="progressbar"
                                                 style="width: {{ $persentaseHadirBulanIni }}%"
                                                 aria-valuenow="{{ $persentaseHadirBulanIni }}" aria-valuemin="0"
-                                                aria-valuemax="100">
-                                                Persentase Hadir: {{ $persentaseHadirBulanIni }}%
+                                                aria-valuemax="100">{{ $persentaseHadirBulanIni }}%
                                             </div>
                                         </div>
                                         <ul class="list-group">
@@ -485,8 +533,8 @@
                                         <div class="progress mb-2">
                                             <div class="progress-bar bg-success" role="progressbar"
                                                 style="width: {{ $persentaseHadirBulanSebelumnya }}%"
-                                                aria-valuenow="{{ $persentaseHadirBulanSebelumnya }}"
-                                                aria-valuemin="0" aria-valuemax="100">
+                                                aria-valuenow="{{ $persentaseHadirBulanSebelumnya }}" aria-valuemin="0"
+                                                aria-valuemax="100">
                                                 Persentase Hadir : {{ $persentaseHadirBulanSebelumnya }}%
                                             </div>
                                         </div>
@@ -540,6 +588,54 @@
 
 @push('myscript')
     <script src="{{ asset('assets/siswa/assets') }}/js/digitalclock.js"></script>
+    <script>
+        // Inisialisasi Webcam
+        function startWebcam() {
+            Webcam.set({
+                width: 320,
+                height: 240,
+                image_format: 'jpeg',
+                jpeg_quality: 90,
+                flip_horiz: false // Nonaktifkan mirroring kamera
+            });
+            Webcam.attach('#my_camera'); // Menampilkan kamera di div dengan id 'my_camera'
+        }
+
+        // Ketika tab webcam diklik, jalankan fungsi startWebcam
+        $('#webcam-tab').on('shown.bs.tab', function(e) {
+            startWebcam();
+        });
+
+        // Ketika tab 'Kirim File' diklik, hentikan kamera
+        $('#file-tab').on('shown.bs.tab', function(e) {
+            Webcam.reset(); // Menonaktifkan dan menghentikan kamera
+        });
+
+        // Fungsi untuk mengambil gambar
+        function ambilFoto() {
+            Webcam.snap(function(data_uri) {
+                // Simpan gambar dalam variabel image
+                let image = data_uri;
+
+                // Tampilkan gambar di elemen <img> dengan id 'result'
+                document.getElementById('result').src = data_uri;
+                document.getElementById('result').style.display = 'block';
+
+                // Simpan data image dalam input tersembunyi untuk dikirim ke server
+                document.getElementById('photo_webcam').value = image;
+
+                // Sembunyikan tampilan kamera
+                document.getElementById('my_camera').style.display = 'none';
+            });
+        }
+
+        // Fungsi untuk mengulang mengambil foto
+        function ambilUlang() {
+            // Reset gambar dan tampilkan kembali kamera
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('my_camera').style.display = 'block';
+        }
+    </script>
     <script>
         function radius() {
             var lokasi = document.getElementById('lokasi');

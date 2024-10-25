@@ -138,10 +138,11 @@
                             </div>
                             <div class="row form-group" style="margin-bottom: 25px;">
                                 <div class="col col-md-3">
-                                    <label for="nik" class="form-control-label">NIK Ortu</label>
+                                    <label for="nik_ayah" class="form-control-label">NIK Ayah</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <select name="nik" tabindex="1" wire:model="nik" class="form-control">
+                                    <select name="nik_ayah" tabindex="1" wire:model="nik_ayah" class="form-control">
+                                        <option value="">Pilih NIK</option>
                                         @foreach ($daftarortu as $o)
                                             <option value="{{ $o->nik }}">{{ $o->user->nama }} -
                                                 {{ $o->nik }}</option>
@@ -149,22 +150,34 @@
                                     </select>
                                 </div>
                             </div>
-                            {{-- <div class="row form-group">
+                            <div class="row form-group" style="margin-bottom: 25px;">
                                 <div class="col col-md-3">
-                                    <label for="id_kelas" class="form-control-label">Kelas</label>
+                                    <label for="nik_ibu" class="form-control-label">NIK Ibu</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <select name="id_kelas" tabindex="1" wire:model="id_kelas"
-                                        class="form-control">
-                                        @foreach ($daftarkelas as $k)
-                                            <option value="{{ $k->id_kelas }}">
-                                                {{ $k->tingkat }} {{ $k->jurusan->nama_jurusan }}
-                                                {{ $k->nomor_kelas }}
-                                            </option>
+                                    <select name="nik_ibu" tabindex="1" wire:model="nik_ibu" class="form-control">
+                                        <option value="">Pilih NIK</option>
+                                        @foreach ($daftarortu as $o)
+                                            <option value="{{ $o->nik }}">{{ $o->user->nama }} -
+                                                {{ $o->nik }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                            </div> --}}
+                            </div>
+                            <div class="row form-group" style="margin-bottom: 25px;">
+                                <div class="col col-md-3">
+                                    <label for="nik_wali" class="form-control-label">NIK Wali</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <select name="nik_wali" tabindex="1" wire:model="nik_wali" class="form-control">
+                                        <option value="">Pilih NIK</option>
+                                        @foreach ($daftarortu as $o)
+                                            <option value="{{ $o->nik }}">{{ $o->user->nama }} -
+                                                {{ $o->nik }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <!-- Akun Wali Column -->
                         <div class="col-md-6">
@@ -267,10 +280,39 @@
                             </div>
                             <div class="row form-group" style="margin-bottom: 25px;">
                                 <div class="col col-md-3">
-                                    <label for="nik" class="form-control-label">NIK Ortu</label>
+                                    <label for="nik_ayah" class="form-control-label">NIK Ayah</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <select name="nik" tabindex="1" wire:model="nik" class="form-control">
+                                    <select name="nik_ayah" tabindex="1" wire:model="nik_ayah" class="form-control">
+                                        <option value="">Pilih NIK</option>
+                                        @foreach ($daftarortu as $o)
+                                            <option value="{{ $o->nik }}">{{ $o->user->nama }} -
+                                                {{ $o->nik }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row form-group" style="margin-bottom: 25px;">
+                                <div class="col col-md-3">
+                                    <label for="nik_ibu" class="form-control-label">NIK Ibu</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <select name="nik_ibu" tabindex="1" wire:model="nik_ibu" class="form-control">
+                                        <option value="">Pilih NIK</option>
+                                        @foreach ($daftarortu as $o)
+                                            <option value="{{ $o->nik }}">{{ $o->user->nama }} -
+                                                {{ $o->nik }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row form-group" style="margin-bottom: 25px;">
+                                <div class="col col-md-3">
+                                    <label for="nik_wali" class="form-control-label">NIK Wali</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <select name="nik_wali" tabindex="1" wire:model="nik_wali" class="form-control">
+                                        <option value="">Pilih NIK</option>
                                         @foreach ($daftarortu as $o)
                                             <option value="{{ $o->nik }}">{{ $o->user->nama }} -
                                                 {{ $o->nik }}</option>

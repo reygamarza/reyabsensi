@@ -8,6 +8,77 @@ use Illuminate\Database\Seeder;
 
 class AbsensiSeeder extends Seeder
 {
+    public function run()
+    {
+        // Daftar NIS siswa
+        $nisList = ['0069584720', '0062894371', '0061748352']; // Tambahkan NIS siswa lainnya sesuai kebutuhan
+        $titikKoordinat = '-6.890622076541303, 107.55806983605572'; // Ganti dengan koordinat yang sesuai
+        $statuses = ['Hadir', 'Terlambat', 'Sakit', 'Izin', 'Alfa', 'TAP']; // Daftar status
+
+        // Tanggal mulai dan akhir untuk data absensi
+        $startDate = new \DateTime('2024-10-01'); // Ubah sesuai kebutuhan
+        $endDate = new \DateTime('2024-10-31'); // Ubah sesuai kebutuhan
+
+        // Menghitung selisih hari
+        $interval = new \DateInterval('P1D'); // Interval 1 hari
+        $dateRange = new \DatePeriod($startDate, $interval, $endDate->modify('+1 day')); // Termasuk hari terakhir
+
+        foreach ($nisList as $nis) {
+            foreach ($dateRange as $date) {
+                // Hanya ambil hari kerja (Senin-Jumat)
+                if ($date->format('N') <= 5) { // 1 = Senin, 7 = Minggu
+                    $status = $statuses[array_rand($statuses)]; // Pilih status secara acak
+
+                    // Inisialisasi variabel untuk foto dan keterlambatan
+                    $photoIn = null;
+                    $photoOut = null;
+                    $jamMasuk = '06:12:34';
+                    $jamPulang = '16:45:56';
+                    $menitKeterlambatan = null;
+
+                    // Logika untuk menentukan foto dan jam masuk/pulang berdasarkan status
+                    switch ($status) {
+                        case 'Hadir':
+                        case 'Terlambat':
+                        case 'TAP':
+                            $photoIn = "0062894371_2024-08-07_masuk.png";
+                            $photoOut = "0062894371_2024-08-07_masuk.png";
+                            break;
+
+                        case 'Sakit':
+                        case 'Izin':
+                            $photoIn = "0062894371_2024-10-15_izin.jpeg"; // Gunakan foto izin
+                            $photoOut = "0062894371_2024-10-15_izin.jpeg"; // Foto yang sama
+                            break;
+
+                        case 'Alfa':
+                            $jamMasuk = null;
+                            $jamPulang = null;
+                            break;
+                    }
+
+                    // Jika status terlambat, tentukan menit keterlambatan (misal 15 menit)
+                    if ($status === 'Terlambat') {
+                        $menitKeterlambatan = 15; // Ubah sesuai kebutuhan
+                    }
+
+                    // Buat data absensi
+                    Absensi::create([
+                        'nis' => $nis,
+                        'status' => $status,
+                        'photo_in' => $photoIn,
+                        'photo_out' => $photoOut,
+                        'date' => $date->format('Y-m-d'),
+                        'jam_masuk' => $jamMasuk,
+                        'jam_pulang' => $jamPulang,
+                        'titik_koordinat_masuk' => $status === 'Alfa' || $status === 'Sakit' || $status === 'Izin' ? null : $titikKoordinat,
+                        'titik_koordinat_pulang' => $status === 'Alfa' || $status === 'Sakit' || $status === 'Izin' ? null : $titikKoordinat,
+                        'menit_keterlambatan' => $menitKeterlambatan,
+                    ]);
+                }
+            }
+        }
+    }
     /**
      * Run the database seeds.
      */
@@ -514,75 +585,4 @@ class AbsensiSeeder extends Seeder
 
     // }
 
-    public function run()
-    {
-        // Daftar NIS siswa
-        $nisList = ['0069584720', '0062894371', '0061748352']; // Tambahkan NIS siswa lainnya sesuai kebutuhan
-        $titikKoordinat = '-6.890622076541303, 107.55806983605572'; // Ganti dengan koordinat yang sesuai
-        $statuses = ['Hadir', 'Terlambat', 'Sakit', 'Izin', 'Alfa', 'TAP']; // Daftar status
-
-        // Tanggal mulai dan akhir untuk data absensi
-        $startDate = new \DateTime('2024-10-01'); // Ubah sesuai kebutuhan
-        $endDate = new \DateTime('2024-10-31'); // Ubah sesuai kebutuhan
-
-        // Menghitung selisih hari
-        $interval = new \DateInterval('P1D'); // Interval 1 hari
-        $dateRange = new \DatePeriod($startDate, $interval, $endDate->modify('+1 day')); // Termasuk hari terakhir
-
-        foreach ($nisList as $nis) {
-            foreach ($dateRange as $date) {
-                // Hanya ambil hari kerja (Senin-Jumat)
-                if ($date->format('N') <= 5) { // 1 = Senin, 7 = Minggu
-                    $status = $statuses[array_rand($statuses)]; // Pilih status secara acak
-
-                    // Inisialisasi variabel untuk foto dan keterlambatan
-                    $photoIn = null;
-                    $photoOut = null;
-                    $jamMasuk = '06:12:34';
-                    $jamPulang = '16:45:56';
-                    $menitKeterlambatan = null;
-
-                    // Logika untuk menentukan foto dan jam masuk/pulang berdasarkan status
-                    switch ($status) {
-                        case 'Hadir':
-                        case 'Terlambat':
-                        case 'TAP':
-                            $photoIn = "{$nis}_{$date->format('Y-m-d')}_masuk.png";
-                            $photoOut = "{$nis}_{$date->format('Y-m-d')}_keluar.png";
-                            break;
-
-                        case 'Sakit':
-                        case 'Izin':
-                            $photoIn = "{$nis}_{$date->format('Y-m-d')}_izin.jpeg"; // Gunakan foto izin
-                            $photoOut = "{$nis}_{$date->format('Y-m-d')}_izin.jpeg"; // Foto yang sama
-                            break;
-
-                        case 'Alfa':
-                            $jamMasuk = null;
-                            $jamPulang = null;
-                            break;
-                    }
-
-                    // Jika status terlambat, tentukan menit keterlambatan (misal 15 menit)
-                    if ($status === 'Terlambat') {
-                        $menitKeterlambatan = 15; // Ubah sesuai kebutuhan
-                    }
-
-                    // Buat data absensi
-                    Absensi::create([
-                        'nis' => $nis,
-                        'status' => $status,
-                        'photo_in' => $photoIn,
-                        'photo_out' => $photoOut,
-                        'date' => $date->format('Y-m-d'),
-                        'jam_masuk' => $jamMasuk,
-                        'jam_pulang' => $jamPulang,
-                        'titik_koordinat_masuk' => $status === 'Alfa' || $status === 'Sakit' || $status === 'Izin' ? null : $titikKoordinat,
-                        'titik_koordinat_pulang' => $status === 'Alfa' || $status === 'Sakit' || $status === 'Izin' ? null : $titikKoordinat,
-                        'menit_keterlambatan' => $menitKeterlambatan,
-                    ]);
-                }
-            }
-        }
-    }
 }

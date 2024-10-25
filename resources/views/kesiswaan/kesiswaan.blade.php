@@ -120,56 +120,55 @@
 @endsection
 
 @push('myscript')
-<script>
-    const attendanceData = {
-        'kelas10': @json($attendanceData['kelas10']),
-        'kelas11': @json($attendanceData['kelas11']),
-        'kelas12': @json($attendanceData['kelas12']),
-        'dates': ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'] // Atur sesuai kebutuhan
-    };
+    <script>
+        const attendanceData = {
+            'kelas10': @json($attendanceData['kelas10']),
+            'kelas11': @json($attendanceData['kelas11']),
+            'kelas12': @json($attendanceData['kelas12']),
+            'dates': ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'] // Atur sesuai kebutuhan
+        };
 
-    const ctx = document.getElementById('attendanceChart').getContext('2d');
-    const attendanceChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: attendanceData.dates,
-            datasets: [{
-                    label: 'Kelas 10',
-                    data: attendanceData.kelas10,
-                    backgroundColor: 'rgba(66, 135, 245, 0.8)',
-                    borderColor: 'rgba(66, 135, 245, 1)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'Kelas 11',
-                    data: attendanceData.kelas11,
-                    backgroundColor: 'rgba(245, 203, 66, 0.8)',
-                    borderColor: 'rgba(245, 203, 66, 1)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'Kelas 12',
-                    data: attendanceData.kelas12,
-                    backgroundColor: 'rgba(66, 245, 157, 0.8)',
-                    borderColor: 'rgba(66, 245, 157, 1)',
-                    borderWidth: 1
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Jumlah Kehadiran (%)'
+        const ctx = document.getElementById('attendanceChart').getContext('2d');
+        const attendanceChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: attendanceData.dates,
+                datasets: [{
+                        label: 'Kelas 10',
+                        data: attendanceData.kelas10,
+                        backgroundColor: 'rgba(66, 135, 245, 0.8)',
+                        borderColor: 'rgba(66, 135, 245, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Kelas 11',
+                        data: attendanceData.kelas11,
+                        backgroundColor: 'rgba(245, 203, 66, 0.8)',
+                        borderColor: 'rgba(245, 203, 66, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Kelas 12',
+                        data: attendanceData.kelas12,
+                        backgroundColor: 'rgba(66, 245, 157, 0.8)',
+                        borderColor: 'rgba(66, 245, 157, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100, 
+                        title: {
+                            display: true,
+                            text: 'Jumlah Kehadiran (%)'
+                        }
                     }
                 }
             }
-        }
-    });
-</script>
+        });
+    </script>
 @endpush
-
-

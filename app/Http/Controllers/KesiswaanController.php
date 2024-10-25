@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensi;
+use App\Models\Jurusan;
 use Illuminate\Http\Request;
 use App\Models\Kelas;
 use App\Models\Wali_Kelas;
 use App\Models\Siswa;
 use App\Models\User;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -20,35 +23,38 @@ class KesiswaanController extends Controller
      */
     public function index()
     {
-        // Data kehadiran
+        // Data kehadiran untuk chart
         $attendanceData = [
             'kelas10' => [],
             'kelas11' => [],
             'kelas12' => []
         ];
 
-        $kelasList = Kelas::whereIn('tingkat', ['10', '11', '12'])->get();
+        // Mendapatkan tanggal Senin dan Jumat minggu ini
+        $startOfWeek = Carbon::now()->startOfWeek(Carbon::MONDAY);
+        $endOfWeek = Carbon::now()->endOfWeek(Carbon::FRIDAY);
 
-        // Menghitung jumlah kehadiran untuk setiap kelas
+        // Mendapatkan jumlah hari kerja (Senin hingga Jumat)
+        $workDays = CarbonPeriod::create($startOfWeek, $endOfWeek)->filter(function ($date) {
+            return in_array($date->dayOfWeek, [1, 2, 3, 4, 5]); // Senin - Jumat
+        })->count();
+
+        // Mengambil kelas tingkat 10, 11, dan 12 beserta siswa-siswanya
+        $kelasList = Kelas::with('siswa')->whereIn('tingkat', ['10', '11', '12'])->get();
+
         foreach ($kelasList as $kelas) {
-            $siswaList = $kelas->siswa;
-            $totalSiswa = $siswaList->count(); // Menghitung total siswa di kelas ini
-            $kehadiranCount = 0; // Menghitung total kehadiran
+            $totalSiswa = $kelas->siswa->count(); // Total siswa per kelas
 
-            foreach ($siswaList as $siswa) {
-                // Ambil data absensi untuk bulan ini
-                $absensi = Absensi::where('nis', $siswa->nis)
-                    ->whereMonth('date', date('m'))
-                    ->whereYear('date', date('Y'))
-                    ->get();
-
-                $kehadiranCount += $absensi->where('status', 'Hadir')->count();
-            }
+            // Ambil jumlah kehadiran siswa dalam minggu ini
+            $kehadiranCount = Absensi::whereIn('nis', $kelas->siswa->pluck('nis')) // Ambil NIS semua siswa di kelas
+                ->whereBetween('date', [$startOfWeek, $endOfWeek]) // Ambil absensi hanya dalam minggu ini
+                ->where('status', 'Hadir') // Hanya hitung yang statusnya "Hadir"
+                ->count();
 
             // Hitung persentase kehadiran
-            $persentaseKehadiran = $totalSiswa > 0 ? ($kehadiranCount / $totalSiswa) * 100 : 0;
+            $persentaseKehadiran = $totalSiswa > 0 ? ($kehadiranCount / ($totalSiswa * $workDays)) * 100 : 0;
 
-            // Masukkan data ke dalam array sesuai tingkat
+            // Simpan data berdasarkan tingkat kelas
             if ($kelas->tingkat == '10') {
                 $attendanceData['kelas10'][] = $persentaseKehadiran;
             } elseif ($kelas->tingkat == '11') {
@@ -76,18 +82,30 @@ class KesiswaanController extends Controller
 
     public function laporankelas(Request $request)
     {
-        // Retrieve the date range from the request
+        // dd($request->all());
+        $jurusans = Jurusan::all();
+
         $startDate = $request->input('start');
         $endDate = $request->input('end');
+        $tingkat = $request->input('tingkat');
+        $id_jurusan = $request->input('id_jurusan');
 
-        // Set default to current month if no dates are provided
         if (!$startDate || !$endDate) {
             $startDate = Carbon::now()->startOfMonth()->toDateString();
             $endDate = Carbon::now()->endOfMonth()->toDateString();
         }
 
-        // Fetch all classes
-        $kelasList = Kelas::with('siswa.absensi')->get();
+        $kelasList = Kelas::with('siswa.absensi');
+
+        if ($tingkat) {
+            $kelasList->where('tingkat', $tingkat);
+        }
+
+        if ($id_jurusan) {
+            $kelasList->where('id_jurusan', $id_jurusan);
+        }
+
+        $kelasList = $kelasList->get();
 
         $kelasData = [];
         $totalPercentageHadir = 0;
@@ -136,19 +154,36 @@ class KesiswaanController extends Controller
 
         $averagePercentageHadir = ($totalClasses > 0) ? ($totalPercentageHadir / $totalClasses) : 0;
 
+        $kelasDataCollection = collect($kelasData);
+
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 6;
+        $paginateData = new LengthAwarePaginator(
+            $kelasDataCollection->forPage($currentPage, $perPage),
+            $kelasDataCollection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => LengthAwarePaginator::resolveCurrentPath()]
+        );
+
+        $paginatedData = $paginateData->appends($request->only(['start', 'end']));
+
         return view('kesiswaan.kelas', [
             'title' => 'Dashboard',
-            'kelasData' => $kelasData,
+            'kelasData' => $paginatedData,
             'averagePercentageHadir' => $averagePercentageHadir,
             'startDate' => $startDate,
             'endDate' => $endDate,
+            'jurusans' => $jurusans,
         ]);
     }
 
     public function laporansiswa(Request $request, $kelas_id)
     {
+        // dd($request->all());
         $startDate = $request->input('start');
         $endDate = $request->input('end');
+        $search = $request->input('search');
 
         if (!$startDate || !$endDate) {
             $startDate = Carbon::now()->startOfMonth()->toDateString();
@@ -156,7 +191,18 @@ class KesiswaanController extends Controller
         }
 
         $kelas = Kelas::where('id_kelas', $kelas_id)->first();
-        $students = Siswa::where('id_kelas', $kelas_id)->with('user')->get();
+        $students = Siswa::where('id_kelas', $kelas_id)->with('user');
+
+        if ($search) {
+            $students->where(function ($s) use ($search) {
+                $s->whereHas('user', function ($query) use ($search) {
+                    $query->where('nama', 'like', '%' . $search . '%');
+                })
+                    ->orWhere('nis', 'like', '%' . $search . '%');
+            });
+        }
+        $students = $students->get();
+
         $siswaIds = $students->pluck('nis');
 
         $siswaAbsensi = Absensi::whereIn('nis', $siswaIds)
@@ -217,20 +263,51 @@ class KesiswaanController extends Controller
             $averageAttendancePercentages[$status] = $totalStudents > 0 ? $totalPercentage / $totalStudents : 0;
         }
 
-        return view('kesiswaan.siswa', compact('studentsData', 'attendanceCounts', 'averageAttendancePercentages', 'kelas', 'startDate', 'endDate'));
+        $siswaDataCollection = collect($studentsData);
+
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 9;
+        $paginateData = new LengthAwarePaginator(
+            $siswaDataCollection->forPage($currentPage, $perPage),
+            $siswaDataCollection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => LengthAwarePaginator::resolveCurrentPath()]
+        );
+
+        $paginatedData = $paginateData->appends($request->only(['start', 'end', 'search']));
+
+        return view('kesiswaan.siswa', [
+            'studentsData' => $paginatedData,
+            'attendanceCounts' => $attendanceCounts,
+            'averageAttendancePercentages' => $averageAttendancePercentages,
+            'kelas' => $kelas,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'search' => $search
+        ]);
     }
 
-    public function laporandetailsiswa(Request $request, $id)
+    public function laporandetailsiswa(Request $request, $kelas_id, $id)
     {
         $startDate = $request->input('start');
         $endDate = $request->input('end');
+        $status = $request->input('status');
 
         if (!$startDate || !$endDate) {
             $startDate = Carbon::now()->startOfMonth()->toDateString();
             $endDate = Carbon::now()->endOfMonth()->toDateString();
         }
 
-        $present = Absensi::where('nis', $id)->whereBetween('date', [$startDate, $endDate])->orderBy('date', 'asc')->paginate(7)->appends($request->only(['start', 'end']));
+        $kelas = Kelas::where('id_kelas', $kelas_id)->first();
+
+        $present = Absensi::where('nis', $id)->whereBetween('date', [$startDate, $endDate])->orderBy('date', 'DESC');
+
+        if ($status) {
+            $present->where('status', $status);
+        }
+
+        $present = $present->get();
 
         $students = Siswa::where('nis', $id)->with('user')->first();
 
@@ -253,7 +330,31 @@ class KesiswaanController extends Controller
             'percentageTAP' => ($totalRecords > 0) ? ($attendanceCounts['TAP'] / $totalRecords) * 100 : 0,
         ];
 
-        return view('kesiswaan.detailsiswa', compact('present', 'students', 'attendanceCounts', 'attendancePercentage', 'startDate', 'endDate'));
+        $presentDataCollection = collect($present);
+
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 7;
+        $paginateData = new LengthAwarePaginator(
+            $presentDataCollection->forPage($currentPage, $perPage),
+            $presentDataCollection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => LengthAwarePaginator::resolveCurrentPath()]
+        );
+
+        $paginatedData = $paginateData->appends($request->only(['start', 'end']));
+
+        // dd($paginateData);
+
+        return view('kesiswaan.detailsiswa', [
+            'present' => $paginatedData,
+            'students' => $students,
+            'attendanceCounts' => $attendanceCounts,
+            'attendancePercentage' => $attendancePercentage,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'kelas' => $kelas,
+        ]);
     }
 
     public function profileK()

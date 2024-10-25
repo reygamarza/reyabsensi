@@ -19,7 +19,7 @@ class Lkelas extends Component
     use WithFileUploads;
     protected $paginationTheme = 'bootstrap';
 
-    public $id_kelas, $id_jurusan, $nuptk, $nomor_kelas, $tingkat;
+    public $id_kelas, $id_jurusan, $nip, $nomor_kelas, $tingkat;
     public $file;
     public $searchkelas = '';
 
@@ -52,7 +52,7 @@ class Lkelas extends Component
 
         Kelas::create([
             'id_jurusan' => $this->id_jurusan,
-            'nuptk' => $this->nuptk,
+            'nip' => empty($this->nip) ? null : $this->nip,
             'nomor_kelas' => $this->nomor_kelas,
             'tingkat' => $this->tingkat,
         ]);
@@ -66,7 +66,7 @@ class Lkelas extends Component
         $daftarkelas = Kelas::with('jurusan', 'waliKelas.user')->findOrFail($id_kelas);
 
         $this->id_kelas = $daftarkelas->id_kelas;
-        $this->nuptk = $daftarkelas->nuptk;
+        $this->nip = $daftarkelas->nip;
         $this->id_jurusan = $daftarkelas->id_jurusan;
         $this->tingkat = $daftarkelas->tingkat;
         $this->nomor_kelas = $daftarkelas->nomor_kelas;
@@ -78,7 +78,7 @@ class Lkelas extends Component
 
         $kelas = Kelas::findOrFail($this->id_kelas);
         $kelas->update([
-            'nuptk' => $this->nuptk,
+            'nip' => empty($this->nip) ? null : $this->nip,
             'id_jurusan' => $this->id_jurusan,
             'tingkat' => $this->tingkat,
             'nomor_kelas' => $this->nomor_kelas,
@@ -114,14 +114,13 @@ class Lkelas extends Component
 
     public function clear()
     {
-        $this->id_jurusan = $this->nomor_kelas = $this->tingkat = $this->nuptk = '';
+        $this->id_jurusan = $this->nomor_kelas = $this->tingkat = $this->nip = '';
     }
 
     protected function rules()
     {
         return [
             'id_jurusan' => 'required',
-            'nuptk' => 'required',
             'nomor_kelas' => 'required',
             'tingkat' => 'required',
         ];

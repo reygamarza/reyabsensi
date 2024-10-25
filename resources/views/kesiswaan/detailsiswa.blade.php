@@ -20,12 +20,6 @@
                                     <li class="list-inline-item"></li>
                                 </ul>
                             </div>
-                            <form class="au-form-icon--sm" action="" method="post">
-                                <input class="au-input--w300 au-input--style2" type="text" placeholder="Cari">
-                                <button class="au-btn--submit2" type="submit">
-                                    <i class="zmdi zmdi-search"></i>
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -38,9 +32,13 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1 class="title-4 text-center">
-                            <span>Laporan Detail Absensi Siswa</span>
-                        </h1>
+                        <div style="display: flex; align-items: center; justify-content: center;">
+                            <a href="{{ route('kesiswaan.siswa', ['kelas_id' => $kelas->id_kelas] ) }}" class="fas fa-chevron-left"
+                                style="font-size: 40px; color: #393939;"></a>
+                            <div style="flex: 1;">
+                                <h1 class="title-4 text-center" style="margin-bottom: 0;">Detail Laporan Absensi Siswa</h1>
+                            </div>
+                        </div>
                         <hr class="line-seprate">
                     </div>
                 </div>
@@ -52,12 +50,24 @@
         <section class="p-t-20">
             <div class="container">
                 <div class="table-data__tool">
-                    <div class="table-data__tool-left">
-                        <button class="au-btn au-btn-icon au-btn--grey au-btn--small">
+                    <div class="table-data__tool-left" style="display:flex; align-items:center;">
+                        <button class="au-btn au-btn-icon au-btn--grey au-btn--small mr-2">
                             <i class="zmdi zmdi-download"></i>Export</button>
+                            <form action="{{ route('kesiswaan.detailsiswa', ['kelas_id' => $kelas->id_kelas, 'id' => $students['nis']]) }}" method="GET">
+                        <div class="rs-select2--light rs-select2--md mr-2">
+                            <select class="js-select2" name="status">
+                                <option selected="selected" value="">Semua Status</option>
+                                <option value="Hadir" {{ request('status') == "Hadir" ? 'selected' : '' }}>Hadir</option>
+                                <option value="Terlambat" {{ request('status') == "Terlambat" ? 'selected' : '' }}>Terlambat</option>
+                                <option value="TAP" {{ request('status') == "TAP" ? 'selected' : '' }}>TAP</option>
+                                <option value="Sakit" {{ request('status') == "Sakit" ? 'selected' : '' }}>Sakit</option>
+                                <option value="Izin" {{ request('status') == "Izin" ? 'selected' : '' }}>Izin</option>
+                                <option value="Alfa" {{ request('status') == "Alfa" ? 'selected' : '' }}>Alfa</option>
+                            </select>
+                            <div class="dropDownSelect2"></div>
+                        </div>
                     </div>
                     <div class="table-data__tool-right">
-                        <form action="{{ route('kesiswaan.detailsiswa', ['id' => $students->nis]) }}" method="GET">
                             <div class="filter-group">
                                 <label for="from-date">From</label>
                                 <input type="date" id="from-date" name="start" class="au-btn-filter"
@@ -222,7 +232,7 @@
                                                                 </tr>
                                                                 <th>Foto Keterangan:</th>
                                                                 <td class="text-muted">
-                                                                    @if ($absensi->foto_pulang)
+                                                                    @if ($absensi->photo_in)
                                                                         <img src="{{ asset('storage/uploads/absensi/' . $absensi->photo_in) }}"
                                                                             alt="Foto Pulang" style="width: 150px;">
                                                                     @else

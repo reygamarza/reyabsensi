@@ -97,6 +97,7 @@
                         </div>
                         <div class="col-12 col-md-9">
                             <select name="tingkat" tabindex="1" wire:model="tingkat" class="form-control">
+                                <option value="">Pilih Tingkat</option>
                                 <option value="10">10</option>
                                 <option value="11">11</option>
                                 <option value="12">12</option>
@@ -109,6 +110,7 @@
                         </div>
                         <div class="col-12 col-md-9">
                             <select name="id_jurusan" tabindex="1" wire:model="id_jurusan" class="form-control">
+                                <option value="">Pilih Jurusan</option>
                                 @foreach ($daftarjurusan as $j)
                                     <option value="{{ $j->id_jurusan }}">{{ $j->id_jurusan }}</option>
                                 @endforeach
@@ -126,12 +128,13 @@
                     </div>
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="nuptk" class="form-control-label">Pilih Wali Kelas</label>
+                            <label for="nip" class="form-control-label">Pilih Wali Kelas</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <select name="nuptk" tabindex="1" wire:model="nuptk" class="form-control">
+                            <select name="nip" tabindex="1" wire:model="nip" class="form-control">
+                                <option value="">Pilih Wali Kelas</option>
                                 @foreach ($daftarwali as $w)
-                                    <option value="{{ $w->nuptk }}">{{ $w->user->nama }}</option>
+                                    <option value="{{ $w->nip }}">{{ $w->user->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -166,6 +169,7 @@
                         </div>
                         <div class="col-12 col-md-9">
                             <select name="tingkat" tabindex="1" wire:model="tingkat" class="form-control">
+                                <option value="">Pilih Tingkat</option>
                                 <option value="10">10</option>
                                 <option value="11">11</option>
                                 <option value="12">12</option>
@@ -178,6 +182,7 @@
                         </div>
                         <div class="col-12 col-md-9">
                             <select name="id_jurusan" tabindex="1" wire:model="id_jurusan" class="form-control">
+                                <option value="">Pilih Jurusan</option>
                                 @foreach ($daftarjurusan as $j)
                                     <option value="{{ $j->id_jurusan }}">{{ $j->id_jurusan }}</option>
                                 @endforeach
@@ -196,12 +201,13 @@
                     </div>
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="nuptk" class="form-control-label">Pilih Wali Kelas</label>
+                            <label for="nip" class="form-control-label">Pilih Wali Kelas</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <select name="nuptk" tabindex="1" wire:model="nuptk" class="form-control">
+                            <select name="nip" tabindex="1" wire:model="nip" class="form-control">
+                                <option value="">Pilih Wali Kelas</option>
                                 @foreach ($daftarwali as $w)
-                                    <option value="{{ $w->nuptk }}">{{ $w->user->nama }}</option>
+                                    <option value="{{ $w->nip }}">{{ $w->user->nama }}</option>
                                 @endforeach
                             </select>
                         </div>

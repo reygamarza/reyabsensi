@@ -17,18 +17,21 @@ class WaliSiswaSeeder extends Seeder
             'nik' => '5347370412765277',
             'id_user' => 9,
             'jenis_kelamin' => 'laki laki',
+            'alamat' => 'Rumah Pak Dani',
         ]);
 
         Wali_Siswa::create([
             'nik' => '8014821110742201',
             'id_user' => 10,
             'jenis_kelamin' => 'perempuan',
+            'alamat' => 'Rumah Bu Tati',
         ]);
 
         Wali_Siswa::create([
             'nik' => '5947550102888607',
             'id_user' => 11,
             'jenis_kelamin' => 'laki laki',
+            'alamat' => 'Rumah Pak Supratman',
         ]);
     }
 }

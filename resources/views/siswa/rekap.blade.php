@@ -171,8 +171,7 @@
                                                     <div class="progress-bar bg-success" role="progressbar"
                                                         style="width: {{ $persentaseHadir }}%"
                                                         aria-valuenow="{{ $persentaseHadir }}" aria-valuemin="0"
-                                                        aria-valuemax="100">
-                                                        Persentase Hadir : {{ $persentaseHadir }}%
+                                                        aria-valuemax="100">{{ $persentaseHadir }}%
                                                     </div>
                                                 </div>
                                                 <ul class="list-group">

@@ -20,7 +20,9 @@ class Siswa extends Model
         'id_kelas',
         'nama',
         'jenis_kelamin',
-        'nik',
+        'nik_ayah',
+        'nik_ibu',
+        'nik_wali',
         'nisn',
     ];
 
@@ -41,7 +43,7 @@ class Siswa extends Model
 
     public function ortu()
     {
-        return $this->belongsTo(Wali_Siswa::class, 'nik', 'nik');
+        return $this->belongsTo(Wali_Siswa::class, 'nik');
     }
 
     public $timestamps = false;

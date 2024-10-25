@@ -17,7 +17,7 @@ class Walikelas extends Component
     use WithFileUploads;
     protected $paginationTheme = 'bootstrap';
 
-    public $email, $password, $nama, $nuptk, $jenis_kelamin, $nip, $nuptk_lama, $id_user;
+    public $email, $password, $nama, $nip, $jenis_kelamin, $nuptk, $nip_lama, $id_user;
     public $file;
     public $searchwali = '';
 
@@ -52,9 +52,9 @@ class Walikelas extends Component
         ]);
 
         Wali_Kelas::create([
-            'nuptk' => $this->nuptk,
-            'jenis_kelamin' => $this->jenis_kelamin,
             'nip' => $this->nip,
+            'jenis_kelamin' => $this->jenis_kelamin,
+            'nuptk' => $this->nuptk,
             'id_user' => $user->id,
         ]);
 
@@ -67,7 +67,7 @@ class Walikelas extends Component
         $daftarwali = Wali_Kelas::with('user')->findOrFail($id);
 
         $this->nuptk = $daftarwali->nuptk;
-        $this->nuptk_lama = $daftarwali->nuptk;
+        $this->nip_lama = $daftarwali->nip;
         $this->jenis_kelamin = $daftarwali->jenis_kelamin;
         $this->nip = $daftarwali->nip;
         $this->email = $daftarwali->user->email;
@@ -86,10 +86,10 @@ class Walikelas extends Component
             'password' => Hash::make($this->password),
         ]);
 
-        Wali_Kelas::where('nuptk', $this->nuptk_lama)->update([
-            'nuptk' => $this->nuptk,
-            'jenis_kelamin' => $this->jenis_kelamin,
+        Wali_Kelas::where('nip', $this->nip_lama)->update([
             'nip' => $this->nip,
+            'jenis_kelamin' => $this->jenis_kelamin,
+            'nuptk' => $this->nuptk,
         ]);
 
         return redirect()->route('wali-kelas-O')->with('berhasil', 'Data Wali Kelas Berhasil Diubah');

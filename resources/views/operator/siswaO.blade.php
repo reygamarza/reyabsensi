@@ -36,7 +36,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div style="display: flex; align-items: center; justify-content: center;">
-                            <a href="{{ route('kelas-O') }}" class="fas fa-chevron-left" style="font-size: 40px; color: #393939;"></a>
+                            <a href="{{ url()->previous() }}" class="fas fa-chevron-left" style="font-size: 40px; color: #393939;"></a>
                             <div style="flex: 1;">
                                 <h1 class="title-4 text-center" style="margin-bottom: 0;">Daftar Siswa {{ $kelas->tingkat }} {{ $kelas->jurusan->id_jurusan }} {{ $kelas->nomor_kelas }}</h1>
                             </div>
@@ -55,8 +55,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="copyright">
-                            <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a
-                                    href="https://colorlib.com">Colorlib</a>.</p>
+
                         </div>
                     </div>
                 </div>

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->time('batas_absen_masuk');
             $table->time('jam_pulang');
             $table->time('batas_absen_pulang');
-            $table->integer('toleransi_waktu')->nullable();
         });
     }
 

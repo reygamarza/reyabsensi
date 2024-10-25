@@ -14,7 +14,7 @@
                                     <li class="list-inline-item active">
                                         <a href="#">> </a>
                                     </li>
-                                    <li class="list-inline-item">Wali Kelas</li>
+                                    <li class="list-inline-item">Daftar Pengguna / Daftar Wali Kelas</li>
                                 </ul>
                             </div>
                             {{-- <div class="au-form-icon--sm">

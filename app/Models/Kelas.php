@@ -26,7 +26,7 @@ class Kelas extends Model
 
     public function walikelas()
     {
-        return $this->belongsTo(Wali_Kelas::class, 'nuptk');
+        return $this->belongsTo(Wali_Kelas::class, 'nip');
     }
 
     public function siswa()

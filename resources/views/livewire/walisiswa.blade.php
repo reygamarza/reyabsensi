@@ -25,10 +25,11 @@
                 <table class="table table-borderless table-data3">
                     <thead>
                         <tr>
-                            <th>NUPTK</th>
+                            <th>NIK</th>
                             <th>Email</th>
                             <th>Nama</th>
                             <th>JK</th>
+                            <th>Alamat</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -39,6 +40,7 @@
                                 <td>{{ $ws->user->email }}</td>
                                 <td>{{ $ws->user->nama }}</td>
                                 <td>{{ $ws->jenis_kelamin }}</td>
+                                <td>{{ $ws->alamat }}</td>
                                 <td>
                                     <div class="table-data-feature">
                                         <a data-toggle="modal" data-target="#EditModal">
@@ -119,6 +121,16 @@
                                                 required>Perempuan
                                         </label>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row form-group" style="margin-bottom: 25px;">
+                                <div class="col col-md-3">
+                                    <label for="alamat" class="form-control-label">Alamat</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="text" id="alamat" name="alamat"
+                                        placeholder="Masukan Alamat" class="form-control" wire:model="alamat"
+                                        required>
                                 </div>
                             </div>
                         </div>
@@ -210,6 +222,16 @@
                                                 required>Perempuan
                                         </label>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row form-group" style="margin-bottom: 25px;">
+                                <div class="col col-md-3">
+                                    <label for="alamat" class="form-control-label">Alamat</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="text" id="alamat" name="alamat"
+                                        placeholder="Masukan Alamat" class="form-control" wire:model="alamat"
+                                        required>
                                 </div>
                             </div>
                         </div>

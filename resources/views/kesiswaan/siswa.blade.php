@@ -20,8 +20,8 @@
                                     <li class="list-inline-item"></li>
                                 </ul>
                             </div>
-                            <form class="au-form-icon--sm" action="" method="post">
-                                <input class="au-input--w300 au-input--style2" type="text" placeholder="Cari">
+                            <form class="au-form-icon--sm" action="{{ route('kesiswaan.siswa', ['kelas_id' => $kelas->id_kelas] ) }}" method="GET">
+                                <input class="au-input--w300 au-input--style2" type="text" name="search" placeholder="Cari Siswa..." value="{{ request('search') }}">
                                 <button class="au-btn--submit2" type="submit">
                                     <i class="zmdi zmdi-search"></i>
                                 </button>
@@ -38,9 +38,12 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1 class="title-4 text-center">
-                            <span>Laporan Absensi Siswa</span>
-                        </h1>
+                        <div style="display: flex; align-items: center; justify-content: center;">
+                            <a href="{{ route('kesiswaan.kelas') }}" class="fas fa-chevron-left" style="font-size: 40px; color: #393939;"></a>
+                            <div style="flex: 1;">
+                                <h1 class="title-4 text-center" style="margin-bottom: 0;">Laporan Absensi Siswa</h1>
+                            </div>
+                        </div>
                         <hr class="line-seprate">
                     </div>
                 </div>
@@ -124,7 +127,7 @@
                                         </div>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-end">
-                                        <a href="{{ route('kesiswaan.detailsiswa', ['id' => $student['nis']]) }}">
+                                        <a href="{{ route('kesiswaan.detailsiswa', ['kelas_id' => $kelas->id_kelas, 'id' => $student['nis']]) }}">
                                             <button class="btn btn-secondary">
                                                 <i class="fa fa-tasks"></i> Detail
                                             </button>
@@ -134,6 +137,9 @@
                             </div>
                         </div>
                         @endforeach
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        {{ $studentsData->links() }}
                     </div>
                 </div>
             </div>

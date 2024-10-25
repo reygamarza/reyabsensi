@@ -18,7 +18,7 @@ class Walisiswa extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-    public $nama, $email, $password, $id, $nik, $jenis_kelamin, $nik_lama, $id_user;
+    public $nama, $email, $password, $id, $nik, $jenis_kelamin, $nik_lama, $id_user, $alamat;
     public $file;
     public $searchwalisiswa = '';
 
@@ -56,6 +56,7 @@ class Walisiswa extends Component
             'nik' => $this->nik,
             'jenis_kelamin' => $this->jenis_kelamin,
             'id_user' => $user->id,
+            'alamat' => $this->alamat,
         ]);
 
         return redirect()->route('wali-siswa-O')->with('berhasil', 'Data Wali Siswa Berhasil Ditambahkan');
@@ -64,7 +65,7 @@ class Walisiswa extends Component
 
     public function clear()
     {
-        $this->nik = $this->nama = $this->jenis_kelamin = $this->email = $this->password = '';
+        $this->nik = $this->nama = $this->jenis_kelamin = $this->email = $this->alamat = $this->password = '';
     }
 
     public function editwalisiswa($id)
@@ -77,6 +78,7 @@ class Walisiswa extends Component
         $this->email = $daftarwalisiswa->user->email;
         $this->nama = $daftarwalisiswa->user->nama;
         $this->id_user = $daftarwalisiswa->user->id;
+        $this->alamat = $daftarwalisiswa->alamat;
     }
 
     public function updatewalisiswa()
@@ -93,6 +95,7 @@ class Walisiswa extends Component
         Wali_Siswa::where('nik', $this->nik_lama)->update([
             'nik' => $this->nik,
             'jenis_kelamin' => $this->jenis_kelamin,
+            'alamat' => $this->alamat,
         ]);
 
         return redirect()->route('wali-siswa-O')->with('berhasil', 'Data Wali Siswa Berhasil Diubah');
@@ -125,6 +128,7 @@ class Walisiswa extends Component
             'nama' => 'required',
             'jenis_kelamin' => 'required|in:laki laki,perempuan',
             'email' => 'required|email',
+            'alamat' => 'required',
         ];
     }
 }

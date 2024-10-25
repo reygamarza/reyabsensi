@@ -82,6 +82,7 @@ class SiswaController extends Controller
 
         $riwayatmingguini = Absensi::whereBetween('date', [$startOfWeek, $endOfWeek])
             ->where('nis', $nis) // Sesuaikan dengan kolom NIS siswa
+            ->orderBy('date', 'DESC')
             ->get();
 
         // Jika absensi ditemukan, ambil statusnya. Jika tidak, setel status ke 'Belum Absen'.
@@ -127,7 +128,7 @@ class SiswaController extends Controller
         $user = Auth::user();
         $nis = $user->siswa->nis;
 
-        $siswa = Siswa::where('nis', $nis)->with('user')->first();
+        $siswa = Siswa::where('nis', $nis)->with('user', 'kelas')->first();
         return view('siswa.profile', compact('siswa'));
     }
 
@@ -152,7 +153,6 @@ class SiswaController extends Controller
         $password = $request->password ? Hash::make($request->password) : $user->password;
 
         $data = [
-            'email' => $request->email,
             'password' => $password,
             'foto' => $fileName,
         ];
@@ -258,21 +258,35 @@ class SiswaController extends Controller
 
     public function uploadfile(Request $request)
     {
+        // dd($request->all());
         $request->validate([
-            'photo_in' => 'required|mimes:png,jpg,jpeg,pdf',
+            'photo_in' => 'nullable|mimes:png,jpg,jpeg,pdf', // Field boleh kosong jika menggunakan webcam
+            'photo_webcam' => 'nullable|string', // Field untuk gambar dari webcam
             'status' => 'required|string',
             'keterangan' => 'required|string',
         ]);
 
-        if ($request->hasFile('photo_in')) {
-            // Ambil data dari request
-            $user = Auth::user();
-            $nis = $user->siswa->nis;
-            $date = date("Y-m-d");
-            $status = $request->input('status');
-            $keterangan = $request->input('keterangan');
+        // Ambil data dari request
+        $user = Auth::user();
+        $nis = $user->siswa->nis;
+        $date = date("Y-m-d");
+        $status = $request->input('status');
+        $keterangan = $request->input('keterangan');
+        $fileName = null;
 
-            // Ambil file dari request
+        if ($request->filled('photo_webcam')) {
+            // Jika file webcam dikirim, simpan sebagai gambar
+            $photoWebcam = $request->input('photo_webcam');
+
+            // Decode Base64 ke file gambar
+            $folderPath = 'public/uploads/absensi/';
+            $fileName = $nis . '_' . $date . '_' . $status . '.png';
+            $image_parts = explode(";base64", $photoWebcam);
+            $image_base64 = base64_decode($image_parts[1]);
+
+            Storage::put($folderPath . $fileName, $image_base64);
+        } elseif ($request->hasFile('photo_in')) {
+            // Cek jika file diupload
             $foto = $request->file('photo_in');
 
             // Menyimpan file dengan nama unik
@@ -282,28 +296,30 @@ class SiswaController extends Controller
             $file = $folderPath . $fileName;
 
             // Pindahkan file ke folder public/uploads/absensi
-            // $foto->move($folderPath, $fileName);
+            Storage::put($file, file_get_contents($foto));
+        }
 
+        if ($fileName) {
             // Simpan data ke database
             $data = [
                 'nis' => $nis,
                 'status' => $status,
-                'photo_in' => $fileName,
+                'photo_in' => $fileName, // Gunakan file yang sudah diproses
                 'keterangan' => $keterangan,
                 'date' => $date,
             ];
 
             $simpan = Absensi::create($data);
             if ($simpan) {
-                Storage::put($file, file_get_contents($foto));
                 return redirect()->route('siswa.index')->with('berhasil', 'Kehadiran berhasil dicatat.');
             } else {
-                return redirect()->route('siswa.index')->with('gagal', 'Fotonya gaada mas.');
+                return redirect()->route('siswa.index')->with('gagal', 'Gagal menyimpan kehadiran.');
             }
         } else {
-            return redirect()->route('siswa.index')->with('gagal', 'File Tidak ada.');
+            return redirect()->route('siswa.index')->with('gagal', 'Tidak ada file yang dikirim.');
         }
     }
+
 
 
     /**
