@@ -333,7 +333,7 @@ class KesiswaanController extends Controller
         $presentDataCollection = collect($present);
 
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $perPage = 7;
+        $perPage = 10;
         $paginateData = new LengthAwarePaginator(
             $presentDataCollection->forPage($currentPage, $perPage),
             $presentDataCollection->count(),

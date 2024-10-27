@@ -7,8 +7,6 @@
                     <button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal"
                         data-target="#TambahModal" wire:click="clear()">
                         <i class="zmdi zmdi-plus"></i>Tambah</button>
-                    {{-- <button class="au-btn-filter mr-2">
-                        <i></i>Semua</button> --}}
                 </div>
                 <div class="table-data__tool-right">
                     <div class="au-form-icon--sm">
@@ -24,28 +22,32 @@
                 <table class="table table-borderless table-data3">
                     <thead>
                         <tr>
-                            <th>ID User</th>
-                            <th>Nama</th>
+                            <th>NIP</th>
                             <th>Email</th>
+                            <th>Nama</th>
+                            <th>JK</th>
+                            <th>NUPTK</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($daftarkesiswaan as $key => $k)
+                        @foreach ($daftarkesiswaan as $k)
                             <tr>
-                                <td>{{ $k->id }}</td>
-                                <td>{{ $k->nama }}</td>
-                                <td>{{ $k->email }}</td>
+                                <td>{{ $k->nip }}</td>
+                                <td>{{ $k->user->email }}</td>
+                                <td>{{ $k->user->nama }}</td>
+                                <td>{{ $k->jenis_kelamin }}</td>
+                                <td>{{ $k->nuptk }}</td>
                                 <td>
                                     <div class="table-data-feature">
                                         <a data-toggle="modal" data-target="#EditModal">
                                             <button class="item mr-1" data-toggle="tooltip" title="Edit"
-                                                wire:click="editkesiswaan({{ $k->id }})">
+                                                wire:click="editkesiswaan({{ $k->nip }})">
                                                 <i class="zmdi zmdi-edit"></i>
                                             </button>
                                         </a>
                                         <button class="item mr-1" data-toggle="tooltip" data-placement="top"
-                                            title="Delete" wire:click="hapuskesiswaan({{ $k->id }})">
+                                            title="Delete" wire:click="hapuskesiswaan({{ $k->nip }})">
                                             <i class="zmdi zmdi-delete"></i>
                                         </button>
                                     </div>
@@ -76,31 +78,80 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row form-group" style="margin-bottom: 25px;">
-                        <div class="col col-md-3">
-                            <label for="nama" class="form-control-label">Nama Lengkap</label>
+                    <div class="row">
+                        <!-- Biodata Kesiswaan Column -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">Biodata Kesiswaan</h6>
+                            <div class="row form-group" style="margin-bottom: 25px;">
+                                <div class="col col-md-3">
+                                    <label for="nip" class="form-control-label">NIP</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="text" id="nip" name="nip" placeholder="Masukan NIP"
+                                        class="form-control" required wire:model="nip">
+                                </div>
+                            </div>
+                            <div class="row form-group" style="margin-bottom: 25px;">
+                                <div class="col col-md-3">
+                                    <label for="nama" class="form-control-label">Nama Lengkap</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="text" id="nama" name="nama"
+                                        placeholder="Masukan Nama Lengkap" class="form-control" wire:model="nama"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="row form-group" style="margin-bottom: 25px;">
+                                <div class="col col-md-3">
+                                    <label class="form-control-label">Jenis Kelamin</label>
+                                </div>
+                                <div class="col col-md-9">
+                                    <div class="form-check-inline form-check">
+                                        <label for="inline-radio1" class="form-check-label mr-4">
+                                            <input type="radio" id="inline-radio1" name="jenis_kelamin"
+                                                value="laki laki" class="form-check-input" wire:model="jenis_kelamin"
+                                                required>Laki - Laki
+                                        </label>
+                                        <label for="inline-radio2" class="form-check-label">
+                                            <input type="radio" id="inline-radio2" name="jenis_kelamin"
+                                                value="perempuan" class="form-check-input" wire:model="jenis_kelamin"
+                                                required>Perempuan
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group" style="margin-bottom: 25px;">
+                                <div class="col col-md-3">
+                                    <label for="nuptk" class="form-control-label">NUPTK</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="text" id="nuptk" name="nuptk" placeholder="Masukan NUPTK"
+                                        class="form-control" wire:model="nuptk" required>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text" id="nama" name="nama" placeholder="Masukan Nama Lengkap"
-                                class="form-control" wire:model="nama" required>
-                        </div>
-                    </div>
-                    <div class="row form-group" style="margin-bottom: 25px;">
-                        <div class="col col-md-3">
-                            <label for="email" class="form-control-label">Email</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <input type="email" id="email" name="email" placeholder="Masukan Email"
-                                class="form-control" wire:model="email" required>
-                        </div>
-                    </div>
-                    <div class="row form-group" style="margin-bottom: 25px;">
-                        <div class="col col-md-3">
-                            <label for="password" class="form-control-label">Password</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text" id="password" name="password" placeholder="Masukan Password"
-                                class="form-control" required wire:model="password">
+                        <!-- Akun Kesiswaan Column -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">Akun Kesiswaan</h6>
+                            <div class="row form-group" style="margin-bottom: 25px;">
+                                <div class="col col-md-3">
+                                    <label for="email" class="form-control-label">Email</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="email" id="email" name="email" placeholder="Masukan Email"
+                                        class="form-control" wire:model="email" required>
+                                </div>
+                            </div>
+                            <div class="row form-group" style="margin-bottom: 25px;">
+                                <div class="col col-md-3">
+                                    <label for="password" class="form-control-label">Password</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="text" id="password" name="password"
+                                        placeholder="Masukan Password" class="form-control" required
+                                        wire:model="password">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -127,31 +178,80 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row form-group" style="margin-bottom: 25px;">
-                        <div class="col col-md-3">
-                            <label for="nama" class="form-control-label">Nama Lengkap</label>
+                    <div class="row">
+                        <!-- Biodata Kesiswaan Column -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">Biodata Kesiswaan</h6>
+                            <div class="row form-group" style="margin-bottom: 25px;">
+                                <div class="col col-md-3">
+                                    <label for="nip" class="form-control-label">NIP</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="text" id="nip" name="nip" placeholder="Masukan NIP"
+                                        class="form-control" required wire:model="nip">
+                                </div>
+                            </div>
+                            <div class="row form-group" style="margin-bottom: 25px;">
+                                <div class="col col-md-3">
+                                    <label for="nama" class="form-control-label">Nama Lengkap</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="text" id="nama" name="nama"
+                                        placeholder="Masukan Nama Lengkap" class="form-control" wire:model="nama"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="row form-group" style="margin-bottom: 25px;">
+                                <div class="col col-md-3">
+                                    <label class="form-control-label">Jenis Kelamin</label>
+                                </div>
+                                <div class="col col-md-9">
+                                    <div class="form-check-inline form-check">
+                                        <label for="inline-radio1" class="form-check-label mr-4">
+                                            <input type="radio" id="inline-radio1" name="jenis_kelamin"
+                                                value="laki laki" class="form-check-input" wire:model="jenis_kelamin"
+                                                required>Laki - Laki
+                                        </label>
+                                        <label for="inline-radio2" class="form-check-label">
+                                            <input type="radio" id="inline-radio2" name="jenis_kelamin"
+                                                value="perempuan" class="form-check-input" wire:model="jenis_kelamin"
+                                                required>Perempuan
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group" style="margin-bottom: 25px;">
+                                <div class="col col-md-3">
+                                    <label for="nuptk" class="form-control-label">NUPTK</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="text" id="nuptk" name="nuptk" placeholder="Masukan NUPTK"
+                                        class="form-control" wire:model="nuptk" required>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text" id="nama" name="nama" placeholder="Masukan Nama Lengkap"
-                                class="form-control" wire:model="nama" required>
-                        </div>
-                    </div>
-                    <div class="row form-group" style="margin-bottom: 25px;">
-                        <div class="col col-md-3">
-                            <label for="email" class="form-control-label">Email</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <input type="email" id="email" name="email" placeholder="Masukan Email"
-                                class="form-control" wire:model="email" required>
-                        </div>
-                    </div>
-                    <div class="row form-group" style="margin-bottom: 25px;">
-                        <div class="col col-md-3">
-                            <label for="password" class="form-control-label">Password</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text" id="password" name="password" placeholder="Masukan Password"
-                                class="form-control" required wire:model="password">
+                        <!-- Akun Kesiswaan Column -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">Akun Kesiswaan</h6>
+                            <div class="row form-group" style="margin-bottom: 25px;">
+                                <div class="col col-md-3">
+                                    <label for="email" class="form-control-label">Email</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="email" id="email" name="email" placeholder="Masukan Email"
+                                        class="form-control" wire:model="email" required>
+                                </div>
+                            </div>
+                            <div class="row form-group" style="margin-bottom: 25px;">
+                                <div class="col col-md-3">
+                                    <label for="password" class="form-control-label">Password</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="text" id="password" name="password"
+                                        placeholder="Masukan Password" class="form-control" required
+                                        wire:model="password">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -162,5 +262,5 @@
             </div>
         </div>
     </div>
-    {{-- End Modal Edit Kesiswaan --}}
+    {{-- End Modal Edit Wali --}}
 </div>

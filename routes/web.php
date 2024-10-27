@@ -45,8 +45,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::middleware(['auth', 'Kesiswaan:kesiswaan'])->group(function () {
     Route::resource('kesiswaan', App\Http\Controllers\KesiswaanController::class);
     Route::get('laporan-kelas', [App\Http\Controllers\KesiswaanController::class, 'laporankelas'])->name('kesiswaan.kelas');
-    Route::get('laporan-siswa/{kelas_id}', [App\Http\Controllers\KesiswaanController::class, 'laporansiswa'])->name('kesiswaan.siswa');
-    Route::get('laporan-detailsiswa/{kelas_id}/{id}', [App\Http\Controllers\KesiswaanController::class, 'laporandetailsiswa'])->name('kesiswaan.detailsiswa');
+    Route::get('laporan-siswa-K/{kelas_id}', [App\Http\Controllers\KesiswaanController::class, 'laporansiswa'])->name('kesiswaan.siswa');
+    Route::get('laporan-detailsiswa-K/{kelas_id}/{id}', [App\Http\Controllers\KesiswaanController::class, 'laporandetailsiswa'])->name('kesiswaan.detailsiswa');
     Route::get('profile-K', [App\Http\Controllers\KesiswaanController::class, 'profileK'])->name('kesiswaan.profile');
     Route::post('editprofile-K', [App\Http\Controllers\KesiswaanController::class, 'editprofileK'])->name('kesiswaan.editprofile');
 });
@@ -64,6 +64,7 @@ Route::middleware(['auth', 'Siswa:siswa'])->group(function () {
 
 Route::middleware(['auth', 'WaliS:walis'])->group(function () {
     Route::resource('walis', App\Http\Controllers\WaliSiswaController::class);
+    Route::get('laporan-siswa-WS', [App\Http\Controllers\WaliSiswaController::class, 'laporan'])->name('laporan-WS');
     Route::get('profile-WS', [App\Http\Controllers\WaliSiswaController::class, 'profile'])->name('profile-WS');
     Route::post('edit-profile-WS', [App\Http\Controllers\WaliSiswaController::class, 'editprofile'])->name('edit-profile-WS');
 });

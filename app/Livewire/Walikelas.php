@@ -31,12 +31,17 @@ class Walikelas extends Component
     protected function getWaliKelas()
     {
         return Wali_Kelas::with('user')
-            ->when($this->searchwali, function ($query) {
-                $query->whereHas('user', function ($q) {
-                    $q->where('nama', 'like', '%' . $this->searchwali . '%')
-                    ->orWhere('email', 'like', '%' . $this->searchwali . '%');
+        ->whereHas('user', function ($q) {
+            $q->where('role', 'wali');
+        })
+        ->when($this->searchwali, function ($query) {
+            $query->whereHas('user', function ($q) {
+                $q->where(function ($q2) {
+                    $q2->where('nama', 'like', '%' . $this->searchwali . '%')
+                        ->orWhere('email', 'like', '%' . $this->searchwali . '%');
                 });
-            })
+            });
+        })
         ->paginate(10);
     }
 

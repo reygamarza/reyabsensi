@@ -52,17 +52,20 @@
                                 <div class="card-header text-white">
                                     <h4 class="mb-0 text-white">Rekap Kehadiran {{ $data['nama'] }}</h4>
                                 </div>
+                                <div class="d-flex justify-content-center pt-3">
+                                    <h2 class="text-center text-primary">Belum Absen</h2>
+                                </div>
                                 <div class="card-body">
-                                    <ul class="nav nav-tabs mb-3" id="attendanceTabs" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link active" id="current-year-tab" data-toggle="tab"
-                                                data-target="#current-year{{ $data['nis'] }}" type="button"
-                                                role="tab">Tahun Ini</button>
-                                        </li>
+                                    <ul class="nav nav-tabs mb-3 mt-0" id="attendanceTabs" role="tablist">
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="current-month-tab" data-toggle="tab"
                                                 data-target="#current-month{{ $data['nis'] }}" type="button"
                                                 role="tab">Bulan Ini</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="current-year-tab" data-toggle="tab"
+                                                data-target="#current-year{{ $data['nis'] }}" type="button"
+                                                role="tab">Tahun Ini</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="previous-month-tab" data-toggle="tab"
@@ -194,8 +197,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="copyright">
-                            <p>Copyright © 2023. All rights reserved. Template by <a
-                                    href="https://colorlib.com">Colorlib</a>.</p>
+
                         </div>
                     </div>
                 </div>

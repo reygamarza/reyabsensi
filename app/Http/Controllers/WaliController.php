@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Wali_Kelas;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -73,8 +74,10 @@ class WaliController extends Controller
 
     public function siswa(Request $request)
     {
+        // dd($request->all());
         $startDate = $request->input('start');
         $endDate = $request->input('end');
+        $search = $request->input('search');
 
         if (!$startDate || !$endDate) {
             $startDate = Carbon::now()->startOfMonth()->toDateString();
@@ -83,7 +86,19 @@ class WaliController extends Controller
 
         $user = Wali_Kelas::where('id_user', auth()->id())->with('kelas')->first();
         $kelas = Kelas::where('nip', $user->nip)->first();
-        $students = Siswa::where('id_kelas', $kelas->id_kelas)->with('user')->get();
+        $students = Siswa::where('id_kelas', $kelas->id_kelas)->with('user');
+
+        if ($search) {
+            $students->where(function ($s) use ($search) {
+                $s->whereHas('user', function ($query) use ($search) {
+                    $query->where('nama', 'like', '%' . $search . '%');
+                })
+                    ->orWhere('nis', 'like', '%' . $search . '%');
+            });
+        }
+
+        $students = $students->get();
+
         $siswaIds = $students->pluck('nis');
 
         $siswaAbsensi = Absensi::whereIn('nis', $siswaIds)
@@ -144,20 +159,50 @@ class WaliController extends Controller
             $averageAttendancePercentages[$status] = $totalStudents > 0 ? $totalPercentage / $totalStudents : 0;
         }
 
-        return view('wali.siswa', compact('studentsData', 'attendanceCounts', 'averageAttendancePercentages', 'kelas', 'startDate', 'endDate'));
+        $siswaDataCollection = collect($studentsData);
+
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 9;
+        $paginateData = new LengthAwarePaginator(
+            $siswaDataCollection->forPage($currentPage, $perPage),
+            $siswaDataCollection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => LengthAwarePaginator::resolveCurrentPath()]
+        );
+
+        $paginatedData = $paginateData->appends($request->only(['start', 'end', 'search']));
+
+
+        return view('wali.siswa', [
+            'studentsData' => $paginatedData,
+            'attendanceCounts' => $attendanceCounts,
+            'averageAttendancePercentages' => $averageAttendancePercentages,
+            'kelas' => $kelas,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'search' => $search
+        ]);
     }
 
     public function detailSiswa(Request $request, $id)
     {
         $startDate = $request->input('start');
         $endDate = $request->input('end');
+        $status = $request->input('status');
 
         if (!$startDate || !$endDate) {
             $startDate = Carbon::now()->startOfMonth()->toDateString();
             $endDate = Carbon::now()->endOfMonth()->toDateString();
         }
 
-        $present = Absensi::where('nis', $id)->whereBetween('date', [$startDate, $endDate])->orderBy('date', 'asc')->paginate(7)->appends($request->only(['start', 'end']));
+        $present = Absensi::where('nis', $id)->whereBetween('date', [$startDate, $endDate])->orderBy('date', 'DESC');
+
+        if ($status) {
+            $present->where('status', $status);
+        }
+
+        $present = $present->get();
 
         $students = Siswa::where('nis', $id)->with('user')->first();
 
@@ -180,7 +225,28 @@ class WaliController extends Controller
             'percentageTAP' => ($totalRecords > 0) ? ($attendanceCounts['TAP'] / $totalRecords) * 100 : 0,
         ];
 
-        return view('wali.detailsiswa', compact('present', 'students', 'attendanceCounts', 'attendancePercentage', 'startDate', 'endDate'));
+        $presentDataCollection = collect($present);
+
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 10;
+        $paginateData = new LengthAwarePaginator(
+            $presentDataCollection->forPage($currentPage, $perPage),
+            $presentDataCollection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => LengthAwarePaginator::resolveCurrentPath()]
+        );
+
+        $paginatedData = $paginateData->appends($request->only(['start', 'end']));
+
+        return view('wali.detailsiswa', [
+            'present' => $paginatedData,
+            'students' => $students,
+            'attendanceCounts' => $attendanceCounts,
+            'attendancePercentage' => $attendancePercentage,
+            'startDate' => $startDate,
+            'endDate' => $endDate
+        ]);
     }
 
     public function profile()

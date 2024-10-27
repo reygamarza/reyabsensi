@@ -15,22 +15,43 @@ class KelasSeeder extends Seeder
     {
         Kelas::create([
             'id_jurusan' => 'PPLG',
-            'nomor_kelas' => 2,
-            'nip' => '198005052022011001',
+            'nomor_kelas' => 1,
+            'nip' => '198005052022041001',
+            'tingkat' => '10',
+        ]);
+
+        Kelas::create([
+            'id_jurusan' => 'DKV',
+            'nomor_kelas' => 1,
+            'nip' => '198005052022011002',
             'tingkat' => '10',
         ]);
 
         Kelas::create([
             'id_jurusan' => 'RPL',
             'nomor_kelas' => 1,
-            'nip' => '198107062022021002',
+            'nip' => '198005052022011003',
+            'tingkat' => '11',
+        ]);
+
+        Kelas::create([
+            'id_jurusan' => 'AK',
+            'nomor_kelas' => 3,
+            'nip' => '198005052022011004',
             'tingkat' => '11',
         ]);
 
         Kelas::create([
             'id_jurusan' => 'RPL',
             'nomor_kelas' => 1,
-            'nip' => '198209072022031003',
+            'nip' => '198005052022011005',
+            'tingkat' => '12',
+        ]);
+
+        Kelas::create([
+            'id_jurusan' => 'RPL',
+            'nomor_kelas' => 2,
+            'nip' => '198005052022011006',
             'tingkat' => '12',
         ]);
     }

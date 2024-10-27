@@ -71,6 +71,12 @@
                                     <span class="bot-line"></span>Dashboard
                                 </a>
                             </li>
+                            <li class="has-sub">
+                                <a href="{{ route('laporan-WS') }}">
+                                    <i class="fas fa-duotone fa-book-open"></i>
+                                    <span class="bot-line"></span>Laporan Absensi
+                                </a>
+                            </li>
                         </ul>
                     </div>
                     <div class="header__tool">

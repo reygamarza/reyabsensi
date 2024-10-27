@@ -7,7 +7,9 @@ use App\Models\Siswa;
 use App\Models\User;
 use App\Models\Waktu_Absen;
 use App\Models\Wali_Siswa;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -102,6 +104,92 @@ class WaliSiswaController extends Controller
 
         return view('walis.walis', compact('dataAbsensiAnak'));
     }
+
+    public function laporan(Request $request)
+    {
+        // dd($request->all());
+        $startDate = $request->input('start');
+        $endDate = $request->input('end');
+        $status = $request->input('status');
+
+        $walisiswa = Wali_Siswa::where('id_user', Auth::user()->id)->with('user')->first();
+
+        if ($walisiswa->jenis_kelamin == "laki laki") {
+            $siswa = Siswa::with('user', 'kelas')->where('nik_ayah', $walisiswa->nik)
+                ->orWhere('nik_wali', $walisiswa->nik)->get();
+        } elseif ($walisiswa->jenis_kelamin == "perempuan") {
+            $siswa = Siswa::with('user', 'kelas')->where('nik_ibu', $walisiswa->nik)
+                ->orWhere('nik_wali', $walisiswa->nik)->get();
+        }
+
+        if (!$startDate || !$endDate) {
+            $startDate = Carbon::now()->startOfMonth()->toDateString();
+            $endDate = Carbon::now()->endOfMonth()->toDateString();
+        }
+
+        $dataAbsensiAnak = [];
+        foreach ($siswa as $s) {
+            $absensiQuery = Absensi::where('nis', $s->nis)
+                ->whereBetween('date', [$startDate, $endDate])
+                ->orderBy('date', 'DESC');
+
+            if ($status) {
+                $absensiQuery->where('status', $status);
+            }
+
+            $absensi = $absensiQuery->get();
+            $totalRecords = $absensi->count();
+
+            // Menghitung statistik absensi
+            $attendanceCounts = [
+                'Hadir' => $absensi->where('status', 'Hadir')->count(),
+                'Sakit/Izin' => $absensi->whereIn('status', ['Sakit', 'Izin'])->count(),
+                'Alfa' => $absensi->where('status', 'Alfa')->count(),
+                'Terlambat' => $absensi->where('status', 'Terlambat')->count(),
+                'TAP' => $absensi->where('status', 'TAP')->count(),
+            ];
+
+            // Menghitung persentase absensi
+            $attendancePercentage = [
+                'percentageHadir' => ($totalRecords > 0) ? ($attendanceCounts['Hadir'] / $totalRecords) * 100 : 0,
+                'percentageSakitIzin' => ($totalRecords > 0) ? ($attendanceCounts['Sakit/Izin'] / $totalRecords) * 100 : 0,
+                'percentageAlfa' => ($totalRecords > 0) ? ($attendanceCounts['Alfa'] / $totalRecords) * 100 : 0,
+                'percentageTerlambat' => ($totalRecords > 0) ? ($attendanceCounts['Terlambat'] / $totalRecords) * 100 : 0,
+                'percentageTAP' => ($totalRecords > 0) ? ($attendanceCounts['TAP'] / $totalRecords) * 100 : 0,
+            ];
+
+            $absensiDataCollection = collect($absensi);
+
+            $currentPage = LengthAwarePaginator::resolveCurrentPage();
+            $perPage = 7;
+            $paginateData = new LengthAwarePaginator(
+                $absensiDataCollection->forPage($currentPage, $perPage),
+                $absensiDataCollection->count(),
+                $perPage,
+                $currentPage,
+                ['path' => LengthAwarePaginator::resolveCurrentPath()]
+            );
+
+            $absensiData = $paginateData->appends($request->only(['start', 'end', 'status']));
+
+            $dataAbsensiAnak[] = [
+                'siswa' => $s,
+                'attendanceCounts' => $attendanceCounts,
+                'attendancePercentage' => $attendancePercentage,
+                'absensiData' => $absensiData,
+            ];
+        }
+
+        return view('walis.laporan', [
+            'walisiswa' => $walisiswa,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'status' => $status,
+            'dataAbsensiAnak' => $dataAbsensiAnak,
+        ]);
+    }
+
+
 
     public function profile()
     {

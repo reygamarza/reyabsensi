@@ -20,12 +20,6 @@
                                     <li class="list-inline-item"></li>
                                 </ul>
                             </div>
-                            <form class="au-form-icon--sm" action="" method="post">
-                                <input class="au-input--w300 au-input--style2" type="text" placeholder="Cari">
-                                <button class="au-btn--submit2" type="submit">
-                                    <i class="zmdi zmdi-search"></i>
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -71,7 +65,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="row mb-4">
+                    <div class="row">
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header bg-info bg-gradient text-white text-center" style="font-size: 18px">
@@ -104,6 +98,14 @@
                             </div>
                         </div>
                     </div>
+                    <div class="d-flex justify-content-end mb-3">
+                        <form class="au-form-icon--sm" action="{{ route('WaliKelas.siswa') }}" method="GET">
+                            <input class="au-input--w300 au-input--style2" type="text" name="search" placeholder="Cari Siswa..." value="{{ request('search') }}">
+                            <button class="au-btn--submit2" type="submit">
+                                <i class="zmdi zmdi-search"></i>
+                            </button>
+                        </form>
+                    </div>
                     <div class="row">
                         @foreach ($studentsData as $student)
                         <div class="col-md-4">
@@ -115,14 +117,58 @@
                                     </strong>
                                 </div>
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">
-                                        <div class="location text-sm-center">Persentase Kehadiran</div>
-                                        <div class="attendance-bar">
-                                            <div class="attendance-progress" style="width: {{ $student['attendancePercentages']['Hadir'] }}%;">
-                                                <span class="attendance-percentage">{{ number_format($student['attendancePercentages']['Hadir']) }}%</span>
+                                    <div class="attendance-content p-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span>Hadir</span>
+                                            <span
+                                                class="fw-medium">{{ number_format($student['attendancePercentages']['Hadir']) }}%</span>
+                                        </div>
+                                        <div class="attendance-bar mb-3">
+                                            <div class="attendance-progress bg-success"
+                                                style="width: {{ number_format($student['attendancePercentages']['Hadir']) }}%">
                                             </div>
                                         </div>
-                                    </li>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span>Sakit/Izin</span>
+                                            <span class="fw-medium">{{ number_format(($student['attendancePercentages']['Sakit'] ?? 0) + ($student['attendancePercentages']['Izin'] ?? 0)) }}%</span>
+                                        </div>
+                                        <div class="attendance-bar mb-3">
+                                            <div class="attendance-progress bg-primary"
+                                                 style="width: {{ number_format(($student['attendancePercentages']['Sakit'] ?? 0) + ($student['attendancePercentages']['Izin'] ?? 0)) }}%">
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span>Terlambat</span>
+                                            <span class="fw-medium">{{ number_format($student['attendancePercentages']['Terlambat']) }}%</span>
+                                        </div>
+                                        <div class="attendance-bar mb-3">
+                                            <div class="attendance-progress bg-warning"
+                                                 style="width: {{ number_format($student['attendancePercentages']['Terlambat']) }}%">
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span>TAP</span>
+                                            <span class="fw-medium">{{ number_format($student['attendancePercentages']['TAP']) }}%</span>
+                                        </div>
+                                        <div class="attendance-bar mb-3">
+                                            <div class="attendance-progress"
+                                                 style="width: {{ number_format($student['attendancePercentages']['TAP']) }}%; background-color: #6610f2;">
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span>Alfa</span>
+                                            <span class="fw-medium">{{ number_format($student['attendancePercentages']['Alfa']) }}%</span>
+                                        </div>
+                                        <div class="attendance-bar">
+                                            <div class="attendance-progress bg-danger"
+                                                 style="width: {{ number_format($student['attendancePercentages']['Alfa']) }}%">
+                                            </div>
+                                        </div>
+                                    </div>
                                     <li class="list-group-item d-flex justify-content-end">
                                         <a href="{{ route('WaliKelas.detailsiswa', ['id' => $student['nis']]) }}">
                                             <button class="btn btn-secondary">
@@ -134,6 +180,9 @@
                             </div>
                         </div>
                         @endforeach
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        {{ $studentsData->links() }}
                     </div>
                 </div>
             </div>

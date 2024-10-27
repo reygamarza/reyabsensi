@@ -63,7 +63,9 @@
                                 <select class="js-select2" name="id_jurusan">
                                     <option selected="selected" value="">Semua Jurusan</option>
                                     @foreach ($jurusans as $j)
-                                        <option value="{{ $j->id_jurusan }}" {{ request('id_jurusan') == $j->id_jurusan ? 'selected' : '' }}>{{ $j->id_jurusan }}</option>
+                                        <option value="{{ $j->id_jurusan }}"
+                                            {{ request('id_jurusan') == $j->id_jurusan ? 'selected' : '' }}>
+                                            {{ $j->id_jurusan }}</option>
                                     @endforeach
                                 </select>
                                 <div class="dropDownSelect2"></div>
@@ -97,13 +99,54 @@
                                             </div>
                                         </a>
                                     </div>
-                                    <div class="attendance-content">
-                                        <p class="text-center">Persentase Hadir</p>
-                                        <div class="attendance-bar">
+                                    <div class="attendance-content p-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span>Hadir</span>
+                                            <span class="fw-medium">{{ number_format($kelas['percentageHadir']) }}%</span>
+                                        </div>
+                                        <div class="attendance-bar mb-3">
+                                            <div class="attendance-progress bg-success"
+                                                 style="width: {{ number_format($kelas['percentageHadir']) }}%">
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span>Sakit/Izin</span>
+                                            <span class="fw-medium">{{ number_format($kelas['percentageSakitIzin']) }}%</span>
+                                        </div>
+                                        <div class="attendance-bar mb-3">
+                                            <div class="attendance-progress bg-primary"
+                                                 style="width: {{ number_format($kelas['percentageSakitIzin']) }}%">
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span>Terlambat</span>
+                                            <span class="fw-medium">{{ number_format($kelas['percentageTerlambat']) }}%</span>
+                                        </div>
+                                        <div class="attendance-bar mb-3">
+                                            <div class="attendance-progress bg-warning"
+                                                 style="width: {{ number_format($kelas['percentageTerlambat']) }}%">
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span>TAP</span>
+                                            <span class="fw-medium">{{ number_format($kelas['percentageTAP']) }}%</span>
+                                        </div>
+                                        <div class="attendance-bar mb-3">
                                             <div class="attendance-progress"
-                                                style="width: {{ number_format($kelas['percentageHadir']) }}%;">
-                                                <span
-                                                    class="attendance-percentage">{{ number_format($kelas['percentageHadir']) }}%</span>
+                                                 style="width: {{ number_format($kelas['percentageTAP']) }}%; background-color: #6610f2;">
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span>Alfa</span>
+                                            <span class="fw-medium">{{ number_format($kelas['percentageAlfa']) }}%</span>
+                                        </div>
+                                        <div class="attendance-bar mb-3">
+                                            <div class="attendance-progress bg-danger"
+                                                 style="width: {{ number_format($kelas['percentageAlfa']) }}%">
                                             </div>
                                         </div>
                                     </div>

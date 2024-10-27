@@ -71,7 +71,7 @@ class LoginController extends Controller
         }
 
         // Cek login untuk Wali Kelas berdasarkan NUPTK
-        $waliKelas = Wali_Kelas::where('nuptk', $request->identifier)->first();
+        $waliKelas = Wali_Kelas::where('nip', $request->identifier)->first();
         if ($waliKelas) {
             $user = User::find($waliKelas->id_user);
             if ($user && Hash::check($request->password, $user->password)) {

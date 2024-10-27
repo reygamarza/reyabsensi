@@ -260,7 +260,6 @@ class SiswaController extends Controller
     {
         // dd($request->all());
         $request->validate([
-            'photo_in' => 'nullable|mimes:png,jpg,jpeg,pdf', // Field boleh kosong jika menggunakan webcam
             'photo_webcam' => 'nullable|string', // Field untuk gambar dari webcam
             'status' => 'required|string',
             'keterangan' => 'required|string',
@@ -285,19 +284,20 @@ class SiswaController extends Controller
             $image_base64 = base64_decode($image_parts[1]);
 
             Storage::put($folderPath . $fileName, $image_base64);
-        } elseif ($request->hasFile('photo_in')) {
-            // Cek jika file diupload
-            $foto = $request->file('photo_in');
-
-            // Menyimpan file dengan nama unik
-            $extension = $foto->getClientOriginalExtension();
-            $folderPath = 'public/uploads/absensi/';
-            $fileName = $nis . '_' . $date . '_' . $status . '.' . $extension;
-            $file = $folderPath . $fileName;
-
-            // Pindahkan file ke folder public/uploads/absensi
-            Storage::put($file, file_get_contents($foto));
         }
+        // elseif ($request->hasFile('photo_in')) {
+        //     // Cek jika file diupload
+        //     $foto = $request->file('photo_in');
+
+        //     // Menyimpan file dengan nama unik
+        //     $extension = $foto->getClientOriginalExtension();
+        //     $folderPath = 'public/uploads/absensi/';
+        //     $fileName = $nis . '_' . $date . '_' . $status . '.' . $extension;
+        //     $file = $folderPath . $fileName;
+
+        //     // Pindahkan file ke folder public/uploads/absensi
+        //     Storage::put($file, file_get_contents($foto));
+        // }
 
         if ($fileName) {
             // Simpan data ke database
@@ -392,14 +392,14 @@ class SiswaController extends Controller
         }
 
 
-        // $faceConfidence = $request->faceConfidence;
-        // if ($faceConfidence < 0.4) {
-        //     return redirect()->back()->with('gagal', 'Deteksi wajah tidak berhasil, silakan coba lagi.');
-        // }
+        $faceConfidence = $request->faceConfidence;
+        if ($faceConfidence < 0.4) {
+            return redirect()->back()->with('gagal', 'Deteksi wajah tidak berhasil, silakan coba lagi.');
+        }
 
-        // if ($jarak['meters'] > $radiussekolah) {
-        //     return redirect()->back()->with('gagal', 'Lokasi kamu berada diluar radius yang diizinkan.');
-        // }
+        if ($jarak['meters'] > $radiussekolah) {
+            return redirect()->back()->with('gagal', 'Lokasi kamu berada diluar radius yang diizinkan.');
+        }
 
         $folderPath = "public/uploads/absensi/";
         $formatMasuk = $nis . "_" . $date . "_" . "masuk";

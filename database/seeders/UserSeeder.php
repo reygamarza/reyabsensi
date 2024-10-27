@@ -33,35 +33,35 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'nama' => 'Reyga Marza Ramadhan',
-            'email' => 'rey@gmail.com',
+            'nama' => 'Lilis Tati Elis',
+            'email' => 'lilis@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
-            'role' => 'siswa',
+            'role' => 'wali',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
         User::create([
-            'nama' => 'Satria Galam Pratama',
-            'email' => 'sat@gmail.com',
+            'nama' => 'Euis Nursibahhayati',
+            'email' => 'euis@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
-            'role' => 'siswa',
+            'role' => 'wali',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
         User::create([
-            'nama' => 'Irma Naila Juwita',
-            'email' => 'iruma@gmail.com',
+            'nama' => 'Pemi Sri Handini',
+            'email' => 'pemi@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
-            'role' => 'siswa',
+            'role' => 'wali',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
         User::create([
             'nama' => 'Engkus Kusnadi',
-            'email' => 'wali10pplg1@gmail.com',
+            'email' => 'engkus@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'wali',
             'created_at' => now(),
@@ -70,7 +70,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'nama' => 'Himatul Munawaroh',
-            'email' => 'wali11rpl1@gmail.com',
+            'email' => 'hima@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'wali',
             'created_at' => now(),
@@ -79,12 +79,39 @@ class UserSeeder extends Seeder
 
         User::create([
             'nama' => 'Ani Nuraeni',
-            'email' => 'wali12rpl1@gmail.com',
+            'email' => 'ani@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'wali',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        // User::create([
+        //     'nama' => 'Reyga Marza Ramadhan',
+        //     'email' => 'rey@gmail.com',
+        //     'password' => password_hash("12345678", PASSWORD_DEFAULT),
+        //     'role' => 'siswa',
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ]);
+
+        // User::create([
+        //     'nama' => 'Satria Galam Pratama',
+        //     'email' => 'sat@gmail.com',
+        //     'password' => password_hash("12345678", PASSWORD_DEFAULT),
+        //     'role' => 'siswa',
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ]);
+
+        // User::create([
+        //     'nama' => 'Irma Naila Juwita',
+        //     'email' => 'iruma@gmail.com',
+        //     'password' => password_hash("12345678", PASSWORD_DEFAULT),
+        //     'role' => 'siswa',
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ]);
 
         User::create([
             'nama' => 'Dani Supriyadi',
@@ -113,5 +140,22 @@ class UserSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
+        // User::create([
+        //     'nama' => 'Haanun Syauqoni',
+        //     'email' => 'noon@gmail.com',
+        //     'password' => password_hash("12345678", PASSWORD_DEFAULT),
+        //     'role' => 'siswa',
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ]);
+
+        // User::create([
+        //     'nama' => 'Hariz May Rayhan',
+        //     'email' => 'rizz@gmail.com',
+        //     'password' => password_hash("12345678", PASSWORD_DEFAULT),
+        //     'role' => 'siswa',
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ]);
     }
 }

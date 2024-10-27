@@ -55,12 +55,25 @@
         <section class="p-t-20">
             <div class="container">
                 <div class="table-data__tool">
-                    <div class="table-data__tool-left">
-                        <button class="au-btn au-btn-icon au-btn--grey au-btn--small">
+                    <div class="table-data__tool-left" style="display:flex; align-items:center;">
+                        <button class="au-btn au-btn-icon au-btn--grey au-btn--small mr-2">
                             <i class="zmdi zmdi-download"></i>Export</button>
+                            <form action="{{ route('WaliKelas.detailsiswa', ['id' => $students->nis]) }}" method="GET">
+                                <div class="rs-select2--light rs-select2--md">
+                                    <select class="js-select2" name="status">
+                                        <option selected="selected" value="">Semua Status</option>
+                                        <option value="Hadir" {{ request('status') == "Hadir" ? 'selected' : '' }}>Hadir</option>
+                                        <option value="Terlambat" {{ request('status') == "Terlambat" ? 'selected' : '' }}>Terlambat</option>
+                                        <option value="TAP" {{ request('status') == "TAP" ? 'selected' : '' }}>TAP</option>
+                                        <option value="Sakit" {{ request('status') == "Sakit" ? 'selected' : '' }}>Sakit</option>
+                                        <option value="Izin" {{ request('status') == "Izin" ? 'selected' : '' }}>Izin</option>
+                                        <option value="Alfa" {{ request('status') == "Alfa" ? 'selected' : '' }}>Alfa</option>
+                                    </select>
+                                    <div class="dropDownSelect2"></div>
+                                </div>
                     </div>
                     <div class="table-data__tool-right">
-                        <form action="{{ route('kesiswaan.detailsiswa', ['id' => $students->nis]) }}" method="GET">
+                        <form action="{{ route('WaliKelas.detailsiswa', ['id' => $students->nis]) }}" method="GET">
                             <div class="filter-group">
                                 <label for="from-date">From</label>
                                 <input type="date" id="from-date" name="start" class="au-btn-filter"
@@ -225,7 +238,7 @@
                                                                 </tr>
                                                                 <th>Foto Keterangan:</th>
                                                                 <td class="text-muted">
-                                                                    @if ($absensi->foto_pulang)
+                                                                    @if ($absensi->photo_in)
                                                                         <img src="{{ asset('storage/uploads/absensi/' . $absensi->photo_in) }}"
                                                                             alt="Foto Pulang" style="width: 150px;">
                                                                     @else

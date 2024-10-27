@@ -161,7 +161,7 @@
                 scales: {
                     y: {
                         beginAtZero: true,
-                        max: 100, 
+                        max: 100,
                         title: {
                             display: true,
                             text: 'Jumlah Kehadiran (%)'

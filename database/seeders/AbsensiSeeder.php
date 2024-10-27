@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Absensi;
+use App\Models\Siswa;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -11,13 +12,13 @@ class AbsensiSeeder extends Seeder
     public function run()
     {
         // Daftar NIS siswa
-        $nisList = ['0069584720', '0062894371', '0061748352']; // Tambahkan NIS siswa lainnya sesuai kebutuhan
+        $nisList = Siswa::pluck('nis')->toArray(); // Tambahkan NIS siswa lainnya sesuai kebutuhan
         $titikKoordinat = '-6.890622076541303, 107.55806983605572'; // Ganti dengan koordinat yang sesuai
-        $statuses = ['Hadir', 'Terlambat', 'Sakit', 'Izin', 'Alfa', 'TAP']; // Daftar status
+        $statuses = array_merge(array_fill(0, 23, 'Hadir'), ['Terlambat', 'Sakit', 'Izin', 'Alfa', 'TAP']);
 
         // Tanggal mulai dan akhir untuk data absensi
-        $startDate = new \DateTime('2024-10-01'); // Ubah sesuai kebutuhan
-        $endDate = new \DateTime('2024-10-31'); // Ubah sesuai kebutuhan
+        $startDate = new \DateTime('2024-08-01'); // Ubah sesuai kebutuhan
+        $endDate = new \DateTime('2024-10-24'); // Ubah sesuai kebutuhan
 
         // Menghitung selisih hari
         $interval = new \DateInterval('P1D'); // Interval 1 hari
@@ -38,11 +39,8 @@ class AbsensiSeeder extends Seeder
 
                     // Logika untuk menentukan foto dan jam masuk/pulang berdasarkan status
                     switch ($status) {
-                        case 'Hadir':
-                        case 'Terlambat':
                         case 'TAP':
                             $photoIn = "0062894371_2024-08-07_masuk.png";
-                            $photoOut = "0062894371_2024-08-07_masuk.png";
                             break;
 
                         case 'Sakit':
@@ -54,6 +52,12 @@ class AbsensiSeeder extends Seeder
                         case 'Alfa':
                             $jamMasuk = null;
                             $jamPulang = null;
+                            break;
+
+                        case 'Hadir':
+                        case 'Terlambat':
+                            $photoIn = "0062894371_2024-08-07_masuk.png";
+                            $photoOut = "0062894371_2024-08-07_masuk.png";
                             break;
                     }
 
