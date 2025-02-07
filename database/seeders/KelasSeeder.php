@@ -13,46 +13,39 @@ class KelasSeeder extends Seeder
      */
     public function run(): void
     {
-        Kelas::create([
-            'id_jurusan' => 'PPLG',
-            'nomor_kelas' => 1,
-            'nip' => '198005052022041001',
-            'tingkat' => '10',
-        ]);
+        $classData = [
+            [
+                'id_jurusan' => 'RPL',
+                'nip' => '196206111988001009',
+                'nomor_kelas' => '1',
+                'tingkat' => '10',
+                'kapasitas' => '35',
+            ],
+            [
+                'id_jurusan' => 'TJKT',
+                'nip' => '196206111988001010',
+                'nomor_kelas' => '3',
+                'tingkat' => '12',
+                'kapasitas' => '36',
+            ],
+            [
+                'id_jurusan' => 'DKV',
+                'nip' => null,
+                'nomor_kelas' => '2',
+                'tingkat' => '11',
+                'kapasitas' => '36',
+            ],
+            [
+                'id_jurusan' => 'MPLB',
+                'nip' => null,
+                'nomor_kelas' => '4',
+                'tingkat' => '10',
+                'kapasitas' => '34',
+            ]
+        ];
 
-        Kelas::create([
-            'id_jurusan' => 'DKV',
-            'nomor_kelas' => 1,
-            'nip' => '198005052022011002',
-            'tingkat' => '10',
-        ]);
-
-        Kelas::create([
-            'id_jurusan' => 'RPL',
-            'nomor_kelas' => 1,
-            'nip' => '198005052022011003',
-            'tingkat' => '11',
-        ]);
-
-        Kelas::create([
-            'id_jurusan' => 'AK',
-            'nomor_kelas' => 3,
-            'nip' => '198005052022011004',
-            'tingkat' => '11',
-        ]);
-
-        Kelas::create([
-            'id_jurusan' => 'RPL',
-            'nomor_kelas' => 1,
-            'nip' => '198005052022011005',
-            'tingkat' => '12',
-        ]);
-
-        Kelas::create([
-            'id_jurusan' => 'RPL',
-            'nomor_kelas' => 2,
-            'nip' => '198005052022011006',
-            'tingkat' => '12',
-        ]);
+        foreach ($classData as $class) {
+            Kelas::create($class);
+        }
     }
 }

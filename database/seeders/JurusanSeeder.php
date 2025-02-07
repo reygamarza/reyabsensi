@@ -14,7 +14,7 @@ class JurusanSeeder extends Seeder
      */
     public function run()
     {
-        $data_jurusan = [
+        $majorsData = [
             ['id_jurusan' => 'AK','nama_jurusan' => 'Akutansi'],
             ['id_jurusan' => 'AKL','nama_jurusan' => 'Akutansi dan Keuangan Lembaga'],
             ['id_jurusan' => 'BR','nama_jurusan' => 'Bisnis Ritel'],
@@ -29,8 +29,8 @@ class JurusanSeeder extends Seeder
             ['id_jurusan' => 'TKJ','nama_jurusan' => 'Teknik Komputer Jaringan'],
         ];
 
-        foreach ($data_jurusan as $j) {
-            Jurusan::create($j);
+        foreach ($majorsData as $major) {
+            Jurusan::create($major);
         }
     }
 }

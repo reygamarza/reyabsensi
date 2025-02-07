@@ -15,147 +15,38 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'nama' => 'Kesiswaan',
-            'email' => 'kesiswaan@gmail.com',
-            'password' => password_hash("12345678", PASSWORD_DEFAULT),
-            'role' => 'kesiswaan',
-            'created_at' => now(),
-            'updated_at' => now(),
+            'nama' => 'Reyga Marza Ramadhan',
+            'email' => 'siswa@gmail.com',
+            'password' => password_hash("siswa123", PASSWORD_DEFAULT),
+            'role' => 'siswa',
         ]);
 
         User::create([
             'nama' => 'Operator',
             'email' => 'operator@gmail.com',
-            'password' => password_hash("12345678", PASSWORD_DEFAULT),
+            'password' => password_hash("operator123", PASSWORD_DEFAULT),
             'role' => 'operator',
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         User::create([
-            'nama' => 'Lilis Tati Elis',
-            'email' => 'lilis@gmail.com',
-            'password' => password_hash("12345678", PASSWORD_DEFAULT),
-            'role' => 'wali',
-            'created_at' => now(),
-            'updated_at' => now(),
+            'nama' => 'Hanifah, S.Pd',
+            'email' => 'kesiswaan@gmail.com',
+            'password' => password_hash("kesiswaan123", PASSWORD_DEFAULT),
+            'role' => 'kesiswaan',
         ]);
 
         User::create([
-            'nama' => 'Euis Nursibahhayati',
-            'email' => 'euis@gmail.com',
-            'password' => password_hash("12345678", PASSWORD_DEFAULT),
-            'role' => 'wali',
-            'created_at' => now(),
-            'updated_at' => now(),
+            'nama' => 'Ani Nuraeni, M.Kom',
+            'email' => 'walikelas@gmail.com',
+            'password' => password_hash("walikelas123", PASSWORD_DEFAULT),
+            'role' => 'waliKelas',
         ]);
 
         User::create([
-            'nama' => 'Pemi Sri Handini',
-            'email' => 'pemi@gmail.com',
-            'password' => password_hash("12345678", PASSWORD_DEFAULT),
-            'role' => 'wali',
-            'created_at' => now(),
-            'updated_at' => now(),
+            'nama' => 'Yudi Fatir',
+            'email' => 'walisiswa@gmail.com',
+            'password' => password_hash("walisiswa123", PASSWORD_DEFAULT),
+            'role' => 'waliSiswa',
         ]);
-
-        User::create([
-            'nama' => 'Engkus Kusnadi',
-            'email' => 'engkus@gmail.com',
-            'password' => password_hash("12345678", PASSWORD_DEFAULT),
-            'role' => 'wali',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        User::create([
-            'nama' => 'Himatul Munawaroh',
-            'email' => 'hima@gmail.com',
-            'password' => password_hash("12345678", PASSWORD_DEFAULT),
-            'role' => 'wali',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        User::create([
-            'nama' => 'Ani Nuraeni',
-            'email' => 'ani@gmail.com',
-            'password' => password_hash("12345678", PASSWORD_DEFAULT),
-            'role' => 'wali',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        // User::create([
-        //     'nama' => 'Reyga Marza Ramadhan',
-        //     'email' => 'rey@gmail.com',
-        //     'password' => password_hash("12345678", PASSWORD_DEFAULT),
-        //     'role' => 'siswa',
-        //     'created_at' => now(),
-        //     'updated_at' => now(),
-        // ]);
-
-        // User::create([
-        //     'nama' => 'Satria Galam Pratama',
-        //     'email' => 'sat@gmail.com',
-        //     'password' => password_hash("12345678", PASSWORD_DEFAULT),
-        //     'role' => 'siswa',
-        //     'created_at' => now(),
-        //     'updated_at' => now(),
-        // ]);
-
-        // User::create([
-        //     'nama' => 'Irma Naila Juwita',
-        //     'email' => 'iruma@gmail.com',
-        //     'password' => password_hash("12345678", PASSWORD_DEFAULT),
-        //     'role' => 'siswa',
-        //     'created_at' => now(),
-        //     'updated_at' => now(),
-        // ]);
-
-        User::create([
-            'nama' => 'Dani Supriyadi',
-            'email' => 'ortu@gmail.com',
-            'password' => password_hash("12345678", PASSWORD_DEFAULT),
-            'role' => 'walis',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        User::create([
-            'nama' => 'Tati Hariyati',
-            'email' => 'ortu2@gmail.com',
-            'password' => password_hash("12345678", PASSWORD_DEFAULT),
-            'role' => 'walis',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        User::create([
-            'nama' => 'Supratman Widodo',
-            'email' => 'ortu3@gmail.com',
-            'password' => password_hash("12345678", PASSWORD_DEFAULT),
-            'role' => 'walis',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        // User::create([
-        //     'nama' => 'Haanun Syauqoni',
-        //     'email' => 'noon@gmail.com',
-        //     'password' => password_hash("12345678", PASSWORD_DEFAULT),
-        //     'role' => 'siswa',
-        //     'created_at' => now(),
-        //     'updated_at' => now(),
-        // ]);
-
-        // User::create([
-        //     'nama' => 'Hariz May Rayhan',
-        //     'email' => 'rizz@gmail.com',
-        //     'password' => password_hash("12345678", PASSWORD_DEFAULT),
-        //     'role' => 'siswa',
-        //     'created_at' => now(),
-        //     'updated_at' => now(),
-        // ]);
     }
 }
