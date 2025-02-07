@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('jurusans', function (Blueprint $table) {
             $table->string('id_jurusan')->primary();
             $table->string('nama_jurusan');
+            $table->timestamps();
         });
     }
 

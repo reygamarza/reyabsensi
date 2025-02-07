@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('wali__kelas', function (Blueprint $table) {
-            $table->string("nip")->primary();
-
+        Schema::create('tenaga_kependidikans', function (Blueprint $table) {
+            $table->string('nip', 18)->primary();
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id')->on('users');
-            $table->enum('jenis_kelamin', ['laki laki', 'perempuan']);
-            $table->string('nuptk')->unique();
+            $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
+            $table->string('nuptk', 16)->nullable()->unique();
+            $table->string('no_telp', 16)->nullable();
+            $table->timestamps();
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('wali__kelas');
+        Schema::dropIfExists('tenaga_kependidikans');
     }
 };
