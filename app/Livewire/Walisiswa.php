@@ -21,12 +21,24 @@ class Walisiswa extends Component
     public $nama, $email, $password, $id, $nik, $jenis_kelamin, $nik_lama, $id_user, $alamat;
     public $file;
     public $searchwalisiswa = '';
+    public $sortColumn = 'nama';
+    public $sortDirection = 'asc';
 
     public function render()
     {
         return view('livewire.walisiswa', [
             'daftarwalisiswa' => $this->getWalisiswa()
         ]);
+    }
+
+    public function sortBy($column)
+    {
+        if ($this->sortColumn === $column) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortColumn = $column;
+            $this->sortDirection = 'asc';
+        }
     }
 
     protected function getWaliSiswa()
@@ -37,6 +49,13 @@ class Walisiswa extends Component
                     $q->where('nama', 'like', '%' . $this->searchwalisiswa . '%')
                         ->orWhere('email', 'like', '%' . $this->searchwalisiswa . '%');
                 });
+            })
+            ->when(in_array($this->sortColumn, ['nik', 'email', 'jenis_kelamin', 'alamat']), function ($query) {
+                $query->orderBy($this->sortColumn, $this->sortDirection);
+            })
+            ->when(in_array($this->sortColumn, ['nama', 'email']), function ($query) {
+                $query->join('users', 'wali__siswas.id_user', '=', 'users.id')
+                      ->orderBy('users.nama', $this->sortDirection);
             })
             ->paginate(10);
     }

@@ -82,20 +82,20 @@
                                     <div class="row text-center">
                                         <div class="col">
                                             <h4 class="text-success">
-                                                {{ number_format($averageAttendancePercentages['Hadir']) }}%</h4>
+                                                {{ number_format($averageAttendancePercentages['Hadir'], 2) }}%</h4>
                                             <small>Hadir</small>
                                         </div>
                                         <div class="col">
                                             <h4 class="text-info">
-                                                {{ number_format($averageAttendancePercentages['Sakit/Izin']) }}%</h4>
+                                                {{ number_format($averageAttendancePercentages['Sakit/Izin'], 2) }}%</h4>
                                             <small>Sakit/Izin</small>
                                         </div>
                                         <div class="col">
                                             <h4 class="text-danger">
-                                                {{ number_format($averageAttendancePercentages['Alfa']) }}%</h4>
+                                                {{ number_format($averageAttendancePercentages['Alfa'], 2) }}%</h4>
                                             <small>Alfa</small>
                                         </div>
-                                        <div class="col">
+                                        {{-- <div class="col">
                                             <h4 class="text-warning">
                                                 {{ number_format($averageAttendancePercentages['Terlambat']) }}%</h4>
                                             <small>Terlambat</small>
@@ -104,7 +104,7 @@
                                             <h4 class="text-secondary">
                                                 {{ number_format($averageAttendancePercentages['TAP']) }}%</h4>
                                             <small>TAP</small>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                             </div>
@@ -135,25 +135,25 @@
                                             <div class="d-flex justify-content-between align-items-center mb-2">
                                                 <span>Hadir</span>
                                                 <span
-                                                    class="fw-medium">{{ number_format($student['attendancePercentages']['Hadir']) }}%</span>
+                                                    class="fw-medium">{{ number_format($student['attendancePercentages']['Hadir'], 2) }}%</span>
                                             </div>
                                             <div class="attendance-bar mb-3">
                                                 <div class="attendance-progress bg-success"
-                                                    style="width: {{ number_format($student['attendancePercentages']['Hadir']) }}%">
+                                                    style="width: {{ number_format($student['attendancePercentages']['Hadir'], 2) }}%">
                                                 </div>
                                             </div>
 
                                             <div class="d-flex justify-content-between align-items-center mb-2">
                                                 <span>Sakit/Izin</span>
-                                                <span class="fw-medium">{{ number_format(($student['attendancePercentages']['Sakit'] ?? 0) + ($student['attendancePercentages']['Izin'] ?? 0)) }}%</span>
+                                                <span class="fw-medium">{{ number_format($student['attendancePercentages']['Sakit/Izin'], 2) }}%</span>
                                             </div>
                                             <div class="attendance-bar mb-3">
                                                 <div class="attendance-progress bg-primary"
-                                                     style="width: {{ number_format(($student['attendancePercentages']['Sakit'] ?? 0) + ($student['attendancePercentages']['Izin'] ?? 0)) }}%">
+                                                     style="width: {{ number_format($student['attendancePercentages']['Sakit/Izin'], 2) }}%">
                                                 </div>
                                             </div>
 
-                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                            {{-- <div class="d-flex justify-content-between align-items-center mb-2">
                                                 <span>Terlambat</span>
                                                 <span class="fw-medium">{{ number_format($student['attendancePercentages']['Terlambat']) }}%</span>
                                             </div>
@@ -171,15 +171,15 @@
                                                 <div class="attendance-progress"
                                                      style="width: {{ number_format($student['attendancePercentages']['TAP']) }}%; background-color: #6610f2;">
                                                 </div>
-                                            </div>
+                                            </div> --}}
 
                                             <div class="d-flex justify-content-between align-items-center mb-2">
                                                 <span>Alfa</span>
-                                                <span class="fw-medium">{{ number_format($student['attendancePercentages']['Alfa']) }}%</span>
+                                                <span class="fw-medium">{{ number_format($student['attendancePercentages']['Alfa'], 2) }}%</span>
                                             </div>
                                             <div class="attendance-bar">
                                                 <div class="attendance-progress bg-danger"
-                                                     style="width: {{ number_format($student['attendancePercentages']['Alfa']) }}%">
+                                                     style="width: {{ number_format($student['attendancePercentages']['Alfa'], 2) }}%">
                                                 </div>
                                             </div>
                                         </div>

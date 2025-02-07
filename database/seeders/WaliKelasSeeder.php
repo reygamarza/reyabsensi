@@ -54,5 +54,12 @@ class WaliKelasSeeder extends Seeder
             'jenis_kelamin' => 'perempuan',
             'nuptk' => '4567890123456786',
         ]);
+
+        Wali_Kelas::create([
+            'nip' => '198005052022011007',
+            'id_user' => 1,
+            'jenis_kelamin' => 'laki laki',
+            'nuptk' => '4567890123456787',
+        ]);
     }
 }

@@ -102,25 +102,25 @@
                                     <div class="attendance-content p-4">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span>Hadir</span>
-                                            <span class="fw-medium">{{ number_format($kelas['percentageHadir']) }}%</span>
+                                            <span class="fw-medium">{{ number_format($kelas['percentageHadir'], 2) }}%</span>
                                         </div>
                                         <div class="attendance-bar mb-3">
                                             <div class="attendance-progress bg-success"
-                                                 style="width: {{ number_format($kelas['percentageHadir']) }}%">
+                                                 style="width: {{ number_format($kelas['percentageHadir'], 2) }}%">
                                             </div>
                                         </div>
 
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span>Sakit/Izin</span>
-                                            <span class="fw-medium">{{ number_format($kelas['percentageSakitIzin']) }}%</span>
+                                            <span class="fw-medium">{{ number_format($kelas['percentageSakitIzin'], 2) }}%</span>
                                         </div>
                                         <div class="attendance-bar mb-3">
                                             <div class="attendance-progress bg-primary"
-                                                 style="width: {{ number_format($kelas['percentageSakitIzin']) }}%">
+                                                 style="width: {{ number_format($kelas['percentageSakitIzin'], 2) }}%">
                                             </div>
                                         </div>
 
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                        {{-- <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span>Terlambat</span>
                                             <span class="fw-medium">{{ number_format($kelas['percentageTerlambat']) }}%</span>
                                         </div>
@@ -128,9 +128,9 @@
                                             <div class="attendance-progress bg-warning"
                                                  style="width: {{ number_format($kelas['percentageTerlambat']) }}%">
                                             </div>
-                                        </div>
+                                        </div> --}}
 
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                        {{-- <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span>TAP</span>
                                             <span class="fw-medium">{{ number_format($kelas['percentageTAP']) }}%</span>
                                         </div>
@@ -138,15 +138,15 @@
                                             <div class="attendance-progress"
                                                  style="width: {{ number_format($kelas['percentageTAP']) }}%; background-color: #6610f2;">
                                             </div>
-                                        </div>
+                                        </div> --}}
 
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span>Alfa</span>
-                                            <span class="fw-medium">{{ number_format($kelas['percentageAlfa']) }}%</span>
+                                            <span class="fw-medium">{{ number_format($kelas['percentageAlfa'], 2) }}%</span>
                                         </div>
                                         <div class="attendance-bar mb-3">
                                             <div class="attendance-progress bg-danger"
-                                                 style="width: {{ number_format($kelas['percentageAlfa']) }}%">
+                                                 style="width: {{ number_format($kelas['percentageAlfa'], 2) }}%">
                                             </div>
                                         </div>
                                     </div>
@@ -168,8 +168,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="copyright">
-                            <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a
-                                    href="https://colorlib.com">Colorlib</a>.</p>
+
                         </div>
                     </div>
                 </div>

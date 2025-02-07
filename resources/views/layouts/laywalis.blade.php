@@ -66,7 +66,7 @@
                     <div class="header__navbar">
                         <ul class="list-unstyled">
                             <li class="has-sub">
-                                <a href="{{ route('wali.index') }}">
+                                <a href="{{ route('walis.index') }}">
                                     <i class="fas fa-tv"></i>
                                     <span class="bot-line"></span>Dashboard
                                 </a>

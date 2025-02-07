@@ -48,7 +48,7 @@
                 <div class="row">
                     <div class="col-md-3 col-lg-3">
                         <div class="statistic_siswa">
-                            <h2 class="number" id="date">Senin 15 September 2024</h2>
+                            <h2 class="number" id="date">-</h2>
                             <span class="desc">Tanggal</span>
                             <div class="icon">
                                 <i class="fa-solid fa-calendar-days text-success"></i>
@@ -59,11 +59,11 @@
                         <div class="statistic_siswa">
                             <h2 class="clock">
                                 <ul>
-                                    <li id="jam">05</li>
+                                    <li id="jam">--</li>
                                     <li id="point">:</li>
-                                    <li id="menit">20</li>
+                                    <li id="menit">--</li>
                                     <li id="point">:</li>
-                                    <li id="detik">30</li>
+                                    <li id="detik">--</li>
                                 </ul>
                             </h2>
                             <span class="desc">Jam</span>
@@ -74,7 +74,7 @@
                     </div>
                     <div class="col-md-3 col-lg-3">
                         <div class="statistic_siswa">
-                            <h2 class="number" id="distance">322 M</h2>
+                            <h2 class="number" id="distance">- M</h2>
                             <input type="hidden" name="lokasi" id="lokasi">
                             <span class="desc">Radius Dari Lokasi</span>
                             <div class="icon">
@@ -282,154 +282,6 @@
         <section class="riwayatkehadiran p-t-50">
             <div class="container">
                 <div class="row justify-content-center">
-                    {{-- <div class="col-md-8 text-center">
-                        <div class="table-responsive table--no-card m-b-30">
-                            <table class="table table-borderless table-striped table-earning">
-                                <thead>
-                                    <tr>
-                                        <th>Tanggal</th>
-                                        <th>Status</th>
-                                        <th>Absen Masuk</th>
-                                        <th>Absen Pulang</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($riwayatkehadiran as $rk)
-                                        <tr>
-                                            <td>{{ \Carbon\Carbon::parse($rk->date)->format('Y - m - d') }}</td>
-                                            <td>
-                                                @if ($rk->status == 'Hadir')
-                                                    <span class="status hadir">{{ $rk->status }}</span>
-                                                @elseif ($rk->status == 'Sakit' || $rk->status == 'Izin')
-                                                    <span class="status izin">{{ $rk->status }}</span>
-                                                @elseif ($rk->status == 'Terlambat')
-                                                    <span class="status terlambat">{{ $rk->status }}</span>
-                                                @elseif ($rk->status == 'TAP')
-                                                    <span class="status tap">{{ $rk->status }}</span>
-                                                @elseif ($rk->status == 'Alfa')
-                                                    <span class="status alfa">{{ $rk->status }}</span>
-                                                @else
-                                                    {{ $rk->status }}
-                                                @endif
-
-                                            </td>
-                                            <td>
-                                                @if ($rk->jam_masuk)
-                                                    {{ \Carbon\Carbon::parse($rk->jam_masuk)->format('H : i : s') }}
-                                                @else
-                                                    -
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if ($rk->jam_pulang)
-                                                    {{ \Carbon\Carbon::parse($rk->jam_pulang)->format('H : i : s') }}
-                                                @else
-                                                    -
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            {{ $riwayatkehadiran->links('pagination::bootstrap-4') }}
-                        </div>
-                    </div> --}}
-                    {{-- <div class="col-lg-8">
-                        <div class="au-card">
-                            <div class="au-card-inner">
-                                <canvas id="myChart"></canvas>
-                            </div>
-                        </div>
-                    </div> --}}
-                    {{-- <div class="col-lg-8">
-                        <div class="au-card">
-                            <h3 class="title-5 m-b-35 text-center"><strong>Riwayat Kehadiran Anda</strong></h3>
-                            <div class="progress mb-2">
-                                <div class="progress-bar bg-success" role="progressbar" style="width:70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">70%</div>
-                            </div>
-                            <div class="au-card-inner">
-                                <div class="card">
-                                    <div class="card-header p-0">
-                                        <div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist">
-                                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"
-                                                href="#nav-home" role="tab" aria-controls="nav-home"
-                                                aria-selected="true"><strong>Bulan Ini</strong></a>
-                                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab"
-                                                href="#nav-profile" role="tab" aria-controls="nav-profile"
-                                                aria-selected="false"><strong>Bulan Sebelumnya</strong></a>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="tab-content" id="nav-tabContent">
-                                            <!-- Tab Bulan Ini -->
-                                            <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
-                                                aria-labelledby="nav-home-tab">
-                                                <ul class="list-group">
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-check-circle text-success"></i> Hadir:
-                                                        {{ $dataBulanIni['Hadir'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-user-md text-info"></i> Sakit/Izin:
-                                                        {{ $dataBulanIni['Sakit/Izin'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-clock text-warning"></i> Terlambat:
-                                                        {{ $dataBulanIni['Terlambat'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-times-circle text-danger"></i> Alfa:
-                                                        {{ $dataBulanIni['Alfa'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-bell text-primary"></i> TAP:
-                                                        {{ $dataBulanIni['TAP'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-user-clock text-secondary"></i> Total Keterlambatan:
-                                                        {{ $late }} Menit
-                                                    </li>
-                                                </ul>
-                                            </div>
-
-                                            <!-- Tab Bulan Sebelumnya -->
-                                            <div class="tab-pane fade" id="nav-profile" role="tabpanel"
-                                                aria-labelledby="nav-profile-tab">
-                                                <ul class="list-group">
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-check-circle text-success"></i> Hadir:
-                                                        {{ $dataBulanSebelumnya['Hadir'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-user-md text-info"></i> Sakit/Izin:
-                                                        {{ $dataBulanSebelumnya['Sakit/Izin'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-clock text-warning"></i> Terlambat:
-                                                        {{ $dataBulanSebelumnya['Terlambat'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-times-circle text-danger"></i> Alfa:
-                                                        {{ $dataBulanSebelumnya['Alfa'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-bell text-primary"></i> TAP:
-                                                        {{ $dataBulanSebelumnya['TAP'] ?? 0 }}
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-user-clock text-secondary"></i> Total Keterlambatan:
-                                                        {{ $late2 }} Menit
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
                     <div class="col-lg-8 text-center">
                         <h3 class="title-5 m-b-35 text-center">Riwayat Kehadiran Anda <strong>Minggu Ini</strong></h3>
                         <div class="table-responsive table--no-card m-b-30">
@@ -501,18 +353,18 @@
                                                 <i class="fas fa-user-md text-info"></i> Sakit/Izin :
                                                 {{ $dataBulanIni['Sakit/Izin'] ?? 0 }}
                                             </li>
-                                            <li class="list-group-item">
+                                            {{-- <li class="list-group-item">
                                                 <i class="fas fa-clock text-warning"></i> Terlambat :
                                                 {{ $dataBulanIni['Terlambat'] ?? 0 }}
-                                            </li>
+                                            </li> --}}
                                             <li class="list-group-item">
                                                 <i class="fas fa-times-circle text-danger"></i> Alfa :
                                                 {{ $dataBulanIni['Alfa'] ?? 0 }}
                                             </li>
-                                            <li class="list-group-item">
+                                            {{-- <li class="list-group-item">
                                                 <i class="fas fa-bell text-primary"></i> TAP :
                                                 {{ $dataBulanIni['TAP'] ?? 0 }}
-                                            </li>
+                                            </li> --}}
                                             <li class="list-group-item">
                                                 <i class="fas fa-user-clock text-secondary"></i> Total
                                                 Keterlambatan :
@@ -540,18 +392,18 @@
                                                 <i class="fas fa-user-md text-info"></i> Sakit/Izin :
                                                 {{ $dataBulanSebelumnya['Sakit/Izin'] ?? 0 }}
                                             </li>
-                                            <li class="list-group-item">
+                                            {{-- <li class="list-group-item">
                                                 <i class="fas fa-clock text-warning"></i> Terlambat :
                                                 {{ $dataBulanSebelumnya['Terlambat'] ?? 0 }}
-                                            </li>
+                                            </li> --}}
                                             <li class="list-group-item">
                                                 <i class="fas fa-times-circle text-danger"></i> Alfa :
                                                 {{ $dataBulanSebelumnya['Alfa'] ?? 0 }}
                                             </li>
-                                            <li class="list-group-item">
+                                            {{-- <li class="list-group-item">
                                                 <i class="fas fa-bell text-primary"></i> TAP :
                                                 {{ $dataBulanSebelumnya['TAP'] ?? 0 }}
-                                            </li>
+                                            </li> --}}
                                             <li class="list-group-item">
                                                 <i class="fas fa-user-clock text-secondary"></i> Total
                                                 Keterlambatan :

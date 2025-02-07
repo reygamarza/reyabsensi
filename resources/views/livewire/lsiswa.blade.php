@@ -25,11 +25,31 @@
                 <table class="table table-borderless table-data3">
                     <thead>
                         <tr>
-                            <th>NIS</th>
-                            <th>Nama</th>
-                            <th>Email</th>
-                            <th>Jenis Kelamin</th>
-                            <th>NISN</th>
+                            <th wire:click="sortBy('nis')" style="cursor: pointer;">
+                                NIS
+                                @if ($sortColumn == 'nis')
+                                    <i class="fa fa-sort-{{ $sortDirection == 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
+                            <th wire:click="sortBy('nama')" style="cursor: pointer;">
+                                Nama
+                                @if ($sortColumn == 'nama')
+                                    <i class="fa fa-sort-{{ $sortDirection == 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
+                            <th wire:click="sortBy('email')" style="cursor: pointer;">
+                                Email
+                                @if ($sortColumn == 'email')
+                                    <i class="fa fa-sort-{{ $sortDirection == 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
+                            <th>JK</th>
+                            <th wire:click="sortBy('nisn')" style="cursor: pointer;">
+                                NISN
+                                @if ($sortColumn == 'nisn')
+                                    <i class="fa fa-sort-{{ $sortDirection == 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -53,16 +73,14 @@
                                             title="Delete" wire:click="hapussiswa({{ $s->nis }})">
                                             <i class="zmdi zmdi-delete"></i>
                                         </button>
-                                        {{-- <button class="item mr-1" data-toggle="tooltip" data-placement="top"
-                                                title="Daftar Siswa {{ $k->tingkat }} {{ $k->jurusan->nama_jurusan }} {{ $k->nomor_kelas }}">
-                                                <i class="zmdi zmdi-more"></i>
-                                            </button> --}}
                                     </div>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+
+
                 <div class="pagination-container">
                     {{ $daftarsiswa->links() }}
                 </div>

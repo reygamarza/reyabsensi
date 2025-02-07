@@ -39,7 +39,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h1 class="title-4">Selamat Datang
-                            <span>Wali Kelas 11 RPL 1!</span>
+                            <span>{{ Auth::user()->nama }}!</span>
                         </h1>
                         <hr class="line-seprate">
                     </div>
@@ -62,18 +62,18 @@
                                 <h2 class="number">{{ $count['Sakit'] + $count['Izin'] }}</h2>
                                 <span class="desc">Total Sakit/Izin</span>
                             </div>
-                            <div class="statistic__item statistic__item--orange">
+                            {{-- <div class="statistic__item statistic__item--orange">
                                 <h2 class="number">{{ $count['Terlambat'] }}</h2>
                                 <span class="desc">Total Terlambat</span>
-                            </div>
+                            </div> --}}
                             <div class="statistic__item statistic__item--red">
                                 <h2 class="number">{{ $count['Alfa'] }}</h2>
                                 <span class="desc">Total Belum Absen</span>
                             </div>
-                            <div class="statistic__item statistic__item--purple ">
+                            {{-- <div class="statistic__item statistic__item--purple ">
                                 <h2 class="number">{{ $count['TAP'] }}</h2>
                                 <span class="desc">Total TAP</span>
-                            </div>
+                            </div> --}}
                         </div>
 
                     </div>
@@ -136,12 +136,11 @@
         // Data untuk chart bulan ini
         const ctxCurrent = document.getElementById('attendanceChartCurrent').getContext('2d');
         const dataCurrent = {
-            labels: ['Hadir', 'Sakit/Izin', 'Terlambat', 'TAP', 'Alfa'],
+            labels: ['Hadir', 'Sakit/Izin', 'Alfa'],
             datasets: [{
-                data: [countCurrent.Hadir, countCurrent.Sakit, countCurrent.Terlambat, countCurrent.TAP,
-                    countCurrent.Alfa
+                data: [countCurrent.Hadir, countCurrent.Sakit, countCurrent.Alfa
                 ],
-                backgroundColor: ['#28a745', '#ffc107', '#007bff', '#6f42c1', '#dc3545'],
+                backgroundColor: ['#28a745', '#ffc107', '#dc3545'],
                 hoverOffset: 4
             }]
         };
@@ -175,12 +174,11 @@
         // Data untuk chart bulan sebelumnya
         const ctxPrevious = document.getElementById('attendanceChartPrevious').getContext('2d');
         const dataPrevious = {
-            labels: ['Hadir', 'Sakit/Izin', 'Terlambat', 'TAP', 'Alfa'],
+            labels: ['Hadir', 'Sakit/Izin', 'Alfa'],
             datasets: [{
-                data: [countPrevious.Hadir, countPrevious.Sakit, countPrevious.Terlambat, countPrevious.TAP,
-                    countPrevious.Alfa
+                data: [countPrevious.Hadir, countPrevious.Sakit, countPrevious.Alfa
                 ],
-                backgroundColor: ['#28a745', '#ffc107', '#007bff', '#6f42c1', '#dc3545'],
+                backgroundColor: ['#28a745', '#ffc107', '#dc3545'],
                 hoverOffset: 4
             }]
         };

@@ -25,14 +25,35 @@
                 <table class="table table-borderless table-data3">
                     <thead>
                         <tr>
-                            <th>NIK</th>
-                            <th>Email</th>
-                            <th>Nama</th>
+                            <th wire:click="sortBy('nik')" style="cursor: pointer;">
+                                NIK
+                                @if ($sortColumn == 'nik')
+                                    <i class="fa fa-sort-{{ $sortDirection == 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
+                            <th wire:click="sortBy('email')" style="cursor: pointer;">
+                                Email
+                                @if ($sortColumn == 'email')
+                                    <i class="fa fa-sort-{{ $sortDirection == 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
+                            <th wire:click="sortBy('nama')" style="cursor: pointer;">
+                                Nama
+                                @if ($sortColumn == 'nama')
+                                    <i class="fa fa-sort-{{ $sortDirection == 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
                             <th>JK</th>
-                            <th>Alamat</th>
+                            <th wire:click="sortBy('alamat')" style="cursor: pointer;">
+                                Alamat
+                                @if ($sortColumn == 'alamat')
+                                    <i class="fa fa-sort-{{ $sortDirection == 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
+
                     <tbody>
                         @foreach ($daftarwalisiswa as $key => $ws)
                             <tr>

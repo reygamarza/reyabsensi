@@ -17,8 +17,8 @@ class AbsensiSeeder extends Seeder
         $statuses = array_merge(array_fill(0, 23, 'Hadir'), ['Terlambat', 'Sakit', 'Izin', 'Alfa', 'TAP']);
 
         // Tanggal mulai dan akhir untuk data absensi
-        $startDate = new \DateTime('2024-08-01'); // Ubah sesuai kebutuhan
-        $endDate = new \DateTime('2024-10-24'); // Ubah sesuai kebutuhan
+        $startDate = new \DateTime('2024-09-01'); // Ubah sesuai kebutuhan
+        $endDate = new \DateTime('2024-11-30'); // Ubah sesuai kebutuhan
 
         // Menghitung selisih hari
         $interval = new \DateInterval('P1D'); // Interval 1 hari

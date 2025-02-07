@@ -93,20 +93,20 @@
                                     <div class="row text-center">
                                         <div class="col">
                                             <h4 class="text-success">
-                                                {{ number_format($attendancePercentage['percentageHadir']) }}%</h4>
+                                                {{ number_format($attendancePercentage['percentageHadir'], 2) }}%</h4>
                                             <small>Hadir</small>
                                         </div>
                                         <div class="col">
                                             <h4 class="text-info">
-                                                {{ number_format($attendancePercentage['percentageSakitIzin']) }}%</h4>
+                                                {{ number_format($attendancePercentage['percentageSakitIzin'], 2) }}%</h4>
                                             <small>Sakit/Izin</small>
                                         </div>
                                         <div class="col">
                                             <h4 class="text-danger">
-                                                {{ number_format($attendancePercentage['percentageAlfa']) }}%</h4>
+                                                {{ number_format($attendancePercentage['percentageAlfa'], 2) }}%</h4>
                                             <small>Alfa</small>
                                         </div>
-                                        <div class="col">
+                                        {{-- <div class="col">
                                             <h4 class="text-warning">
                                                 {{ number_format($attendancePercentage['percentageTerlambat']) }}%</h4>
                                             <small>Terlambat</small>
@@ -115,7 +115,7 @@
                                             <h4 class="text-secondary">
                                                 {{ number_format($attendancePercentage['percentageTAP']) }}%</h4>
                                             <small>TAP</small>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                             </div>

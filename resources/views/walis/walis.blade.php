@@ -53,8 +53,18 @@
                                     <h4 class="mb-0 text-white">Rekap Kehadiran {{ $data['nama'] }}</h4>
                                 </div>
                                 <div class="d-flex justify-content-center pt-3">
-                                    <h2 class="text-center text-primary">Belum Absen</h2>
+                                    <h2 class="text-center
+                                        @if ($data['HariIni'] == 'Hadir') text-success
+                                        @elseif ($data['HariIni'] == 'Terlambat') text-warning
+                                        @elseif (in_array($data['HariIni'], ['Sakit', 'Izin'])) text-info
+                                        @elseif ($data['HariIni'] == 'Alfa') text-danger
+                                        @elseif ($data['HariIni'] == 'TAP') text-secondary
+                                        @else text-muted
+                                        @endif">
+                                        {{ $data['HariIni'] ?? 'Belum Absen' }}
+                                    </h2>
                                 </div>
+
                                 <div class="card-body">
                                     <ul class="nav nav-tabs mb-3 mt-0" id="attendanceTabs" role="tablist">
                                         <li class="nav-item" role="presentation">
@@ -92,18 +102,18 @@
                                                 <i class="fas fa-user-md text-info"></i>
                                                 <span>Sakit/Izin : {{ $data['BulanIni']['Sakit/Izin'] }} hari</span>
                                             </div>
-                                            <div class="attendance-item">
+                                            {{-- <div class="attendance-item">
                                                 <i class="fas fa-clock text-warning"></i>
                                                 <span>Terlambat : {{ $data['BulanIni']['Terlambat'] }} hari</span>
-                                            </div>
+                                            </div> --}}
                                             <div class="attendance-item">
                                                 <i class="fas fa-times-circle text-danger"></i>
                                                 <span>Alfa : {{ $data['BulanIni']['Alfa'] }} hari</span>
                                             </div>
-                                            <div class="attendance-item">
+                                            {{-- <div class="attendance-item">
                                                 <i class="fas fa-bell text-primary"></i>
                                                 <span>TAP : {{ $data['BulanIni']['TAP'] }} hari</span>
-                                            </div>
+                                            </div> --}}
                                             <div class="attendance-item">
                                                 <i class="fas fa-user-clock text-secondary"></i>
                                                 <span>Total Keterlambatan : {{ $data['BulanIni']['late'] }} Menit</span>
@@ -128,18 +138,18 @@
                                                 <i class="fas fa-user-md text-info"></i>
                                                 <span>Sakit/Izin : {{ $data['BulanLalu']['Sakit/Izin'] }} hari</span>
                                             </div>
-                                            <div class="attendance-item">
+                                            {{-- <div class="attendance-item">
                                                 <i class="fas fa-clock text-warning"></i>
                                                 <span>Terlambat : {{ $data['BulanLalu']['Terlambat'] }} hari</span>
-                                            </div>
+                                            </div> --}}
                                             <div class="attendance-item">
                                                 <i class="fas fa-times-circle text-danger"></i>
                                                 <span>Alfa : {{ $data['BulanLalu']['Alfa'] }} hari</span>
                                             </div>
-                                            <div class="attendance-item">
+                                            {{-- <div class="attendance-item">
                                                 <i class="fas fa-bell text-primary"></i>
                                                 <span>TAP : {{ $data['BulanLalu']['TAP'] }} hari</span>
-                                            </div>
+                                            </div> --}}
                                             <div class="attendance-item">
                                                 <i class="fas fa-user-clock text-secondary"></i>
                                                 <span>Total Keterlambatan : {{ $data['BulanLalu']['late'] }} Menit</span>
@@ -164,18 +174,18 @@
                                                 <i class="fas fa-user-md text-info"></i>
                                                 <span>Sakit/Izin : {{ $data['TahunIni']['Sakit/Izin'] }} hari</span>
                                             </div>
-                                            <div class="attendance-item">
+                                            {{-- <div class="attendance-item">
                                                 <i class="fas fa-clock text-warning"></i>
                                                 <span>Terlambat : {{ $data['TahunIni']['Terlambat'] }} hari</span>
-                                            </div>
+                                            </div> --}}
                                             <div class="attendance-item">
                                                 <i class="fas fa-times-circle text-danger"></i>
                                                 <span>Alfa : {{ $data['TahunIni']['Alfa'] }} hari</span>
                                             </div>
-                                            <div class="attendance-item">
+                                            {{-- <div class="attendance-item">
                                                 <i class="fas fa-bell text-primary"></i>
                                                 <span>TAP : {{ $data['TahunIni']['TAP'] }} hari</span>
-                                            </div>
+                                            </div> --}}
                                             <div class="attendance-item">
                                                 <i class="fas fa-user-clock text-secondary"></i>
                                                 <span>Total Keterlambatan : {{ $data['TahunIni']['late'] }} Menit</span>

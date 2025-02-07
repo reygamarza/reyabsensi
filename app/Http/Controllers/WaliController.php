@@ -33,7 +33,7 @@ class WaliController extends Controller
             ->get();
 
         $count = [
-            'Hadir' => $harini->where('status', 'Hadir')->count(),
+            'Hadir' => $harini->whereIn('status', ['Hadir', 'Terlambat', 'TAP'])->count(),
             'Sakit' => $harini->where('status', 'Sakit')->count(),
             'Izin' => $harini->where('status', 'Izin')->count(),
             'Terlambat' => $harini->where('status', 'Terlambat')->count(),
@@ -47,12 +47,12 @@ class WaliController extends Controller
             ->get();
 
         $countCurrent = [
-            'Hadir' => $bulanIni->where('status', 'Hadir')->count(),
+            'Hadir' => $bulanIni->whereIn('status', ['Hadir', 'Terlambat', 'TAP'])->count(),
             'Sakit' => $bulanIni->where('status', 'Sakit')->count(),
             'Izin' => $bulanIni->where('status', 'Izin')->count(),
-            'Terlambat' => $bulanIni->where('status', 'Terlambat')->count(),
             'Alfa' => $bulanIni->where('status', 'Alfa')->count(),
-            'TAP' => $bulanIni->where('status', 'TAP')->count(),
+            // 'Terlambat' => $bulanIni->where('status', 'Terlambat')->count(),
+            // 'TAP' => $bulanIni->where('status', 'TAP')->count(),
         ];
 
         // Data untuk bulan sebelumnya
@@ -61,12 +61,12 @@ class WaliController extends Controller
             ->get();
 
         $countPrevious = [
-            'Hadir' => $bulanSebelumnya->where('status', 'Hadir')->count(),
+            'Hadir' => $bulanSebelumnya->whereIn('status', ['Hadir', 'Terlambat', 'TAP'])->count(),
             'Sakit' => $bulanSebelumnya->where('status', 'Sakit')->count(),
             'Izin' => $bulanSebelumnya->where('status', 'Izin')->count(),
-            'Terlambat' => $bulanSebelumnya->where('status', 'Terlambat')->count(),
             'Alfa' => $bulanSebelumnya->where('status', 'Alfa')->count(),
-            'TAP' => $bulanSebelumnya->where('status', 'TAP')->count(),
+            // 'Terlambat' => $bulanSebelumnya->where('status', 'Terlambat')->count(),
+            // 'TAP' => $bulanSebelumnya->where('status', 'TAP')->count(),
         ];
 
         return view('wali.wali', compact('user', 'kelas', 'count', 'countCurrent', 'countPrevious'));
@@ -74,93 +74,110 @@ class WaliController extends Controller
 
     public function siswa(Request $request)
     {
-        // dd($request->all());
+        // Retrieve the date range from the request
         $startDate = $request->input('start');
         $endDate = $request->input('end');
         $search = $request->input('search');
 
+        // Set default to the current month if no dates are provided
         if (!$startDate || !$endDate) {
             $startDate = Carbon::now()->startOfMonth()->toDateString();
             $endDate = Carbon::now()->endOfMonth()->toDateString();
         }
 
-        $user = Wali_Kelas::where('id_user', auth()->id())->with('kelas')->first();
-        $kelas = Kelas::where('nip', $user->nip)->first();
-        $students = Siswa::where('id_kelas', $kelas->id_kelas)->with('user');
+        // Fetch students in the class
+        $user = Auth::user();
+        $nip = $user->walikelas->nip;
+        $class = Kelas::where("nip", $nip)->first();
+        $studentsQuery = Siswa::where('id_kelas', $class->id_kelas)->with('user');
 
         if ($search) {
-            $students->where(function ($s) use ($search) {
-                $s->whereHas('user', function ($query) use ($search) {
-                    $query->where('nama', 'like', '%' . $search . '%');
-                })
-                    ->orWhere('nis', 'like', '%' . $search . '%');
+            $studentsQuery->where(function ($query) use ($search) {
+                $query->where('nis', 'like', '%' . $search . '%')
+                    ->orWhereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('nama', 'like', '%' . $search . '%');
+                    });
             });
         }
 
-        $students = $students->get();
-
+        // Get the students and their IDs
+        $students = $studentsQuery->get();
         $siswaIds = $students->pluck('nis');
 
+        // Fetch attendance records for the students within the specified date range
         $siswaAbsensi = Absensi::whereIn('nis', $siswaIds)
             ->whereBetween('date', [$startDate, $endDate])
             ->get();
 
-        $totalStudents = count($students);
+        // Initialize the attendance count for each status across all students
         $attendanceCounts = [
-            'Hadir' => $siswaAbsensi->where('status', 'Hadir')->count(),
-            'Sakit' => $siswaAbsensi->where('status', 'Sakit')->count(),
-            'Izin' => $siswaAbsensi->where('status', 'Izin')->count(),
+            'Hadir' => $siswaAbsensi->whereIn('status', ['Hadir', 'Terlambat', 'TAP'])->count(),
+            'Sakit/Izin' => $siswaAbsensi->whereIn('status', ['Sakit', 'Izin'])->count(),
             'Alfa' => $siswaAbsensi->where('status', 'Alfa')->count(),
-            'Terlambat' => $siswaAbsensi->where('status', 'Terlambat')->count(),
-            'TAP' => $siswaAbsensi->where('status', 'TAP')->count(),
         ];
 
+        // Calculate attendance data for each student
         $studentsData = [];
 
         foreach ($students as $student) {
+            // Get attendance records for the current student within the specified date range
             $studentAttendance = $siswaAbsensi->where('nis', $student->nis);
 
-            $totalAttendance = $studentAttendance->count();
+            // Calculate the Effective Business Day Count based on unique attendance dates
+            $effectiveBusinessDaysCount = $studentAttendance->unique('date')->count();
+
+            // Initialize the student data
             $studentData = [
                 'nis' => $student->nis,
                 'name' => $student->user->nama,
+                'attendanceCounts' => [],
                 'attendancePercentages' => [],
             ];
 
-            if ($totalAttendance > 0) {
-                foreach ($attendanceCounts as $status => $count) {
+            // Count the status for this student
+            foreach ($attendanceCounts as $status => $count) {
+                if ($status === 'Hadir') {
+                    // Count the combined status for 'Hadir'
+                    $studentStatusCount = $studentAttendance->whereIn('status', ['Hadir', 'Terlambat', 'TAP'])->count();
+                } elseif ($status === 'Sakit/Izin') {
+                    // Count the combined status for 'Sakit/Izin'
+                    $studentStatusCount = $studentAttendance->whereIn('status', ['Sakit', 'Izin'])->count();
+                } else {
+                    // Count for individual statuses
                     $studentStatusCount = $studentAttendance->where('status', $status)->count();
-                    $percentage = ($studentStatusCount / $totalAttendance) * 100;
-                    $studentData['attendancePercentages'][$status] = $percentage;
                 }
-            } else {
-                $studentData['attendancePercentages'] = array_fill_keys(array_keys($attendanceCounts), 0);
+
+                $studentData['attendanceCounts'][$status] = $studentStatusCount; // Count for this status
+
+                // Calculate the percentage based on Effective Business Days Count
+                if ($effectiveBusinessDaysCount > 0) {
+                    $percentage = ($studentStatusCount / $effectiveBusinessDaysCount) * 100;
+                    $studentData['attendancePercentages'][$status] = $percentage;
+                } else {
+                    $studentData['attendancePercentages'][$status] = 0; // Set to 0 if no effective days
+                }
             }
 
-            $studentsData[] = $studentData;
+            $studentsData[] = $studentData; // Add student data to the array
         }
 
+        // Calculate average attendance percentages for all statuses
         $averageAttendancePercentages = [];
-
-        $attendanceCounts['Sakit/Izin'] = $attendanceCounts['Sakit'] + $attendanceCounts['Izin'];
-
+        $totalStudents = count($students);
         foreach ($attendanceCounts as $status => $count) {
             $totalPercentage = 0;
 
+            // Sum the individual percentages for this status
             foreach ($studentsData as $studentData) {
-                if ($status === 'Sakit/Izin') {
-                    $totalPercentage += $studentData['attendancePercentages']['Sakit'] ?? 0;
-                    $totalPercentage += $studentData['attendancePercentages']['Izin'] ?? 0;
-                } else {
-                    $totalPercentage += $studentData['attendancePercentages'][$status] ?? 0;
-                }
+                $totalPercentage += $studentData['attendancePercentages'][$status] ?? 0;
             }
 
+            // Calculate the average percentage
             $averageAttendancePercentages[$status] = $totalStudents > 0 ? $totalPercentage / $totalStudents : 0;
         }
 
+        // Create a pagination instance
         $siswaDataCollection = collect($studentsData);
-
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 9;
         $paginateData = new LengthAwarePaginator(
@@ -171,16 +188,17 @@ class WaliController extends Controller
             ['path' => LengthAwarePaginator::resolveCurrentPath()]
         );
 
-        $paginatedData = $paginateData->appends($request->only(['start', 'end', 'search']));
+        $paginatedData = $paginateData->appends($request->only(['start', 'end']));
 
-
+        // Pass the data to the view
         return view('wali.siswa', [
             'studentsData' => $paginatedData,
             'attendanceCounts' => $attendanceCounts,
             'averageAttendancePercentages' => $averageAttendancePercentages,
-            'kelas' => $kelas,
+            'kelas' => $class,
             'startDate' => $startDate,
             'endDate' => $endDate,
+            'businessDaysCount' => $effectiveBusinessDaysCount,
             'search' => $search
         ]);
     }
@@ -210,7 +228,7 @@ class WaliController extends Controller
         $totalRecords = $present->count();
 
         $attendanceCounts = [
-            'Hadir' => $present->where('status', 'Hadir')->count(),
+            'Hadir' => $present->whereIn('status', ['Hadir', 'Terlambat', 'TAP'])->count(),
             'Sakit/Izin' => $present->where('status', 'Sakit')->count() + $present->where('status', 'Izin')->count(),
             'Alfa' => $present->where('status', 'Alfa')->count(),
             'Terlambat' => $present->where('status', 'Terlambat')->count(),

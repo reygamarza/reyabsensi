@@ -23,10 +23,22 @@ class Lsiswa extends Component
     public $email, $password, $nama, $nis, $jenis_kelamin, $nisn, $id_kelas, $id_user, $nis_lama, $nik_ayah, $nik_ibu, $nik_wali;
     public $file;
     public $searchsiswa = '';
+    public $sortColumn = 'nis';
+    public $sortDirection = 'asc';
 
     public function mount($id_kelas)
     {
         $this->id_kelas = $id_kelas;
+    }
+
+    public function sortBy($column)
+    {
+        if ($this->sortColumn === $column) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortColumn = $column;
+            $this->sortDirection = 'asc';
+        }
     }
 
     public function render()
@@ -41,14 +53,21 @@ class Lsiswa extends Component
     protected function getSiswa()
     {
         return Siswa::with('user', 'kelas.jurusan')
-            ->where('id_kelas', $this->id_kelas)
-            ->when($this->searchsiswa, function ($query) {
-                $query->whereHas('user', function ($q) {
-                    $q->where('nama', 'like', '%' . $this->searchsiswa . '%')
-                        ->orWhere('email', 'like', '%' . $this->searchsiswa . '%');
-                });
-            })
-            ->paginate(10);
+        ->where('id_kelas', $this->id_kelas)
+        ->when($this->searchsiswa, function ($query) {
+            $query->whereHas('user', function ($q) {
+                $q->where('nama', 'like', '%' . $this->searchsiswa . '%')
+                    ->orWhere('email', 'like', '%' . $this->searchsiswa . '%');
+            });
+        })
+        ->when(in_array($this->sortColumn, ['nis', 'nisn']), function ($query) {
+            $query->orderBy($this->sortColumn, $this->sortDirection);
+        })
+        ->when(in_array($this->sortColumn, ['nama', 'email']), function ($query) {
+            $query->join('users', 'siswas.id_user', '=', 'users.id')
+                  ->orderBy("users.{$this->sortColumn}", $this->sortDirection);
+        })
+        ->paginate(10);
     }
 
     public function tambahsiswa()

@@ -25,11 +25,31 @@
                 <table class="table table-borderless table-data3">
                     <thead>
                         <tr>
-                            <th>NIP</th>
-                            <th>Email</th>
-                            <th>Nama</th>
+                            <th wire:click="sortBy('nip')" style="cursor: pointer;">
+                                NIP
+                                @if ($sortColumn == 'nip')
+                                    <i class="fa fa-sort-{{ $sortDirection == 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
+                            <th wire:click="sortBy('nama')" style="cursor: pointer;">
+                                Nama
+                                @if ($sortColumn == 'nama')
+                                    <i class="fa fa-sort-{{ $sortDirection == 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
+                            <th wire:click="sortBy('email')" style="cursor: pointer;">
+                                Email
+                                @if ($sortColumn == 'email')
+                                    <i class="fa fa-sort-{{ $sortDirection == 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
                             <th>JK</th>
-                            <th>NUPTK</th>
+                            <th wire:click="sortBy('nuptk')" style="cursor: pointer;">
+                                NUPTK
+                                @if ($sortColumn == 'nuptk')
+                                    <i class="fa fa-sort-{{ $sortDirection == 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -37,8 +57,8 @@
                         @foreach ($daftarwali as $w)
                             <tr>
                                 <td>{{ $w->nip }}</td>
-                                <td>{{ $w->user->email }}</td>
                                 <td>{{ $w->user->nama }}</td>
+                                <td>{{ $w->user->email }}</td>
                                 <td>{{ $w->jenis_kelamin }}</td>
                                 <td>{{ $w->nuptk }}</td>
                                 <td>

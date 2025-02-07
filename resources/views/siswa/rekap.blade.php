@@ -183,18 +183,18 @@
                                                         <i class="fas fa-user-md text-info"></i> Sakit/Izin :
                                                         {{ $jumlahIzin }}
                                                     </li>
-                                                    <li class="list-group-item">
+                                                    {{-- <li class="list-group-item">
                                                         <i class="fas fa-clock text-warning"></i> Terlambat :
                                                         {{ $jumlahTerlambat }}
-                                                    </li>
+                                                    </li> --}}
                                                     <li class="list-group-item">
                                                         <i class="fas fa-times-circle text-danger"></i> Alfa :
                                                         {{ $jumlahAlfa }}
                                                     </li>
-                                                    <li class="list-group-item">
+                                                    {{-- <li class="list-group-item">
                                                         <i class="fas fa-bell text-primary"></i> TAP :
                                                         {{ $jumlahTap }}
-                                                    </li>
+                                                    </li> --}}
                                                     <li class="list-group-item">
                                                         <i class="fas fa-user-clock text-secondary"></i> Total
                                                         Keterlambatan : {{ $totalKeterlambatan }} Menit

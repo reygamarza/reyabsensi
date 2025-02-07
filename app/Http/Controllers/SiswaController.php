@@ -29,7 +29,6 @@ class SiswaController extends Controller
         $nis = $user->siswa->nis;
         $late2 = Absensi::where('nis', $nis)->whereMonth('date', date('m', strtotime('first day of previous month')))->sum('menit_keterlambatan');
         $late = Absensi::where('nis', $nis)->whereMonth('date', date('m'))->sum('menit_keterlambatan');
-        // return $late;
 
         // Mencari absensi berdasarkan tanggal hari ini dan NIS siswa.
         $cekabsen = Absensi::where('date', $hariini)
@@ -56,11 +55,15 @@ class SiswaController extends Controller
         $dataBulanIni['Sakit/Izin'] = ($dataBulanIni['Sakit'] ?? 0) + ($dataBulanIni['Izin'] ?? 0);
         unset($dataBulanIni['Sakit'], $dataBulanIni['Izin']);
 
+        // Gabungkan 'Terlambat' dan 'TAP' ke dalam 'Hadir'
+        $dataBulanIni['Hadir'] = ($dataBulanIni['Hadir'] ?? 0) + ($dataBulanIni['Terlambat'] ?? 0) + ($dataBulanIni['TAP'] ?? 0);
+        unset($dataBulanIni['Terlambat'], $dataBulanIni['TAP']);
+
         $dataBulanSebelumnya['Sakit/Izin'] = ($dataBulanSebelumnya['Sakit'] ?? 0) + ($dataBulanSebelumnya['Izin'] ?? 0);
         unset($dataBulanSebelumnya['Sakit'], $dataBulanSebelumnya['Izin']);
 
         // Status yang tersisa
-        $statuses = ['Hadir', 'Sakit/Izin', 'Alfa', 'Terlambat', 'TAP'];
+        $statuses = ['Hadir', 'Sakit/Izin', 'Alfa'];
         foreach ($statuses as $status) {
             if (!array_key_exists($status, $dataBulanIni)) {
                 $dataBulanIni[$status] = 0;
@@ -122,6 +125,7 @@ class SiswaController extends Controller
             'statusValidasi' => $statusValidasi
         ]);
     }
+
 
     public function profile()
     {
@@ -196,7 +200,7 @@ class SiswaController extends Controller
         // Query dengan paginasi untuk tampilan tabel
         $absensi = Absensi::where('nis', $nis)
             ->whereBetween('date', [$start_date, $end_date])
-            ->paginate(7)
+            ->paginate(10)
             ->appends($request->only(['start_date', 'end_date']));
 
         return view('siswa.rekap', array_merge(
@@ -207,7 +211,7 @@ class SiswaController extends Controller
 
     private function filterrekap($absensi)
     {
-        $jumlahHadir = $absensi->where('status', 'Hadir')->count();
+        $jumlahHadir = $absensi->whereIn('status', ['Hadir', 'Terlambat', 'TAP'])->count();
         $jumlahIzin = $absensi->whereIn('status', ['Sakit', 'Izin'])->count();
         $jumlahTerlambat = $absensi->where('status', 'Terlambat')->count();
         $jumlahAlfa = $absensi->where('status', 'Alfa')->count();

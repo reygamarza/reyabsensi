@@ -32,13 +32,15 @@ class WaliSiswaController extends Controller
 
         $dataAbsensiAnak = [];
         foreach ($siswa as $s) {
+            $today = date('Y-m-d');
+            $hariIni = Absensi::where('nis', $s->nis)->where('date', $today)->first();
             $tahunIni = Absensi::where('nis', $s->nis)->whereYear('date', date('Y'))->get();
             $ini = Absensi::whereYear('date', date('Y'))->where('nis', $s->nis)->whereMonth('date', date('m'))->get();
             $lalu = Absensi::whereYear('date', date('Y'))->where('nis', $s->nis)->whereMonth('date', date('m', strtotime('first day of previous month')))->get();
 
             $jumlah = [
                 'tahunIni' => $tahunIni->count(),
-                'hadirTahunIni' => $tahunIni->where('status', "Hadir")->count(),
+                'hadirTahunIni' => $tahunIni->whereIn('status', ["Hadir", "Terlambat", "TAP"])->count(),
                 'terlambatTahunIni' => $tahunIni->where('status', "Terlambat")->count(),
                 'tapTahunIni' => $tahunIni->where('status', "TAP")->count(),
                 'alfaTahunIni' => $tahunIni->where('status', "Alfa")->count(),
@@ -46,7 +48,7 @@ class WaliSiswaController extends Controller
                 'menitTerlambatTahunIni' => $tahunIni->sum('menit_keterlambatan'),
 
                 'ini' => $ini->count(),
-                'hadirIni' => $ini->where('status', "Hadir")->count(),
+                'hadirIni' => $ini->whereIn('status', ["Hadir", "Terlambat", "TAP"])->count(),
                 'terlambatIni' => $ini->where('status', "Terlambat")->count(),
                 'tapIni' => $ini->where('status', "TAP")->count(),
                 'alfaIni' => $ini->where('status', "Alfa")->count(),
@@ -54,7 +56,7 @@ class WaliSiswaController extends Controller
                 'menitTerlambatBulanIni' => $ini->sum('menit_keterlambatan'),
 
                 'lalu' => $lalu->count(),
-                'hadirLalu' => $lalu->where('status', "Hadir")->count(),
+                'hadirLalu' => $lalu->whereIn('status', ["Hadir", "Terlambat", "TAP"])->count(),
                 'terlambatLalu' => $lalu->where('status', "Terlambat")->count(),
                 'tapLalu' => $lalu->where('status', "TAP")->count(),
                 'alfaLalu' => $lalu->where('status', "Alfa")->count(),
@@ -71,6 +73,7 @@ class WaliSiswaController extends Controller
             $dataAbsensiAnak[] = [
                 'nis' => $s->nis,
                 'nama' => strtolower($s->user->nama),
+                'HariIni' => $hariIni ? $hariIni->status : 'Belum Absen',
                 'BulanIni' => [
                     'Hadir' => $jumlah['hadirIni'],
                     'Terlambat' => $jumlah['terlambatIni'],
@@ -142,7 +145,7 @@ class WaliSiswaController extends Controller
 
             // Menghitung statistik absensi
             $attendanceCounts = [
-                'Hadir' => $absensi->where('status', 'Hadir')->count(),
+                'Hadir' => $absensi->whereIn('status', ["Hadir", "Terlambat", "TAP"])->count(),
                 'Sakit/Izin' => $absensi->whereIn('status', ['Sakit', 'Izin'])->count(),
                 'Alfa' => $absensi->where('status', 'Alfa')->count(),
                 'Terlambat' => $absensi->where('status', 'Terlambat')->count(),

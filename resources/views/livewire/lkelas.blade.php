@@ -28,9 +28,24 @@
                 <table class="table table-borderless table-data3">
                     <thead>
                         <tr>
-                            <th>Kelas</th>
-                            <th>Wali Kelas</th>
-                            <th>Jumlah Siswa</th>
+                            <th wire:click="sortBy('tingkat')" style="cursor: pointer;">
+                                Kelas
+                                @if ($sortColumn == 'tingkat')
+                                    <i class="fa fa-sort-{{ $sortDirection == 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
+                            <th wire:click="sortBy('waliKelas.user.nama')" style="cursor: pointer;">
+                                Wali Kelas
+                                @if ($sortColumn == 'waliKelas.user.nama')
+                                    <i class="fa fa-sort-{{ $sortDirection == 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
+                            <th wire:click="sortBy('siswa_count')" style="cursor: pointer;">
+                                Jumlah Siswa
+                                @if ($sortColumn == 'siswa_count')
+                                    <i class="fa fa-sort-{{ $sortDirection == 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -69,6 +84,7 @@
                         @endforeach
                     </tbody>
                 </table>
+
                 <div class="pagination-container">
                     {{ $daftarkelas->links() }}
                 </div>

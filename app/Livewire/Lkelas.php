@@ -22,6 +22,8 @@ class Lkelas extends Component
     public $id_kelas, $id_jurusan, $nip, $nomor_kelas, $tingkat;
     public $file;
     public $searchkelas = '';
+    public $sortColumn = 'tingkat';
+    public $sortDirection = 'asc';
 
     public function render()
     {
@@ -32,16 +34,34 @@ class Lkelas extends Component
         ]);
     }
 
+    public function sortBy($column)
+    {
+        if ($this->sortColumn === $column) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortDirection = 'asc';
+        }
+        $this->sortColumn = $column;
+    }
+
     protected function getKelas()
     {
         return Kelas::with('jurusan', 'waliKelas.user')
-        ->withCount('siswa')
+            ->withCount('siswa')
             ->when($this->searchkelas, function ($query) {
                 $query->whereHas('jurusan', function ($q) {
                     $q->where('id_jurusan', 'like', '%' . $this->searchkelas . '%');
                 })
                     ->orWhere('nomor_kelas', 'like', '%' . $this->searchkelas . '%')
                     ->orWhere('tingkat', 'like', '%' . $this->searchkelas . '%');
+            })
+            ->when(in_array($this->sortColumn, ['tingkat', 'nomor_kelas', 'siswa_count']), function ($query) {
+                $query->orderBy($this->sortColumn, $this->sortDirection);
+            })
+            ->when($this->sortColumn === 'waliKelas.user.nama', function ($query) {
+                $query->join('wali__kelas', 'kelas.nip', '=', 'wali__kelas.nip')
+                      ->join('users', 'users.id', '=', 'wali__kelas.id_user')
+                      ->orderBy('users.nama', $this->sortDirection);
             })
             ->paginate(10);
     }

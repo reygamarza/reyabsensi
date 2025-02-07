@@ -20,6 +20,8 @@ class Walikelas extends Component
     public $email, $password, $nama, $nip, $jenis_kelamin, $nuptk, $nip_lama, $id_user;
     public $file;
     public $searchwali = '';
+    public $sortColumn = 'nama';
+    public $sortDirection = 'asc';
 
     public function render()
     {
@@ -28,21 +30,38 @@ class Walikelas extends Component
         ]);
     }
 
+    public function sortBy($column)
+    {
+        if ($this->sortColumn === $column) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortColumn = $column;
+            $this->sortDirection = 'asc';
+        }
+    }
+
     protected function getWaliKelas()
     {
         return Wali_Kelas::with('user')
-        ->whereHas('user', function ($q) {
-            $q->where('role', 'wali');
-        })
-        ->when($this->searchwali, function ($query) {
-            $query->whereHas('user', function ($q) {
-                $q->where(function ($q2) {
-                    $q2->where('nama', 'like', '%' . $this->searchwali . '%')
-                        ->orWhere('email', 'like', '%' . $this->searchwali . '%');
+            ->whereHas('user', function ($q) {
+                $q->where('role', 'wali');
+            })
+            ->when($this->searchwali, function ($query) {
+                $query->whereHas('user', function ($q) {
+                    $q->where(function ($q2) {
+                        $q2->where('nama', 'like', '%' . $this->searchwali . '%')
+                            ->orWhere('email', 'like', '%' . $this->searchwali . '%');
+                    });
                 });
-            });
-        })
-        ->paginate(10);
+            })
+            ->when(in_array($this->sortColumn, ['nip', 'nuptk']), function ($query) {
+                $query->orderBy($this->sortColumn, $this->sortDirection);
+            })
+            ->when(in_array($this->sortColumn, ['nama', 'email']), function ($query) {
+                $query->join('users', 'wali__kelas.id_user', '=', 'users.id')
+                      ->orderBy('users.nama', $this->sortDirection);
+            })
+            ->paginate(10);
     }
 
     public function tambahwali()

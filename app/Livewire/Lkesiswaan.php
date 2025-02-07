@@ -15,30 +15,52 @@ class Lkesiswaan extends Component
 
     public $email, $password, $nama, $nip, $jenis_kelamin, $nuptk, $nip_lama, $id_user;
     public $searchkesiswaan = '';
+    public $sortColumn = 'nama';
+    public $sortDirection = 'asc';
 
     public function render()
     {
+        // dd($this->getKesiswaan());
         return view('livewire.lkesiswaan', [
             'daftarkesiswaan' => $this->getKesiswaan()
         ]);
     }
 
+    public function sortBy($column)
+    {
+        if ($this->sortColumn === $column) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortColumn = $column;
+            $this->sortDirection = 'asc';
+        }
+    }
+
     protected function getKesiswaan()
     {
         return Wali_Kelas::with('user')
-        ->whereHas('user', function ($q) {
-            $q->where('role', 'kesiswaan');
-        })
-        ->when($this->searchkesiswaan, function ($query) {
-            $query->whereHas('user', function ($q) {
-                $q->where(function ($q2) {
-                    $q2->where('nama', 'like', '%' . $this->searchkesiswaan . '%')
-                        ->orWhere('email', 'like', '%' . $this->searchkesiswaan . '%');
+            ->whereHas('user', function ($q) {
+                $q->where('role', 'kesiswaan');
+            })
+            ->when($this->searchkesiswaan, function ($query) {
+                $query->whereHas('user', function ($q) {
+                    $q->where(function ($q2) {
+                        $q2->where('nama', 'like', '%' . $this->searchkesiswaan . '%')
+                            ->orWhere('email', 'like', '%' . $this->searchkesiswaan . '%');
+                    });
                 });
-            });
-        })
-        ->paginate(10);
+            })
+            ->when(in_array($this->sortColumn, ['nip', 'nuptk']), function ($query) {
+                $query->orderBy($this->sortColumn, $this->sortDirection);
+            })
+            ->when(in_array($this->sortColumn, ['nama', 'email']), function ($query) {
+                $query->join('users', 'wali__kelas.id_user', '=', 'users.id')
+                      ->orderBy('users.nama', $this->sortDirection);
+            })
+            ->paginate(10);
     }
+
+
 
     public function tambahkesiswaan()
     {

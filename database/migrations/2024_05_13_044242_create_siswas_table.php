@@ -24,7 +24,7 @@ return new class extends Migration
             $table->foreign('nik_ibu')->references('nik')->on('wali__siswas')->onDelete('set null');
 
             $table->string('nik_wali')->nullable();
-            $table->foreign('nik_wali')->references('nik')->on('wali__siswas')->onDelete('set null');  
+            $table->foreign('nik_wali')->references('nik')->on('wali__siswas')->onDelete('set null');
 
             $table->unsignedInteger('id_kelas');
             $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onDelete('cascade');

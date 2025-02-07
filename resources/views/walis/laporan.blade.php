@@ -113,14 +113,14 @@
                                             <h4 class="text-danger">{{ number_format($data['attendancePercentage']['percentageAlfa']) }}%</h4>
                                             <small>Alfa</small>
                                         </div>
-                                        <div class="col">
+                                        {{-- <div class="col">
                                             <h4 class="text-warning">{{ number_format($data['attendancePercentage']['percentageTerlambat']) }}%</h4>
                                             <small>Terlambat</small>
-                                        </div>
-                                        <div class="col">
+                                        </div> --}}
+                                        {{-- <div class="col">
                                             <h4 class="text-secondary">{{ number_format($data['attendancePercentage']['percentageTAP']) }}%</h4>
                                             <small>TAP</small>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                             </div>

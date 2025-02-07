@@ -23,62 +23,60 @@ class KesiswaanController extends Controller
      */
     public function index()
     {
-        // Data kehadiran untuk chart
-        $attendanceData = [
-            'kelas10' => [],
-            'kelas11' => [],
-            'kelas12' => []
-        ];
-
-        // Mendapatkan tanggal Senin dan Jumat minggu ini
-        $startOfWeek = Carbon::now()->startOfWeek(Carbon::MONDAY);
-        $endOfWeek = Carbon::now()->endOfWeek(Carbon::FRIDAY);
-
-        // Mendapatkan jumlah hari kerja (Senin hingga Jumat)
-        $workDays = CarbonPeriod::create($startOfWeek, $endOfWeek)->filter(function ($date) {
-            return in_array($date->dayOfWeek, [1, 2, 3, 4, 5]); // Senin - Jumat
-        })->count();
-
-        // Mengambil kelas tingkat 10, 11, dan 12 beserta siswa-siswanya
-        $kelasList = Kelas::with('siswa')->whereIn('tingkat', ['10', '11', '12'])->get();
-
-        foreach ($kelasList as $kelas) {
-            $totalSiswa = $kelas->siswa->count(); // Total siswa per kelas
-
-            // Ambil jumlah kehadiran siswa dalam minggu ini
-            $kehadiranCount = Absensi::whereIn('nis', $kelas->siswa->pluck('nis')) // Ambil NIS semua siswa di kelas
-                ->whereBetween('date', [$startOfWeek, $endOfWeek]) // Ambil absensi hanya dalam minggu ini
-                ->where('status', 'Hadir') // Hanya hitung yang statusnya "Hadir"
-                ->count();
-
-            // Hitung persentase kehadiran
-            $persentaseKehadiran = $totalSiswa > 0 ? ($kehadiranCount / ($totalSiswa * $workDays)) * 100 : 0;
-
-            // Simpan data berdasarkan tingkat kelas
-            if ($kelas->tingkat == '10') {
-                $attendanceData['kelas10'][] = $persentaseKehadiran;
-            } elseif ($kelas->tingkat == '11') {
-                $attendanceData['kelas11'][] = $persentaseKehadiran;
-            } elseif ($kelas->tingkat == '12') {
-                $attendanceData['kelas12'][] = $persentaseKehadiran;
-            }
-        }
-
         $today = date('Y-m-d');
+
         $attendanceTotal = [
-            'Hadir' => Absensi::where('status', 'Hadir')->where('date', $today)->count(),
+            'Hadir' => Absensi::whereIn('status', ['Hadir', 'Terlambat', 'TAP'])->where('date', $today)->count(),
             'Terlambat' => Absensi::where('status', 'Terlambat')->where('date', $today)->count(),
             'TAP' => Absensi::where('status', 'TAP')->where('date', $today)->count(),
             'Alfa' => Absensi::where('status', 'Alfa')->where('date', $today)->count(),
             'Izin' => Absensi::where(function ($query) {
                 $query->where('status', 'Sakit')
-                    ->orWhere('status', 'Izin');
+                      ->orWhere('status', 'Izin');
             })->where('date', $today)->count(),
         ];
 
-        // Mengirim data ke view
-        return view('kesiswaan.kesiswaan', compact('attendanceData', 'attendanceTotal'));
+        $attendanceData = [];
+
+        // Calculate last five weekdays (Monday to Friday)
+        $fiveWeekdays = [];
+        $date = Carbon::now();
+        while (count($fiveWeekdays) < 5) {
+            if (in_array($date->dayOfWeek, [1, 2, 3, 4, 5])) { // Monday to Friday
+                $fiveWeekdays[] = $date->format('Y-m-d');
+            }
+            $date->subDay();
+        }
+        $fiveWeekdays = array_reverse($fiveWeekdays); // Oldest to latest
+
+        // Process attendance for last five weekdays
+        $kelasList = Kelas::with('siswa')->whereIn('tingkat', ['10', '11', '12'])->get();
+
+        foreach ($fiveWeekdays as $index => $date) {
+            foreach ($kelasList as $kelas) {
+                $totalSiswa = $kelas->siswa->count();
+
+                $kehadiranCount = Absensi::whereIn('nis', $kelas->siswa->pluck('nis'))
+                    ->whereDate('date', $date)
+                    ->whereIn('status', ['Hadir', 'Terlambat', 'TAP'])
+                    ->count();
+
+                $persentaseKehadiran = $totalSiswa > 0 ? ($kehadiranCount / $totalSiswa) * 100 : 0;
+
+                if ($kelas->tingkat == '10') {
+                    $attendanceData['kelas10'][$index] = $persentaseKehadiran;
+                } elseif ($kelas->tingkat == '11') {
+                    $attendanceData['kelas11'][$index] = $persentaseKehadiran;
+                } elseif ($kelas->tingkat == '12') {
+                    $attendanceData['kelas12'][$index] = $persentaseKehadiran;
+                }
+            }
+        }
+
+        return view('kesiswaan.kesiswaan', compact('attendanceData', 'attendanceTotal', 'fiveWeekdays'));
     }
+
+
 
     public function laporankelas(Request $request)
     {
@@ -121,7 +119,7 @@ class KesiswaanController extends Controller
 
             $totalKelasRecords = $kelasAbsensi->count();
 
-            $kelasHadir = $kelasAbsensi->where('status', 'Hadir')->count();
+            $kelasHadir = $kelasAbsensi->whereIn('status', ["Hadir", "Terlambat", "TAP"])->count();
             $kelasSakitIzin = ($kelasAbsensi->where('status', 'Sakit')->count()) + ($kelasAbsensi->where('status', 'Izin')->count());
             $kelasAlfa = $kelasAbsensi->where('status', 'Alfa')->count();
             $kelasTerlambat = $kelasAbsensi->where('status', 'Terlambat')->count();
@@ -178,93 +176,106 @@ class KesiswaanController extends Controller
         ]);
     }
 
-    public function laporansiswa(Request $request, $kelas_id)
+    public function laporanSiswa(Request $request, $kelas_id)
     {
-        // dd($request->all());
+        // Retrieve the date range from the request
         $startDate = $request->input('start');
         $endDate = $request->input('end');
-        $search = $request->input('search');
 
+        // Set default to the current month if no dates are provided
         if (!$startDate || !$endDate) {
             $startDate = Carbon::now()->startOfMonth()->toDateString();
             $endDate = Carbon::now()->endOfMonth()->toDateString();
         }
 
+        // Fetch the search keyword for name or NIS
+        $search = $request->input('search');
+
+        // Fetch students in the class and apply search filter
         $kelas = Kelas::where('id_kelas', $kelas_id)->first();
-        $students = Siswa::where('id_kelas', $kelas_id)->with('user');
+        $studentsQuery = Siswa::where('id_kelas', $kelas_id)->with('user');
 
         if ($search) {
-            $students->where(function ($s) use ($search) {
-                $s->whereHas('user', function ($query) use ($search) {
-                    $query->where('nama', 'like', '%' . $search . '%');
-                })
-                    ->orWhere('nis', 'like', '%' . $search . '%');
-            });
+            // Filter by name or NIS
+            $studentsQuery->whereHas('user', function ($query) use ($search) {
+                $query->where('nama', 'like', '%' . $search . '%');
+            })->orWhere('nis', 'like', '%' . $search . '%');
         }
-        $students = $students->get();
 
+        $students = $studentsQuery->get();
         $siswaIds = $students->pluck('nis');
 
+        // Fetch attendance records for the students within the specified date range
         $siswaAbsensi = Absensi::whereIn('nis', $siswaIds)
             ->whereBetween('date', [$startDate, $endDate])
             ->get();
 
         $totalStudents = count($students);
         $attendanceCounts = [
-            'Hadir' => $siswaAbsensi->where('status', 'Hadir')->count(),
-            'Sakit' => $siswaAbsensi->where('status', 'Sakit')->count(),
-            'Izin' => $siswaAbsensi->where('status', 'Izin')->count(),
+            'Hadir' => $siswaAbsensi->whereIn('status', ['Hadir', 'Terlambat', 'TAP'])->count(),
+            'Sakit/Izin' => $siswaAbsensi->whereIn('status', ['Sakit', 'Izin'])->count(),
             'Alfa' => $siswaAbsensi->where('status', 'Alfa')->count(),
-            'Terlambat' => $siswaAbsensi->where('status', 'Terlambat')->count(),
-            'TAP' => $siswaAbsensi->where('status', 'TAP')->count(),
         ];
 
-        $studentsData = [];
+        // Calculate the percentage of attendance for each student
+        $studentsData = []; // Initialize the array to hold student data
 
         foreach ($students as $student) {
+            // Get attendance records for the current student within the specified date range
             $studentAttendance = $siswaAbsensi->where('nis', $student->nis);
+            $effectiveBusinessDaysCount = $studentAttendance->unique('date')->count();
 
-            $totalAttendance = $studentAttendance->count();
+            // Initialize the student data
             $studentData = [
                 'nis' => $student->nis,
                 'name' => $student->user->nama,
+                'attendanceCounts' => [],
                 'attendancePercentages' => [],
             ];
 
-            if ($totalAttendance > 0) {
-                foreach ($attendanceCounts as $status => $count) {
+            // Count the status for this student
+            foreach ($attendanceCounts as $status => $count) {
+                if ($status === 'Hadir') {
+                    // Count the combined status for 'Hadir'
+                    $studentStatusCount = $studentAttendance->whereIn('status', ['Hadir', 'Terlambat', 'TAP'])->count();
+                } elseif ($status === 'Sakit/Izin') {
+                    // Calculate the count for combined status
+                    $studentStatusCount = $studentAttendance->whereIn('status', ['Sakit', 'Izin'])->count();
+                } else {
+                    // Calculate count for individual statuses
                     $studentStatusCount = $studentAttendance->where('status', $status)->count();
-                    $percentage = ($studentStatusCount / $totalAttendance) * 100;
-                    $studentData['attendancePercentages'][$status] = $percentage;
                 }
-            } else {
-                $studentData['attendancePercentages'] = array_fill_keys(array_keys($attendanceCounts), 0);
+
+                $studentData['attendanceCounts'][$status] = $studentStatusCount; // Count for this status
+
+                // Calculate the percentage for this status
+                if ($effectiveBusinessDaysCount > 0) {
+                    $percentage = round(($studentStatusCount / $effectiveBusinessDaysCount) * 100, 2);
+                    $studentData['attendancePercentages'][$status] = $percentage;
+                } else {
+                    $studentData['attendancePercentages'][$status] = 0; // Set to 0 if no business days
+                }
             }
 
-            $studentsData[] = $studentData;
+            $studentsData[] = $studentData; // Add student data to the array
         }
 
+        // Calculate average attendance percentages for all statuses
         $averageAttendancePercentages = [];
-
-        $attendanceCounts['Sakit/Izin'] = $attendanceCounts['Sakit'] + $attendanceCounts['Izin'];
-
         foreach ($attendanceCounts as $status => $count) {
             $totalPercentage = 0;
 
+            // Sum the individual percentages for this status
             foreach ($studentsData as $studentData) {
-                if ($status === 'Sakit/Izin') {
-                    $totalPercentage += $studentData['attendancePercentages']['Sakit'] ?? 0;
-                    $totalPercentage += $studentData['attendancePercentages']['Izin'] ?? 0;
-                } else {
-                    $totalPercentage += $studentData['attendancePercentages'][$status] ?? 0;
-                }
+                $totalPercentage += $studentData['attendancePercentages'][$status] ?? 0;
             }
 
-            $averageAttendancePercentages[$status] = $totalStudents > 0 ? $totalPercentage / $totalStudents : 0;
+            // Calculate the average percentage
+            $averageAttendancePercentages[$status] = $totalStudents > 0 ? round($totalPercentage / $totalStudents, 2) : 0;
         }
 
+        // Create a pagination instance
         $siswaDataCollection = collect($studentsData);
-
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 9;
         $paginateData = new LengthAwarePaginator(
@@ -277,6 +288,7 @@ class KesiswaanController extends Controller
 
         $paginatedData = $paginateData->appends($request->only(['start', 'end', 'search']));
 
+        // Pass the data to the view
         return view('kesiswaan.siswa', [
             'studentsData' => $paginatedData,
             'attendanceCounts' => $attendanceCounts,
@@ -287,6 +299,10 @@ class KesiswaanController extends Controller
             'search' => $search
         ]);
     }
+
+
+
+
 
     public function laporandetailsiswa(Request $request, $kelas_id, $id)
     {
@@ -315,7 +331,7 @@ class KesiswaanController extends Controller
         $totalRecords = $present->count();
 
         $attendanceCounts = [
-            'Hadir' => $present->where('status', 'Hadir')->count(),
+            'Hadir' => $present->whereIn('status', ['Hadir', 'Terlambat', 'TAP'])->count(),
             'Sakit/Izin' => $present->where('status', 'Sakit')->count() + $present->where('status', 'Izin')->count(),
             'Alfa' => $present->where('status', 'Alfa')->count(),
             'Terlambat' => $present->where('status', 'Terlambat')->count(),

@@ -22,11 +22,31 @@
                 <table class="table table-borderless table-data3">
                     <thead>
                         <tr>
-                            <th>NIP</th>
-                            <th>Email</th>
-                            <th>Nama</th>
+                            <th wire:click="sortBy('nip')" style="cursor: pointer;">
+                                NIP
+                                @if ($sortColumn == 'nip')
+                                    <i class="fa fa-sort-{{ $sortDirection == 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
+                            <th wire:click="sortBy('nama')" style="cursor: pointer;">
+                                Nama
+                                @if ($sortColumn == 'nama')
+                                    <i class="fa fa-sort-{{ $sortDirection == 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
+                            <th wire:click="sortBy('email')" style="cursor: pointer;">
+                                Email
+                                @if ($sortColumn == 'email')
+                                    <i class="fa fa-sort-{{ $sortDirection == 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
                             <th>JK</th>
-                            <th>NUPTK</th>
+                            <th wire:click="sortBy('nuptk')" style="cursor: pointer;">
+                                NUPTK
+                                @if ($sortColumn == 'nuptk')
+                                    <i class="fa fa-sort-{{ $sortDirection == 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -34,8 +54,8 @@
                         @foreach ($daftarkesiswaan as $k)
                             <tr>
                                 <td>{{ $k->nip }}</td>
-                                <td>{{ $k->user->email }}</td>
                                 <td>{{ $k->user->nama }}</td>
+                                <td>{{ $k->user->email }}</td>
                                 <td>{{ $k->jenis_kelamin }}</td>
                                 <td>{{ $k->nuptk }}</td>
                                 <td>
