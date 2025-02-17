@@ -74,7 +74,7 @@
                                 height="auto" alt="CoolAdmin" />
                         </a>
                     </div>
-                    <div class="header__navbar">
+                    {{-- <div class="header__navbar">
                         <ul class="list-unstyled">
                             <li class="">
                                 <a href="{{ route('operator.index') }}">
@@ -114,7 +114,7 @@
                                 </ul>
                             </li>
                         </ul>
-                    </div>
+                    </div> --}}
                     <div class="header__tool">
                         <div class="header-button-item has-noti js-item-menu">
                             <i class="zmdi zmdi-notifications"></i>
@@ -157,8 +157,8 @@
                                     </div>
                                     <div class="account-dropdown__body">
                                         <div class="account-dropdown__item">
-                                            <a href="{{ route('profile-O') }}">
-                                                <i class="zmdi zmdi-account"></i>Profile</a>
+                                            {{-- <a href="{{ route('profile-O') }}">
+                                                <i class="zmdi zmdi-account"></i>Profile</a> --}}
                                         </div>
                                     </div>
                                     <div class="account-dropdown__footer">
@@ -201,7 +201,7 @@
             </div>
             <nav class="navbar-mobile">
                 <div class="container-fluid">
-                    <ul class="navbar-mobile__list list-unstyled">
+                    {{-- <ul class="navbar-mobile__list list-unstyled">
                         <li>
                             <a href="{{ route('operator.index') }}">
                                 <i class="fa-solid fa-route"></i>Koordinat | Waktu Absen</a>
@@ -233,7 +233,7 @@
                                 </li>
                             </ul>
                         </li>
-                    </ul>
+                    </ul> --}}
                 </div>
             </nav>
         </header>
@@ -306,8 +306,8 @@
                             </div>
                             <div class="account-dropdown__body">
                                 <div class="account-dropdown__item">
-                                    <a href="{{ route('profile-O') }}">
-                                        <i class="zmdi zmdi-account"></i>Profile</a>
+                                    {{-- <a href="{{ route('profile-O') }}">
+                                        <i class="zmdi zmdi-account"></i>Profile</a> --}}
                                 </div>
                             </div>
                             <div class="account-dropdown__footer">

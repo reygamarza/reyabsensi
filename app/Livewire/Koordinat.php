@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Koordinat_Sekolah;
+use App\Models\LokasiSekolah;
 use Livewire\Component;
 
 class Koordinat extends Component
@@ -12,7 +13,7 @@ class Koordinat extends Component
 
     public function render()
     {
-        $koordinat = Koordinat_Sekolah::first();
+        $koordinat = LokasiSekolah::first();
 
         $this->titik_koordinat = $koordinat->titik_koordinat;
         $this->radius = $koordinat->radius;

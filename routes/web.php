@@ -14,32 +14,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    if (auth()->check()) {
-        $role = auth()->user()->role;
-
-        if ($role == 'kesiswaan') {
-            return redirect('kesiswaan');
-        } elseif ($role == 'siswa') {
-            return redirect('siswa');
-        } elseif ($role == 'wali') {
-            return redirect('wali');
-        } elseif ($role == 'operator') {
-            return redirect('operator');
-        } elseif ($role == 'walis') {
-            return redirect('walis');
-        } else {
-            return redirect('/home');
-        }
-    }
-    return view('login');
-});
-
-
+Route::view('/', 'login');
 Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
-Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Auth::routes();
+
+Route::middleware(['auth'])->group(function () {
+    Route::group(['prefix' => '/operator', 'middleware' => ['can:isOperator']], function () {
+        Route::get('/', [App\Http\Controllers\OperatorController::class, 'index'])->name('operator.dashboard');
+        // Route::get('wali-kelas-O', [App\Http\Controllers\OperatorController::class, 'walikelasO'])->name('wali-kelas-O');
+        // Route::get('wali-siswa-O', [App\Http\Controllers\OperatorController::class, 'walisiswaO'])->name('wali-siswa-O');
+        // Route::get('kesiswaan-O', [App\Http\Controllers\OperatorController::class, 'kesiswaanO'])->name('kesiswaan-O');
+        // Route::get('kelas-O', [App\Http\Controllers\OperatorController::class, 'kelasO'])->name('kelas-O');
+        // Route::get('siswa-O/{id_kelas}', [App\Http\Controllers\OperatorController::class, 'siswaO'])->name('siswa-O');
+        // Route::get('jurusan-O', [App\Http\Controllers\OperatorController::class, 'jurusanO'])->name('jurusan-O');
+        // Route::get('profile-O', [App\Http\Controllers\OperatorController::class, 'profileO'])->name('profile-O');
+        // Route::post('edit-profile-O', [App\Http\Controllers\OperatorController::class, 'editprofileO'])->name('operator.editprofile');
+    });
+});
+
 
 
 Route::middleware(['auth', 'Kesiswaan:kesiswaan'])->group(function () {
@@ -78,17 +72,17 @@ Route::middleware(['auth', 'Wali:wali'])->group(function () {
     Route::post('edit-profile', [App\Http\Controllers\WaliController::class, 'editprofile'])->name('WaliKelas.editprofile');
 });
 
-Route::middleware(['auth', 'Operator:operator'])->group(function () {
-    Route::resource('operator', App\Http\Controllers\OperatorController::class);
-    Route::get('wali-kelas-O', [App\Http\Controllers\OperatorController::class, 'walikelasO'])->name('wali-kelas-O');
-    Route::get('wali-siswa-O', [App\Http\Controllers\OperatorController::class, 'walisiswaO'])->name('wali-siswa-O');
-    Route::get('kesiswaan-O', [App\Http\Controllers\OperatorController::class, 'kesiswaanO'])->name('kesiswaan-O');
-    Route::get('kelas-O', [App\Http\Controllers\OperatorController::class, 'kelasO'])->name('kelas-O');
-    Route::get('siswa-O/{id_kelas}', [App\Http\Controllers\OperatorController::class, 'siswaO'])->name('siswa-O');
-    Route::get('jurusan-O', [App\Http\Controllers\OperatorController::class, 'jurusanO'])->name('jurusan-O');
-    Route::get('profile-O', [App\Http\Controllers\OperatorController::class, 'profileO'])->name('profile-O');
-    Route::post('edit-profile-O', [App\Http\Controllers\OperatorController::class, 'editprofileO'])->name('operator.editprofile');
+// Route::middleware(['auth', 'Operator:operator'])->group(function () {
+//     Route::resource('operator', App\Http\Controllers\OperatorController::class);
+//     Route::get('wali-kelas-O', [App\Http\Controllers\OperatorController::class, 'walikelasO'])->name('wali-kelas-O');
+//     Route::get('wali-siswa-O', [App\Http\Controllers\OperatorController::class, 'walisiswaO'])->name('wali-siswa-O');
+//     Route::get('kesiswaan-O', [App\Http\Controllers\OperatorController::class, 'kesiswaanO'])->name('kesiswaan-O');
+//     Route::get('kelas-O', [App\Http\Controllers\OperatorController::class, 'kelasO'])->name('kelas-O');
+//     Route::get('siswa-O/{id_kelas}', [App\Http\Controllers\OperatorController::class, 'siswaO'])->name('siswa-O');
+//     Route::get('jurusan-O', [App\Http\Controllers\OperatorController::class, 'jurusanO'])->name('jurusan-O');
+//     Route::get('profile-O', [App\Http\Controllers\OperatorController::class, 'profileO'])->name('profile-O');
+//     Route::post('edit-profile-O', [App\Http\Controllers\OperatorController::class, 'editprofileO'])->name('operator.editprofile');
 
-    // Route::post('/tambah-wali-O', [App\Http\Controllers\OperatorController::class, 'tambahwaliO'])->name('tambah-wali-O');
+//     // Route::post('/tambah-wali-O', [App\Http\Controllers\OperatorController::class, 'tambahwaliO'])->name('tambah-wali-O');
 
-});
+// });
