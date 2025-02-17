@@ -9,21 +9,17 @@ class Jurusan extends Model
 {
     use HasFactory;
 
-    protected $table = 'jurusans';
-    public $primaryKey = 'id_jurusan';
-    public $incrementing = false;
-    protected $keyType = 'string';
-
-
+    protected $primaryKey = 'id_jurusan';
     protected $fillable = [
         'id_jurusan',
-        'nama_jurusan',
+        'nama_jurusan'
     ];
+
+    public $incrementing = false;
 
     public function kelas()
     {
         return $this->hasMany(Kelas::class, 'id_jurusan');
     }
 
-    public $timestamps = false;
 }

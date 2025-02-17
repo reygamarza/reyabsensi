@@ -10,24 +10,24 @@ class Absensi extends Model
     use HasFactory;
 
     protected $primaryKey = 'id_absensi';
-    public $incrementing = true;
-    public $timestamps = false;
-
     protected $fillable = [
         'nis',
         'status',
+        'foto_masuk',
+        'foto_pulang',
         'keterangan',
-        'photo_in',
-        'photo_out',
-        'date',
+        'tanggal',
         'jam_masuk',
         'jam_pulang',
-        'titik_koordinat',
+        'latitude_masuk',
+        'longitude_masuk',
+        'latitude_pulang',
+        'longitude_pulang',
+        'menit_keterlambatan'
     ];
 
-    public function absensi()
+    public function siswa()
     {
-        return $this->belongsTo(Siswa::class, 'id_siswa');
+        return $this->belongsTo(Siswa::class, 'nis');
     }
-
 }

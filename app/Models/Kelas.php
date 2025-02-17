@@ -9,14 +9,13 @@ class Kelas extends Model
 {
     use HasFactory;
 
-    protected $table = 'kelas';
     protected $primaryKey = 'id_kelas';
-
     protected $fillable = [
         'id_jurusan',
-        'nuptk',
+        'nip',
         'nomor_kelas',
         'tingkat',
+        'kapasitas'
     ];
 
     public function jurusan()
@@ -24,15 +23,13 @@ class Kelas extends Model
         return $this->belongsTo(Jurusan::class, 'id_jurusan');
     }
 
-    public function walikelas()
+    public function tenagaKependidikan()
     {
-        return $this->belongsTo(Wali_Kelas::class, 'nip');
+        return $this->belongsTo(TenagaKependidikan::class, 'nip');
     }
 
     public function siswa()
     {
         return $this->hasMany(Siswa::class, 'id_kelas');
     }
-
-    public $timestamps = false;
 }

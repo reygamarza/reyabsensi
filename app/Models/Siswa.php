@@ -9,26 +9,32 @@ class Siswa extends Model
 {
     use HasFactory;
 
-    protected $table = 'siswas';
     protected $primaryKey = 'nis';
-    public $incrementing = false;
-    protected $keyType = 'string';
-
     protected $fillable = [
         'nis',
         'id_user',
-        'id_kelas',
-        'nama',
-        'jenis_kelamin',
         'nik_ayah',
         'nik_ibu',
         'nik_wali',
+        'id_kelas',
+        'jenis_kelamin',
         'nisn',
+        'tempat_lahir',
+        'tanggal_lahir'
     ];
+
+    public $incrementing = false;
 
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user');
+    }
+
+    public function waliSiswa()
+    {
+        return $this->belongsTo(WaliSiswa::class, 'nik_ayah', 'nik')
+                    ->orWhere('nik_ibu', 'nik')
+                    ->orWhere('nik_wali', 'nik');
     }
 
     public function kelas()
@@ -36,15 +42,8 @@ class Siswa extends Model
         return $this->belongsTo(Kelas::class, 'id_kelas');
     }
 
-    public function absensi()
+    public function siswa()
     {
-        return $this->hasMany(Absensi::class, 'nis');
+        return $this->hasMany(Siswa::class, 'id_kelas');
     }
-
-    public function ortu()
-    {
-        return $this->belongsTo(Wali_Siswa::class, 'nik');
-    }
-
-    public $timestamps = false;
 }

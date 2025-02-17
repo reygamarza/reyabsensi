@@ -5,21 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Wali_Kelas extends Model
+class TenagaKependidikan extends Model
 {
     use HasFactory;
 
-    protected $table = 'wali__kelas';
-    public $primaryKey = 'nip';
-    // public $incrementing = false;
-    // protected $keyType = 'string';
-
+    protected $primaryKey = 'nip';
     protected $fillable = [
         'nip',
         'id_user',
         'jenis_kelamin',
         'nuptk',
+        'no_telp'
     ];
+
+    public $incrementing = false;
 
     public function user()
     {
@@ -28,8 +27,6 @@ class Wali_Kelas extends Model
 
     public function kelas()
     {
-        return $this->belongsTo(Kelas::class, 'id_kelas');
+        return $this->hasMany(Kelas::class, 'nip');
     }
-
-    public $timestamps = false;
 }

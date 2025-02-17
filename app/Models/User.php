@@ -18,9 +18,10 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'nama',
+        'name',
         'email',
         'password',
+        'avatar',
         'role',
     ];
 
@@ -43,18 +44,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function siswa()
+    public function tenagaKependidikan()
     {
-        return $this->hasOne(Siswa::class, 'id_user');
+        return $this->hasOne(TenagaKependidikan::class, 'id_user');
     }
 
-    public function walikelas()
+    public function waliSiswa()
     {
-        return $this->hasOne(Wali_Kelas::class, 'id_user');
+        return $this->hasOne(WaliSiswa::class, 'id_user');
     }
 
-    public function ortu()
+    public function absensi()
     {
-        return $this->hasOne(Wali_Siswa::class, 'id_user');
+        return $this->hasMany(Absensi::class, 'nis');
     }
 }
