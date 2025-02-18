@@ -24,25 +24,24 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
-        Gate::define('operator', function (User $user) {
-            return $user->role == 'operator';
+        Gate::define('isSiswa', function ($user) {
+            return $user->role === 'siswa';
         });
 
-        Gate::define('kesiswaan', function (User $user) {
-            return $user->role == 'kesiswaan';
+        Gate::define('isOperator', function ($user) {
+            return $user->role === 'operator';
         });
 
-        Gate::define('siswa', function (User $user) {
-            return $user->role == 'siswa';
+        Gate::define('isKesiswaan', function ($user) {
+            return $user->role === 'kesiswaan';
         });
 
-        Gate::define('wali', function (User $user) {
-            return $user->role == 'wali';
+        Gate::define('isWaliKelas', function ($user) {
+            return $user->role === 'waliKelas';
         });
 
-        Gate::define('walis', function (User $user) {
-            return $user->role == 'walis';
+        Gate::define('isWaliSiswa', function ($user) {
+            return $user->role === 'waliSiswa';
         });
     }
 }

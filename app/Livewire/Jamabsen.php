@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Waktu_Absen;
+use App\Models\WaktuAbsensi;
 use Livewire\Component;
 
 class Jamabsen extends Component
@@ -14,7 +15,7 @@ class Jamabsen extends Component
 
     public function render()
     {
-        $jam = Waktu_Absen::first();
+        $jam = WaktuAbsensi::first();
 
         $this->jam_absen = $jam->jam_absen;
         $this->batas_absen_masuk = $jam->batas_absen_masuk;
