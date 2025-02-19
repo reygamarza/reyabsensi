@@ -135,7 +135,7 @@
                             <div class="account-item account-item--style2 clearfix js-item-menu">
                                 <div class="image">
                                     <img src={{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}
-                                    alt="Foto Profil" />
+                                        alt="Foto Profil" />
                                 </div>
                                 <div class="content">
                                     <a class="js-acc-btn" href="#">{{ Auth::user()->nama }}</a>
@@ -145,7 +145,7 @@
                                         <div class="image">
                                             <a href="#">
                                                 <img src={{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}
-                                                alt="Foto Profil" />
+                                                    alt="Foto Profil" />
                                             </a>
                                         </div>
                                         <div class="content">
@@ -284,7 +284,7 @@
                     <div class="account-item account-item--style2 clearfix js-item-menu">
                         <div class="image">
                             <img src={{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}
-                            alt="Foto Profil" />
+                                alt="Foto Profil" />
                         </div>
                         <div class="content">
                             <a class="js-acc-btn" href="#">{{ Auth::user()->nama }}</a>
@@ -294,7 +294,7 @@
                                 <div class="image">
                                     <a href="#">
                                         <img src={{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}
-                                        alt="Foto Profil" />
+                                            alt="Foto Profil" />
                                     </a>
                                 </div>
                                 <div class="content">
