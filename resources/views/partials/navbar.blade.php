@@ -152,7 +152,7 @@
                                 alt="Foto Profil" />
                         </div>
                         <div class="content">
-                            <a class="js-acc-btn" href="#">Kesiswaan</a>
+                            <a class="js-acc-btn" href="#">{{ Auth::user()->nama }}</a>
                         </div>
                         <div class="account-dropdown js-dropdown">
                             <div class="info clearfix">
@@ -164,17 +164,17 @@
                                 </div>
                                 <div class="content">
                                     <h5 class="name">
-                                        <a href="#">Kesiswaan</a>
+                                        <a href="#">{{ Auth::user()->nama }}</a>
                                     </h5>
                                     <span class="email">{{ Auth::user()->email }}</span>
                                 </div>
                             </div>
-                            <div class="account-dropdown__body">
+                            {{-- <div class="account-dropdown__body">
                                 <div class="account-dropdown__item">
                                     <a href="{{ route('kesiswaan.profile') }}">
                                         <i class="zmdi zmdi-account"></i>Profile</a>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="account-dropdown__footer">
                                 <a href="{{ route('logout') }}" class="dropdown-item zmdi zmdi-power"
                                     onclick="event.preventDefault();

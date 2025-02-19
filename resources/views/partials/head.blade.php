@@ -2,7 +2,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<title>@yield('title', 'MyApp')</title>
+<title>{{ ucwords(preg_replace('/([a-z])([A-Z])/', '$1 $2', Auth::user()->role)) }} | @yield('title', 'MyApp')</title>
 
 <!-- Fontfaces CSS-->
 <link href="{{ asset('assets/kesiswaan') }}/css/font-face.css" rel="stylesheet" media="all">

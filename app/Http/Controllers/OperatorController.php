@@ -18,9 +18,7 @@ class OperatorController extends Controller
      */
     public function index()
     {
-        return view('operator.operator', [
-            'title' => 'Koordinat dan Waktu'
-        ]);
+        return view('pages.operator.index');
     }
 
     public function walikelasO()

@@ -9,8 +9,25 @@
     <div class="page-wrapper">
         @include('partials.navbar')
 
-        @yield('content')
+        <!-- PAGE CONTENT-->
+        <div class="page-content--bgf7">
 
+            @yield('content')
+
+            <!-- COPYRIGHT-->
+            <section class="p-t-60 p-b-20">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="copyright">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END COPYRIGHT-->
+        </div>
         @include('partials.scripts')
 </body>
 
