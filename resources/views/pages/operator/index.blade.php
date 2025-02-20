@@ -17,7 +17,7 @@
                                 <li class="list-inline-item seprate">
                                     <span>></span>
                                 </li>
-                                <li class="list-inline-item">Koordinat | Waktu Absen</li>
+                                <li class="list-inline-item">Lokasi Sekolah | Waktu Absen</li>
                             </ul>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h1 class="title-4 text-center">Setting Alamat Sekolah dan Waktu Absen</h1>
+                    <h1 class="title-4 text-center">Setting Lokasi Sekolah dan Waktu Absen</h1>
                     <hr class="line-seprate">
                 </div>
             </div>
@@ -40,23 +40,18 @@
     </section>
     <!-- END WELCOME-->
 
-    <!-- INPUT BOXES -->
-    <section class="p-t-20 p-b-20">
+    <!-- FORM -->
+    <section class="py-4">
         <div class="container">
-            <div class="row">
+            <div class="row g-4">
                 <div class="col-md-6">
-                    <div class="statistic__item">
-                        {{-- @livewire('jamabsen') --}}
-                    </div>
+                    <livewire:pages.operator.index.lokasi-sekolah />
                 </div>
                 <div class="col-md-6">
-                    <div class="statistic__item">
-                        <h3 class="title-5 m-b-25 text-center">Koordinat Sekolah</h3>
-                        {{-- @livewire('koordinat') --}}
-                    </div>
+                    <livewire:pages.operator.index.waktu-absen />
                 </div>
             </div>
         </div>
     </section>
-    <!-- END INPUT BOXES -->
+    <!-- END FORM -->
 @endsection

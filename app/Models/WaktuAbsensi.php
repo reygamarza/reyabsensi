@@ -11,10 +11,10 @@ class WaktuAbsensi extends Model
 
     protected $primaryKey = 'id_waktu_absensi';
     protected $fillable = [
-        'absensi_masuk',
-        'batas_absensi_masuk',
-        'absensi_pulang',
-        'batas_absensi_pulang'
+        'absen_masuk',
+        'batas_absen_masuk',
+        'absen_pulang',
+        'batas_absen_pulang'
     ];
 
     public $timestamps = true;
